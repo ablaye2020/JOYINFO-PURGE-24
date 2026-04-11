@@ -18,7 +18,7 @@ const state = {
   game2: { currentImgIndex: 0, positions: {} }
 };
 
-// BroadcastChannel pour synchro équipe
+// BroadcastChannel
 const channel = new BroadcastChannel('purge_team');
 channel.onmessage = (e) => {
   const { type, data } = e.data;
@@ -36,13 +36,13 @@ function saveTeam() {
 }
 function broadcastTeam() { channel.postMessage({ type: 'TEAM_UPDATE', data: state.currentTeam }); }
 
-// Valider numéro de téléphone
+// Validation numéro
 function isValidPhone(phone) {
-  const phoneRegex = /^\+\d{1,4}\d{6,15}$/;
+  const phoneRegex = /^\+\d{8,15}$/;
   return phoneRegex.test(phone);
 }
 
-// Générer un code de groupe unique
+// Générer code
 function generateTeamCode() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
   let code = '';
@@ -52,27 +52,86 @@ function generateTeamCode() {
   return code;
 }
 
-// Récupérer le numéro complet avec indicatif
+// Récupérer numéro
 function getFullPhoneNumber(formType) {
-  const countrySelect = document.getElementById(`${formType === 'reg' ? 'reg-country' : 'login-country'}`);
-  const countryCode = countrySelect ? countrySelect.value : '+241';
   const phoneInput = document.getElementById(`${formType === 'reg' ? 'reg-phone' : 'login-phone'}`);
-  const localNumber = phoneInput.value.trim().replace(/[^0-9]/g, '');
-  return countryCode + localNumber;
+  return phoneInput.value.trim().replace(/\s/g, '');
 }
 
 // Écrans
 const screens = {
   subscribe: document.getElementById('screen-subscribe'), auth: document.getElementById('screen-auth'),
-  lobby: document.getElementById('screen-lobby'), game1: document.getElementById('screen-game1'),
-  game2: document.getElementById('screen-game2'), game3: document.getElementById('screen-game3'),
-  results: document.getElementById('screen-results')
+  teamChoice: document.getElementById('screen-team-choice'), lobby: document.getElementById('screen-lobby'),
+  game1: document.getElementById('screen-game1'), game2: document.getElementById('screen-game2'),
+  game3: document.getElementById('screen-game3'), results: document.getElementById('screen-results')
 };
 function showScreen(id) { Object.values(screens).forEach(s => s.classList.remove('active')); screens[id].classList.add('active'); }
 
+// Mise à jour UI choix équipe
+function updateChoiceUI() {
+  if (state.user) {
+    document.getElementById('choice-user-avatar').src = state.user.avatar;
+    document.getElementById('choice-user-pseudo').textContent = state.user.pseudo;
+  }
+}
+
+// Setup écran choix équipe
+function setupTeamChoice() {
+  document.getElementById('create-team-btn').onclick = () => {
+    const newCode = generateTeamCode();
+    state.currentTeam = { code: newCode, players: [state.user] };
+    saveTeam();
+    localStorage.setItem(`team_${newCode}`, JSON.stringify(state.currentTeam));
+    broadcastTeam();
+    showScreen('lobby');
+    updateLobbyUI();
+  };
+  
+  document.getElementById('show-join-team-btn').onclick = () => {
+    const section = document.getElementById('join-team-section');
+    section.classList.toggle('hidden');
+  };
+  
+  document.getElementById('choice-join-btn').onclick = () => {
+    const code = document.getElementById('choice-join-code').value.toUpperCase().trim();
+    if (!code) return;
+    
+    const existingTeam = localStorage.getItem(`team_${code}`);
+    if (existingTeam) {
+      state.currentTeam = JSON.parse(existingTeam);
+    } else {
+      state.currentTeam = { code: code, players: [] };
+    }
+    
+    if (state.currentTeam.players.length >= 4) {
+      document.getElementById('join-error').textContent = '❌ Cette équipe est déjà complète (4/4) !';
+      return;
+    }
+    
+    if (!state.currentTeam.players.find(p => p.phone === state.user.phone)) {
+      state.currentTeam.players.push(state.user);
+      saveTeam();
+      localStorage.setItem(`team_${state.currentTeam.code}`, JSON.stringify(state.currentTeam));
+      broadcastTeam();
+      showScreen('lobby');
+      updateLobbyUI();
+    } else {
+      showScreen('lobby');
+      updateLobbyUI();
+    }
+  };
+  
+  document.getElementById('choice-logout').onclick = () => {
+    state.user = null;
+    state.currentTeam = { code: null, players: [] };
+    showScreen('auth');
+  };
+}
+
 // Init
 document.addEventListener('DOMContentLoaded', ()=>{
-  // Abonnement
+  setupTeamChoice();
+  
   document.getElementById('verify-subscription').onclick = ()=> showScreen('auth');
 
   // Tabs
@@ -89,19 +148,21 @@ document.addEventListener('DOMContentLoaded', ()=>{
       document.getElementById('phone-status').innerHTML='✅ Vérifié'; 
       document.getElementById('register-btn').disabled=false; 
     } else {
-      document.getElementById('phone-status').innerHTML='❌ Numéro invalide (ex: 612345678)';
+      document.getElementById('phone-status').innerHTML='❌ Numéro invalide - Utilisez le format +241XXXXXXXX';
       document.getElementById('register-btn').disabled=true;
     }
   };
+  
   document.getElementById('reg-avatar-file').onchange = (e)=>{
     const f=e.target.files[0]; if(f){ const r=new FileReader(); r.onload=ev=>document.getElementById('reg-avatar-preview').src=ev.target.result; r.readAsDataURL(f); }
   };
+  
   document.getElementById('register-btn').onclick = ()=>{
     const phone = getFullPhoneNumber('reg');
     const pseudo = document.getElementById('reg-pseudo').value.trim();
     const avatar = document.getElementById('reg-avatar-preview').src;
     if(!phone || !pseudo || !isValidPhone(phone)){ 
-      document.getElementById('reg-error').textContent='Numéro invalide ou pseudo manquant'; 
+      document.getElementById('reg-error').textContent='Numéro invalide (ex: +241612345678) ou pseudo manquant'; 
       return; 
     }
     if(state.users.find(u=>u.phone===phone)){ 
@@ -112,9 +173,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
     state.users.push(user); 
     saveUsers(); 
     state.user=user; 
-    loadOrCreateTeam(); 
-    showScreen('lobby'); 
-    updateLobbyUI();
+    showScreen('team-choice');
+    updateChoiceUI();
   };
 
   // Login
@@ -127,52 +187,20 @@ document.addEventListener('DOMContentLoaded', ()=>{
       return; 
     }
     state.user=user; 
-    loadOrCreateTeam(); 
-    showScreen('lobby'); 
-    updateLobbyUI();
+    showScreen('team-choice');
+    updateChoiceUI();
   };
 
   // Lobby
-  document.getElementById('logout-btn').onclick = ()=>{ state.user=null; state.currentTeam={code:null,players:[]}; showScreen('auth'); };
+  document.getElementById('lobby-logout-btn').onclick = ()=>{ state.user=null; state.currentTeam={code:null,players:[]}; showScreen('auth'); };
   document.getElementById('copy-code-btn').onclick = ()=> navigator.clipboard?.writeText(state.currentTeam.code) && alert('✅ Code copié ! Partage-le avec tes amis');
-  document.getElementById('join-team-btn').onclick = ()=>{
-    const code = document.getElementById('join-code-input').value.toUpperCase().trim();
-    if(!code) return;
-    
-    if(state.currentTeam.code && state.currentTeam.code !== code) {
-      if(confirm("⚠️ Tu es déjà dans une équipe. Veux-tu la quitter pour rejoindre celle-ci ?")) {
-        state.currentTeam.players = state.currentTeam.players.filter(p=>p.phone!==state.user.phone);
-      } else return;
-    }
-    
-    if(!state.currentTeam.code || state.currentTeam.code !== code) {
-      const existingTeam = localStorage.getItem(`team_${code}`);
-      if(existingTeam) {
-        state.currentTeam = JSON.parse(existingTeam);
-      } else {
-        state.currentTeam = { code: code, players: [] };
-      }
-    }
-    
-    if(!state.currentTeam.players.find(p=>p.phone===state.user.phone)) {
-      if(state.currentTeam.players.length >= 4) {
-        alert("❌ Cette équipe est déjà complète (4/4) !");
-        return;
-      }
-      state.currentTeam.players.push(state.user);
-      saveTeam();
-      localStorage.setItem(`team_${state.currentTeam.code}`, JSON.stringify(state.currentTeam));
-      broadcastTeam();
-    }
-    updateLobbyUI();
-  };
   document.getElementById('leave-team').onclick = ()=>{
     if(confirm("Quitter l'équipe ?")) {
       state.currentTeam.players = state.currentTeam.players.filter(p=>p.phone!==state.user.phone);
       if(state.currentTeam.players.length === 0){ 
         localStorage.removeItem(`team_${state.currentTeam.code}`);
         state.currentTeam = {code:null,players:[]}; 
-        showScreen('auth'); 
+        showScreen('team-choice'); 
       } else { 
         saveTeam();
         localStorage.setItem(`team_${state.currentTeam.code}`, JSON.stringify(state.currentTeam));
@@ -213,7 +241,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   function displayAdminList(){ document.getElementById('admin-list').innerHTML = ADMIN_LIST.map((p,i)=>`<li>${p} <button onclick="removeAdmin(${i})">X</button></li>`).join(''); }
   window.removeAdmin = (i)=>{ ADMIN_LIST.splice(i,1); localStorage.setItem('purge_admin_list',JSON.stringify(ADMIN_LIST)); displayAdminList(); };
 
-  // Charger données sauvegardées
+  // Charger données
   if(localStorage.getItem('purge_admin_list')) ADMIN_LIST = JSON.parse(localStorage.getItem('purge_admin_list'));
   if(localStorage.getItem('purge_game1_questions')) {
     const saved = JSON.parse(localStorage.getItem('purge_game1_questions'));
@@ -225,26 +253,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
   }
   checkBan();
 });
-
-function loadOrCreateTeam(){
-  const saved = localStorage.getItem('purge_team');
-  if(saved && state.user){ 
-    try{ 
-      state.currentTeam = JSON.parse(saved);
-      if(!state.currentTeam.players.find(p=>p.phone===state.user.phone)) {
-        state.currentTeam = { code: generateTeamCode(), players: [state.user] };
-        saveTeam();
-      }
-    } catch(e){}
-  }
-  if(!state.currentTeam || !state.currentTeam.code || !state.currentTeam.players.find(p=>p && p.phone===state.user?.phone)){
-    const newCode = generateTeamCode();
-    state.currentTeam = { code: newCode, players: [state.user] };
-    saveTeam();
-    localStorage.setItem(`team_${newCode}`, JSON.stringify(state.currentTeam));
-    broadcastTeam();
-  }
-}
 
 function updateLobbyUI(){
   const t=state.currentTeam;
@@ -343,7 +351,7 @@ function validateGame1Round(){
       alert(`⚠️ ${perdant.player.pseudo} a donné une réponse minoritaire ! +500 dettes`); 
     }
   } else {
-    alert("🤝 Tout le monde a répondu la même chose ou personne n'a répondu ! Pas de dette cette manche.");
+    alert("🤝 Tout le monde a répondu la même chose ! Pas de dette cette manche.");
   }
   
   state.game1.round++; 
