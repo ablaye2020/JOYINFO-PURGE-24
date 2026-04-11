@@ -1,5 +1,5 @@
 /****************************************************
- * PURGE GAME - Version Firebase Complète
+ * PURGE GAME - Version Firebase Complète (Timer 30s)
  ****************************************************/
 
 // État
@@ -242,13 +242,18 @@ function loadQuestion() {
   });
   
   document.getElementById('validate-round').disabled = false;
-  startTimer(60);
+  startTimer(30); // ⏱️ 30 SECONDES PAR QUESTION
 }
 
+// ⏱️ TIMER À 30 SECONDES
 function startTimer(seconds) {
   let timeLeft = seconds;
   const timerEl = document.getElementById('timer');
   if (window.gameTimer) clearInterval(window.gameTimer);
+  
+  // Afficher le temps initial
+  const secInitial = timeLeft < 10 ? '0' + timeLeft : timeLeft;
+  timerEl.textContent = `00:${secInitial}`;
   
   window.gameTimer = setInterval(() => {
     timeLeft--;
@@ -368,7 +373,9 @@ function finishGame() {
   }
   showScreen('screen-results');
 }
+
 // ========== MUSIQUE DE FOND ==========
+function initMusic() {
   const audio = document.getElementById('background-music');
   const toggleBtn = document.getElementById('toggle-music');
   
@@ -398,9 +405,14 @@ function finishGame() {
       }
     };
   }
+}
+
 // ========== INITIALISATION ==========
 document.addEventListener('DOMContentLoaded', () => {
-  console.log("=== PURGE GAME AVEC FIREBASE ===");
+  console.log("=== PURGE GAME AVEC FIREBASE (TIMER 30s) ===");
+  
+  // Initialiser la musique
+  initMusic();
   
   // Charger les admins
   loadAdminList();
@@ -672,5 +684,5 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('finish-game3').onclick = finishGame;
   document.getElementById('play-again').onclick = () => { localStorage.clear(); location.reload(); };
   
-  console.log("=== INITIALISATION TERMINÉE ===");
+  console.log("=== INITIALISATION TERMINÉE (TIMER 30s) ===");
 });
