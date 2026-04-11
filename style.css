@@ -805,3 +805,115 @@ input, select {
 .phone-input-wrapper {
   position: relative;
 }
+/* ===== NOUVEAUX STYLES À AJOUTER À LA FIN ===== */
+
+.input-hint {
+  font-size: 11px;
+  color: #666;
+  margin-top: 5px;
+}
+
+/* ÉCRAN CHOIX ÉQUIPE */
+.choice-container {
+  background: #1a1a2e;
+  border-radius: 28px;
+  padding: 30px 25px;
+  text-align: center;
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.choice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #2a2a3e;
+}
+
+.user-info-mini {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-info-mini img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid #ff4757;
+  object-fit: cover;
+}
+
+.user-info-mini span {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.choice-container h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.choice-subtitle {
+  color: #888;
+  font-size: 14px;
+  margin-bottom: 40px;
+}
+
+.choice-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.create-btn {
+  background: linear-gradient(135deg, #ff4757, #c0392b);
+  padding: 16px;
+  font-size: 18px;
+}
+
+.join-choice-btn {
+  background: #2a2a3e;
+  padding: 16px;
+  font-size: 18px;
+}
+
+.join-team-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #2a2a3e;
+  animation: fadeIn 0.3s ease;
+}
+
+#choice-join-code {
+  text-align: center;
+  font-size: 24px;
+  letter-spacing: 4px;
+  padding: 15px;
+}
+
+/* Taille normale pour les inputs téléphone */
+#login-phone, #reg-phone {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #2a2a3e;
+  background: #1a1a2e;
+  color: white;
+  font-size: 16px;
+}
+
+#login-phone:focus, #reg-phone:focus {
+  outline: none;
+  border-color: #ff4757;
+}
+
+/* Animation pour le panneau qui apparaît */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
