@@ -1,5 +1,5 @@
 /****************************************************
- * PURGE GAME - Version avec équipe persistante
+ * PURGE GAME - Version avec synchronisation fonctionnelle
  ****************************************************/
 
 // État
@@ -18,20 +18,22 @@ let ADMIN_LIST = ["+221708137251","+221769426236","+22897173547","+2250777315113
 function saveUsers() { localStorage.setItem('purge_users', JSON.stringify(state.users)); }
 
 function saveTeam() { 
-  if (state.currentTeam.code) {
+  if (state.currentTeam && state.currentTeam.code) {
     localStorage.setItem('purge_team', JSON.stringify(state.currentTeam));
-    // Sauvegarder aussi dans une équipe séparée pour que les autres puissent la trouver
     localStorage.setItem(`team_${state.currentTeam.code}`, JSON.stringify(state.currentTeam));
-    console.log("💾 Équipe sauvegardée:", state.currentTeam.code, state.currentTeam.players.length, "joueurs");
+    console.log("💾 Équipe sauvegardée:", state.currentTeam.code, "avec", state.currentTeam.players.length, "joueurs");
+    
+    // Afficher la liste des joueurs dans la console
+    state.currentTeam.players.forEach(p => console.log("   -", p.pseudo, p.phone));
   }
 }
 
-function loadTeamFromCode(code) {
+function loadTeamFromStorage(code) {
   const saved = localStorage.getItem(`team_${code}`);
   if (saved) {
     try {
       const team = JSON.parse(saved);
-      console.log("📂 Équipe chargée depuis code:", code, team.players.length, "joueurs");
+      console.log("📂 Équipe chargée:", code, team.players.length, "joueurs");
       return team;
     } catch(e) {}
   }
@@ -91,13 +93,13 @@ function updateChoiceUI() {
   }
 }
 
-// Mise à jour du lobby
+// Mise à jour du lobby - VERSION CORRIGÉE
 function updateLobbyUI() {
   const t = state.currentTeam;
-  if (!t || !t.players) return;
+  if (!t || !t.code) return;
   
-  console.log("🔄 Mise à jour lobby - Joueurs:", t.players.length);
-  console.log("👥 Liste:", t.players.map(p => p.pseudo).join(", "));
+  console.log("🔄 MISE À JOUR LOBBY - Code:", t.code);
+  console.log("👥 Joueurs dans l'équipe:", t.players.length);
   
   const onlineCount = document.getElementById('online-count');
   const inviteCode = document.getElementById('invite-code');
@@ -125,6 +127,26 @@ function updateLobbyUI() {
     }
   }
 }
+
+// Fonction pour rafraîchir l'équipe depuis le stockage
+function refreshTeamFromStorage() {
+  if (state.currentTeam && state.currentTeam.code) {
+    const savedTeam = loadTeamFromStorage(state.currentTeam.code);
+    if (savedTeam) {
+      const oldCount = state.currentTeam.players.length;
+      state.currentTeam.players = savedTeam.players;
+      if (oldCount !== savedTeam.players.length) {
+        console.log("🔄 Équipe mise à jour depuis stockage:", oldCount, "→", savedTeam.players.length);
+        updateLobbyUI();
+      }
+    }
+  }
+}
+
+// Vérifier les changements toutes les 2 secondes
+setInterval(() => {
+  refreshTeamFromStorage();
+}, 2000);
 
 // Initialisation
 document.addEventListener('DOMContentLoaded', () => {
@@ -233,14 +255,14 @@ document.addEventListener('DOMContentLoaded', () => {
       
       state.user = user;
       
-      // Chercher si l'utilisateur était dans une équipe sauvegardée
+      // Chercher si l'utilisateur était dans une équipe
       const savedTeam = localStorage.getItem('purge_team');
       if (savedTeam) {
         try {
           const team = JSON.parse(savedTeam);
           if (team.players && team.players.find(p => p.phone === user.phone)) {
             state.currentTeam = team;
-            console.log("📂 Équipe chargée depuis sauvegarde:", team.code, team.players.length, "joueurs");
+            console.log("📂 Équipe retrouvée:", team.code);
             showScreen('screen-lobby');
             updateLobbyUI();
             return;
@@ -286,16 +308,15 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       
-      // Chercher l'équipe dans localStorage avec le code
-      let existingTeam = loadTeamFromCode(code);
+      // Chercher l'équipe dans localStorage
+      let existingTeam = loadTeamFromStorage(code);
       
       if (existingTeam) {
         state.currentTeam = existingTeam;
-        console.log("📂 Équipe trouvée:", code, state.currentTeam.players.length, "joueurs");
+        console.log("📂 Équipe trouvée avec", state.currentTeam.players.length, "joueurs");
       } else {
-        // Si l'équipe n'existe pas, la créer
         state.currentTeam = { code: code, players: [] };
-        console.log("🆕 Nouvelle équipe créée avec code:", code);
+        console.log("🆕 Nouvelle équipe créée");
       }
       
       // Vérifier si l'équipe est pleine
@@ -308,11 +329,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!state.currentTeam.players.find(p => p.phone === state.user.phone)) {
         state.currentTeam.players.push(state.user);
         console.log("✅ Joueur ajouté:", state.user.pseudo);
-        console.log("👥 Nombre total de joueurs:", state.currentTeam.players.length);
+        console.log("👥 Nombre total:", state.currentTeam.players.length);
         
         saveTeam();
-      } else {
-        console.log("ℹ️ Joueur déjà dans l'équipe");
       }
       
       showScreen('screen-lobby');
@@ -324,7 +343,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const choiceLogout = document.getElementById('choice-logout');
   if (choiceLogout) {
     choiceLogout.onclick = () => {
-      // Ne pas supprimer l'équipe, juste déconnecter l'utilisateur
       state.user = null;
       showScreen('screen-auth');
     };
@@ -337,7 +355,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (confirm("Quitter l'équipe ?")) {
         state.currentTeam.players = state.currentTeam.players.filter(p => p.phone !== state.user.phone);
         if (state.currentTeam.players.length === 0) {
-          // Supprimer l'équipe si plus personne
           localStorage.removeItem(`team_${state.currentTeam.code}`);
           state.currentTeam = { code: null, players: [] };
           showScreen('screen-team-choice');
@@ -369,7 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
   
-  // LANCER LE JEU 1
+  // LANCER LE JEU
   const startGame = document.getElementById('start-game');
   if (startGame) {
     startGame.onclick = () => {
@@ -382,7 +399,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
   
-  // ADMIN (version simplifiée)
+  // ADMIN
   const showAdminBtn = document.getElementById('show-admin-btn');
   const closeAdmin = document.getElementById('close-admin');
   
