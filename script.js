@@ -1,5 +1,5 @@
 /****************************************************
- * PURGE GAME - Version avec synchronisation fonctionnelle
+ * PURGE GAME - Version avec synchronisation forcée
  ****************************************************/
 
 // État
@@ -21,10 +21,13 @@ function saveTeam() {
   if (state.currentTeam && state.currentTeam.code) {
     localStorage.setItem('purge_team', JSON.stringify(state.currentTeam));
     localStorage.setItem(`team_${state.currentTeam.code}`, JSON.stringify(state.currentTeam));
-    console.log("💾 Équipe sauvegardée:", state.currentTeam.code, "avec", state.currentTeam.players.length, "joueurs");
+    console.log("💾 Équipe sauvegardée:", state.currentTeam.code, "👥", state.currentTeam.players.length, "joueurs");
     
-    // Afficher la liste des joueurs dans la console
-    state.currentTeam.players.forEach(p => console.log("   -", p.pseudo, p.phone));
+    // Déclencher un événement storage pour les autres onglets
+    window.dispatchEvent(new StorageEvent('storage', {
+      key: `team_${state.currentTeam.code}`,
+      newValue: JSON.stringify(state.currentTeam)
+    }));
   }
 }
 
@@ -39,6 +42,25 @@ function loadTeamFromStorage(code) {
   }
   return null;
 }
+
+// Écouter les changements dans localStorage (pour les autres onglets)
+window.addEventListener('storage', (e) => {
+  console.log("📡 Événement storage détecté:", e.key);
+  
+  if (e.key && e.key.startsWith('team_') && state.currentTeam.code) {
+    const code = e.key.replace('team_', '');
+    if (code === state.currentTeam.code && e.newValue) {
+      try {
+        const updatedTeam = JSON.parse(e.newValue);
+        if (updatedTeam.players.length !== state.currentTeam.players.length) {
+          console.log("🔄 Synchronisation détectée! Nouveaux joueurs:", updatedTeam.players.length);
+          state.currentTeam.players = updatedTeam.players;
+          updateLobbyUI();
+        }
+      } catch(e) {}
+    }
+  }
+});
 
 function isValidPhone(phone) {
   return /^\+\d{8,15}$/.test(phone);
@@ -93,13 +115,13 @@ function updateChoiceUI() {
   }
 }
 
-// Mise à jour du lobby - VERSION CORRIGÉE
+// Mise à jour du lobby
 function updateLobbyUI() {
   const t = state.currentTeam;
   if (!t || !t.code) return;
   
   console.log("🔄 MISE À JOUR LOBBY - Code:", t.code);
-  console.log("👥 Joueurs dans l'équipe:", t.players.length);
+  console.log("👥 Joueurs:", t.players.map(p => p.pseudo).join(", "));
   
   const onlineCount = document.getElementById('online-count');
   const inviteCode = document.getElementById('invite-code');
@@ -128,24 +150,21 @@ function updateLobbyUI() {
   }
 }
 
-// Fonction pour rafraîchir l'équipe depuis le stockage
-function refreshTeamFromStorage() {
+// Rafraîchissement forcé toutes les 2 secondes
+setInterval(() => {
   if (state.currentTeam && state.currentTeam.code) {
-    const savedTeam = loadTeamFromStorage(state.currentTeam.code);
-    if (savedTeam) {
-      const oldCount = state.currentTeam.players.length;
-      state.currentTeam.players = savedTeam.players;
-      if (oldCount !== savedTeam.players.length) {
-        console.log("🔄 Équipe mise à jour depuis stockage:", oldCount, "→", savedTeam.players.length);
-        updateLobbyUI();
-      }
+    const saved = localStorage.getItem(`team_${state.currentTeam.code}`);
+    if (saved) {
+      try {
+        const team = JSON.parse(saved);
+        if (team.players.length !== state.currentTeam.players.length) {
+          console.log("🔄 Rafraîchissement auto - Nouveaux joueurs détectés!");
+          state.currentTeam.players = team.players;
+          updateLobbyUI();
+        }
+      } catch(e) {}
     }
   }
-}
-
-// Vérifier les changements toutes les 2 secondes
-setInterval(() => {
-  refreshTeamFromStorage();
 }, 2000);
 
 // Initialisation
@@ -297,18 +316,20 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
   
-  // REJOINDRE UNE ÉQUIPE - VERSION CORRIGÉE
+  // REJOINDRE UNE ÉQUIPE
   const choiceJoinBtn = document.getElementById('choice-join-btn');
   if (choiceJoinBtn) {
     choiceJoinBtn.onclick = () => {
       console.log("🔗 REJOINDRE ÉQUIPE");
-      const code = document.getElementById('choice-join-code').value.toUpperCase().trim();
+      const codeInput = document.getElementById('choice-join-code');
+      const code = codeInput ? codeInput.value.toUpperCase().trim() : '';
+      
       if (!code) {
         alert("Entrez un code d'invitation");
         return;
       }
       
-      // Chercher l'équipe dans localStorage
+      // Chercher l'équipe
       let existingTeam = loadTeamFromStorage(code);
       
       if (existingTeam) {
@@ -316,7 +337,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("📂 Équipe trouvée avec", state.currentTeam.players.length, "joueurs");
       } else {
         state.currentTeam = { code: code, players: [] };
-        console.log("🆕 Nouvelle équipe créée");
+        console.log("🆕 Nouvelle équipe créée avec code:", code);
       }
       
       // Vérifier si l'équipe est pleine
@@ -332,6 +353,9 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("👥 Nombre total:", state.currentTeam.players.length);
         
         saveTeam();
+        
+        // Afficher un message de confirmation
+        alert(`✅ Vous avez rejoint l'équipe ${code}!`);
       }
       
       showScreen('screen-lobby');
