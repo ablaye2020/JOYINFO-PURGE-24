@@ -1,5 +1,8 @@
 /****************************************************
- * PURGE GAME - Version Firebase Complète (Timer 30s)
+ * PURGE GAME - Version Firebase Complète
+ * - Timer 30 secondes
+ * - Réponses vides = pénalité
+ * - Réponses invalides (1, a, p) = pénalité
  ****************************************************/
 
 // État
@@ -63,10 +66,6 @@ function displayAdminList() {
   }
 }
 
-function isAdmin(phone) {
-  return phone === OWNER_PHONE || ADMIN_LIST.includes(phone);
-}
-
 // ========== FONCTIONS UTILITAIRES ==========
 function saveUsers() { localStorage.setItem('purge_users', JSON.stringify(state.users)); }
 
@@ -91,6 +90,16 @@ function escapeHtml(str) {
     if (m === '>') return '&gt;';
     return m;
   });
+}
+
+// Vérifier si une réponse est valide (pas vide, pas trop courte, pas juste un chiffre/lettre)
+function isValidAnswer(answer) {
+  if (!answer || answer.length < 2) return false;
+  if (/^\d$/.test(answer)) return false;
+  if (/^[a-z]$/i.test(answer)) return false;
+  if (/^[?!;:,.]+$/.test(answer)) return false;
+  if (answer.trim().length < 2) return false;
+  return true;
 }
 
 // ========== AFFICHAGE ÉCRANS ==========
@@ -242,16 +251,15 @@ function loadQuestion() {
   });
   
   document.getElementById('validate-round').disabled = false;
-  startTimer(30); // ⏱️ 30 SECONDES PAR QUESTION
+  startTimer(30);
 }
 
-// ⏱️ TIMER À 30 SECONDES
+// Timer à 30 secondes
 function startTimer(seconds) {
   let timeLeft = seconds;
   const timerEl = document.getElementById('timer');
   if (window.gameTimer) clearInterval(window.gameTimer);
   
-  // Afficher le temps initial
   const secInitial = timeLeft < 10 ? '0' + timeLeft : timeLeft;
   timerEl.textContent = `00:${secInitial}`;
   
@@ -266,30 +274,102 @@ function startTimer(seconds) {
   }, 1000);
 }
 
+// Validation du round avec vérification des réponses
 function validateGame1Round() {
   const answers = [];
+  let allEmpty = true;
+  
+  // Récupérer les réponses
   state.currentTeam.players.forEach((p, i) => {
     const input = document.getElementById(`answer-${i}`);
-    answers.push({ player: p, answer: input?.value.trim().toLowerCase() || '' });
+    let answer = input?.value.trim().toLowerCase() || '';
+    
+    const isValid = isValidAnswer(answer);
+    
+    answers.push({ 
+      player: p, 
+      answer: answer,
+      isValid: isValid
+    });
+    
+    if (answer.length > 0) allEmpty = false;
   });
   
-  const count = {};
-  answers.forEach(a => { if (a.answer) count[a.answer] = (count[a.answer] || 0) + 1; });
+  // Cas 1 : Tout le monde a laissé vide
+  if (allEmpty) {
+    alert("❌ Personne n'a répondu ! Tout le monde reçoit +500 dettes");
+    state.currentTeam.players.forEach(p => {
+      state.game1.playerDebts[p.phone] = (state.game1.playerDebts[p.phone] || 0) + 500;
+    });
+    state.game1.round++;
+    if (state.game1.round <= 5) {
+      loadQuestion();
+    } else {
+      showScreen('screen-game2');
+      initGame2();
+    }
+    return;
+  }
   
+  // Filtrer les réponses valides
+  const validAnswers = answers.filter(a => a.isValid && a.answer.length > 0);
+  const invalidPlayers = answers.filter(a => !a.isValid && a.answer.length > 0);
+  
+  // Cas 2 : Des joueurs ont donné des réponses invalides
+  if (invalidPlayers.length > 0) {
+    invalidPlayers.forEach(p => {
+      state.game1.playerDebts[p.player.phone] = (state.game1.playerDebts[p.player.phone] || 0) + 500;
+      alert(`⚠️ ${p.player.pseudo} a donné une réponse invalide "${p.answer}" ! +500 dettes`);
+    });
+  }
+  
+  // Si pas assez de réponses valides
+  if (validAnswers.length < 2) {
+    alert("🤝 Pas assez de réponses valides pour déterminer un perdant !");
+    state.game1.round++;
+    if (state.game1.round <= 5) {
+      loadQuestion();
+    } else {
+      showScreen('screen-game2');
+      initGame2();
+    }
+    return;
+  }
+  
+  // Compter les réponses valides
+  const count = {};
+  validAnswers.forEach(a => {
+    count[a.answer] = (count[a.answer] || 0) + 1;
+  });
+  
+  // Trouver la réponse minoritaire
   let minoritaire = null;
   let minCount = Infinity;
   for (let [rep, c] of Object.entries(count)) {
-    if (c < minCount) { minCount = c; minoritaire = rep; }
+    if (c < minCount && c >= 1) {
+      minCount = c;
+      minoritaire = rep;
+    }
   }
   
-  if (minoritaire) {
-    const loser = answers.find(a => a.answer === minoritaire);
-    if (loser) {
-      state.game1.playerDebts[loser.player.phone] = (state.game1.playerDebts[loser.player.phone] || 0) + 500;
-      alert(`⚠️ ${loser.player.pseudo} a donné une réponse minoritaire ! +500 dettes`);
+  // Si tout le monde a donné la même réponse
+  if (minoritaire === null || Object.keys(count).length === 1) {
+    alert("🤝 Tout le monde a donné la même réponse valide ! Pas de dette cette manche.");
+    state.game1.round++;
+    if (state.game1.round <= 5) {
+      loadQuestion();
+    } else {
+      showScreen('screen-game2');
+      initGame2();
     }
-  } else {
-    alert("🤝 Tout le monde a répondu la même chose !");
+    return;
+  }
+  
+  // Trouver le perdant
+  const loser = validAnswers.find(a => a.answer === minoritaire);
+  if (loser) {
+    state.game1.playerDebts[loser.player.phone] = (state.game1.playerDebts[loser.player.phone] || 0) + 500;
+    alert(`⚠️ ${loser.player.pseudo} a donné la réponse minoritaire "${minoritaire}" ! +500 dettes`);
   }
   
   state.game1.round++;
@@ -409,18 +489,13 @@ function initMusic() {
 
 // ========== INITIALISATION ==========
 document.addEventListener('DOMContentLoaded', () => {
-  console.log("=== PURGE GAME AVEC FIREBASE (TIMER 30s) ===");
+  console.log("=== PURGE GAME AVEC FIREBASE (TIMER 30s + VALIDATION) ===");
   
-  // Initialiser la musique
   initMusic();
-  
-  // Charger les admins
   loadAdminList();
   
-  // Écran abonnement
   document.getElementById('verify-subscription').onclick = () => showScreen('screen-auth');
   
-  // Tabs Connexion/Inscription
   document.querySelectorAll('.tab').forEach(tab => {
     tab.onclick = () => {
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -430,7 +505,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   });
   
-  // Vérification numéro
   document.getElementById('reg-verify-phone').onclick = () => {
     const phone = document.getElementById('reg-phone').value.trim();
     const status = document.getElementById('phone-status');
@@ -444,7 +518,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
   
-  // Upload photo
   document.getElementById('reg-avatar-file').onchange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -456,7 +529,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
   
-  // Inscription
   document.getElementById('register-btn').onclick = () => {
     const phone = document.getElementById('reg-phone').value.trim();
     const pseudo = document.getElementById('reg-pseudo').value.trim();
@@ -481,7 +553,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('choice-user-pseudo').textContent = user.pseudo;
   };
   
-  // Connexion
   document.getElementById('login-btn').onclick = () => {
     const phone = document.getElementById('login-phone').value.trim();
     const pseudo = document.getElementById('login-pseudo').value.trim();
@@ -498,7 +569,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('choice-user-pseudo').textContent = user.pseudo;
   };
   
-  // Créer une équipe
   document.getElementById('create-team-btn').onclick = async () => {
     const newCode = generateTeamCode();
     state.currentTeam = { code: newCode, players: [state.user] };
@@ -508,12 +578,10 @@ document.addEventListener('DOMContentLoaded', () => {
     updateLobbyUI();
   };
   
-  // Afficher formulaire rejoindre
   document.getElementById('show-join-team-btn').onclick = () => {
     document.getElementById('join-team-section').classList.toggle('hidden');
   };
   
-  // Rejoindre une équipe
   document.getElementById('choice-join-btn').onclick = async () => {
     const code = document.getElementById('choice-join-code').value.toUpperCase().trim();
     if (!code) {
@@ -529,7 +597,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
   
-  // Quitter l'équipe
   document.getElementById('leave-team').onclick = async () => {
     if (confirm("Quitter l'équipe ?")) {
       state.currentTeam.players = state.currentTeam.players.filter(p => p.phone !== state.user.phone);
@@ -543,7 +610,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
   
-  // Déconnexion
   document.getElementById('choice-logout').onclick = () => {
     state.user = null;
     state.currentTeam = { code: null, players: [] };
@@ -558,7 +624,6 @@ document.addEventListener('DOMContentLoaded', () => {
     showScreen('screen-auth');
   };
   
-  // Copier code
   document.getElementById('copy-code-btn').onclick = () => {
     if (state.currentTeam.code) {
       navigator.clipboard.writeText(state.currentTeam.code);
@@ -566,7 +631,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
   
-  // Lancer le jeu
   document.getElementById('start-game').onclick = () => {
     if (state.currentTeam.players.length === 4) {
       startGame1();
@@ -575,7 +639,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
   
-  // Retour
   document.getElementById('g1-back').onclick = () => showScreen('screen-lobby');
   document.getElementById('g2-back').onclick = () => showScreen('screen-lobby');
   
@@ -676,7 +739,6 @@ document.addEventListener('DOMContentLoaded', () => {
     removeAdmin(index);
   };
   
-  // Écouteurs des boutons du jeu
   document.getElementById('validate-round').onclick = validateGame1Round;
   document.getElementById('submit-devine').onclick = submitDevine;
   document.getElementById('vote-blanc').onclick = voteBlanc;
@@ -684,5 +746,5 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('finish-game3').onclick = finishGame;
   document.getElementById('play-again').onclick = () => { localStorage.clear(); location.reload(); };
   
-  console.log("=== INITIALISATION TERMINÉE (TIMER 30s) ===");
+  console.log("=== INITIALISATION TERMINÉE ===");
 });
