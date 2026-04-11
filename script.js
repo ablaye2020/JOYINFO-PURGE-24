@@ -1,5 +1,5 @@
 /****************************************************
- * PURGE GAME - Version avec numéros internationaux
+ * PURGE GAME - Version internationale complète
  ****************************************************/
 const CONFIG = {
   WHATSAPP_CHANNEL: 'https://whatsapp.com/channel/0029VbCLsX44IBhF4woPb93M',
@@ -8,24 +8,6 @@ const CONFIG = {
 
 const OWNER_PHONE = "+24160248210";
 let ADMIN_LIST = ["+221708137251","+221769426236","+22897173547","+2250777315113","+50946801238"];
-
-// Liste des indicatifs téléphoniques (pays)
-const COUNTRY_CODES = [
-  { code: "+1", country: "USA/Canada" }, { code: "+33", country: "France" }, { code: "+221", country: "Sénégal" },
-  { code: "+225", country: "Côte d'Ivoire" }, { code: "+228", country: "Togo" }, { code: "+241", country: "Gabon" },
-  { code: "+509", country: "Haïti" }, { code: "+44", country: "UK" }, { code: "+49", country: "Allemagne" },
-  { code: "+34", country: "Espagne" }, { code: "+39", country: "Italie" }, { code: "+55", country: "Brésil" },
-  { code: "+54", country: "Argentine" }, { code: "+52", country: "Mexique" }, { code: "+86", country: "Chine" },
-  { code: "+81", country: "Japon" }, { code: "+82", country: "Corée" }, { code: "+91", country: "Inde" },
-  { code: "+7", country: "Russie" }, { code: "+61", country: "Australie" }, { code: "+27", country: "Afrique du Sud" },
-  { code: "+212", country: "Maroc" }, { code: "+216", country: "Tunisie" }, { code: "+213", country: "Algérie" },
-  { code: "+20", country: "Égypte" }, { code: "+966", country: "Arabie Saoudite" }, { code: "+971", country: "UAE" },
-  { code: "+64", country: "Nouvelle-Zélande" }, { code: "+46", country: "Suède" }, { code: "+47", country: "Norvège" },
-  { code: "+45", country: "Danemark" }, { code: "+31", country: "Pays-Bas" }, { code: "+32", country: "Belgique" },
-  { code: "+41", country: "Suisse" }, { code: "+43", country: "Autriche" }, { code: "+48", country: "Pologne" },
-  { code: "+420", country: "Rép. Tchèque" }, { code: "+36", country: "Hongrie" }, { code: "+40", country: "Roumanie" },
-  { code: "+359", country: "Bulgarie" }, { code: "+30", country: "Grèce" }, { code: "+90", country: "Turquie" }
-];
 
 // État
 const state = {
@@ -54,9 +36,9 @@ function saveTeam() {
 }
 function broadcastTeam() { channel.postMessage({ type: 'TEAM_UPDATE', data: state.currentTeam }); }
 
-// Valider numéro de téléphone (format international basique)
+// Valider numéro de téléphone
 function isValidPhone(phone) {
-  const phoneRegex = /^\+\d{1,4}\d{5,15}$/;
+  const phoneRegex = /^\+\d{1,4}\d{6,15}$/;
   return phoneRegex.test(phone);
 }
 
@@ -70,6 +52,15 @@ function generateTeamCode() {
   return code;
 }
 
+// Récupérer le numéro complet avec indicatif
+function getFullPhoneNumber(formType) {
+  const countrySelect = document.getElementById(`${formType === 'reg' ? 'reg-country' : 'login-country'}`);
+  const countryCode = countrySelect ? countrySelect.value : '+241';
+  const phoneInput = document.getElementById(`${formType === 'reg' ? 'reg-phone' : 'login-phone'}`);
+  const localNumber = phoneInput.value.trim().replace(/[^0-9]/g, '');
+  return countryCode + localNumber;
+}
+
 // Écrans
 const screens = {
   subscribe: document.getElementById('screen-subscribe'), auth: document.getElementById('screen-auth'),
@@ -79,38 +70,8 @@ const screens = {
 };
 function showScreen(id) { Object.values(screens).forEach(s => s.classList.remove('active')); screens[id].classList.add('active'); }
 
-// Mettre à jour les sélecteurs de pays dans les formulaires
-function setupCountrySelectors() {
-  const selectors = document.querySelectorAll('.country-select');
-  if (selectors.length === 0) {
-    // Créer les sélecteurs si pas présents
-    const wrappers = document.querySelectorAll('.phone-input-wrapper');
-    wrappers.forEach(wrapper => {
-      const countrySpan = wrapper.querySelector('.country-code');
-      if (countrySpan && !wrapper.querySelector('.country-select')) {
-        const select = document.createElement('select');
-        select.className = 'country-select';
-        COUNTRY_CODES.forEach(cc => {
-          const option = document.createElement('option');
-          option.value = cc.code;
-          option.textContent = `${cc.code} (${cc.country})`;
-          if (cc.code === '+241') option.selected = true;
-          select.appendChild(option);
-        });
-        select.onchange = function() {
-          countrySpan.textContent = this.value;
-        };
-        wrapper.insertBefore(select, countrySpan);
-      }
-    });
-  }
-}
-
 // Init
 document.addEventListener('DOMContentLoaded', ()=>{
-  // Configurer les sélecteurs de pays
-  setupCountrySelectors();
-  
   // Abonnement
   document.getElementById('verify-subscription').onclick = ()=> showScreen('auth');
 
@@ -128,7 +89,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
       document.getElementById('phone-status').innerHTML='✅ Vérifié'; 
       document.getElementById('register-btn').disabled=false; 
     } else {
-      document.getElementById('phone-status').innerHTML='❌ Numéro invalide';
+      document.getElementById('phone-status').innerHTML='❌ Numéro invalide (ex: 612345678)';
       document.getElementById('register-btn').disabled=true;
     }
   };
@@ -147,7 +108,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
       document.getElementById('reg-error').textContent='Numéro déjà utilisé'; 
       return; 
     }
-    const user={phone,pseudo,avatar,score:0,game1Debts:0,game2Position:0}; 
+    const user={phone,pseudo,avatar,score:0}; 
     state.users.push(user); 
     saveUsers(); 
     state.user=user; 
@@ -171,33 +132,20 @@ document.addEventListener('DOMContentLoaded', ()=>{
     updateLobbyUI();
   };
 
-  // Fonction pour récupérer le numéro complet avec indicatif
-  function getFullPhoneNumber(formType) {
-    const wrapper = document.querySelector(`#${formType === 'reg' ? 'register-form' : 'login-form'} .phone-input-wrapper`);
-    const countryCode = wrapper.querySelector('.country-code').textContent;
-    const phoneInput = document.getElementById(`${formType === 'reg' ? 'reg-phone' : 'login-phone'}`);
-    const localNumber = phoneInput.value.trim().replace(/[^0-9]/g, '');
-    return countryCode + localNumber;
-  }
-
   // Lobby
   document.getElementById('logout-btn').onclick = ()=>{ state.user=null; state.currentTeam={code:null,players:[]}; showScreen('auth'); };
-  document.getElementById('copy-code-btn').onclick = ()=> navigator.clipboard?.writeText(state.currentTeam.code) && alert('Code copié ! Partage-le avec tes amis 📋');
+  document.getElementById('copy-code-btn').onclick = ()=> navigator.clipboard?.writeText(state.currentTeam.code) && alert('✅ Code copié ! Partage-le avec tes amis');
   document.getElementById('join-team-btn').onclick = ()=>{
     const code = document.getElementById('join-code-input').value.toUpperCase().trim();
     if(!code) return;
     
-    // Vérifier si le joueur est déjà dans une équipe
     if(state.currentTeam.code && state.currentTeam.code !== code) {
-      if(confirm("Tu es déjà dans une équipe. Veux-tu la quitter pour rejoindre celle-ci ?")) {
+      if(confirm("⚠️ Tu es déjà dans une équipe. Veux-tu la quitter pour rejoindre celle-ci ?")) {
         state.currentTeam.players = state.currentTeam.players.filter(p=>p.phone!==state.user.phone);
       } else return;
     }
     
-    // Simuler la recherche d'équipe (dans une vraie app, vérifier sur serveur)
-    // Pour l'instant, on crée/ rejoint
     if(!state.currentTeam.code || state.currentTeam.code !== code) {
-      // Vérifier si le code existe (simulé - dans localStorage on peut stocker les équipes actives)
       const existingTeam = localStorage.getItem(`team_${code}`);
       if(existingTeam) {
         state.currentTeam = JSON.parse(existingTeam);
@@ -208,7 +156,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     
     if(!state.currentTeam.players.find(p=>p.phone===state.user.phone)) {
       if(state.currentTeam.players.length >= 4) {
-        alert("Cette équipe est déjà complète (4/4) !");
+        alert("❌ Cette équipe est déjà complète (4/4) !");
         return;
       }
       state.currentTeam.players.push(state.user);
@@ -242,8 +190,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
   document.getElementById('next-game2').onclick = ()=> showScreen('game3');
   document.getElementById('finish-game3').onclick = finishGame;
   document.getElementById('play-again').onclick = ()=> { localStorage.clear(); location.reload(); };
+  document.getElementById('g1-back').onclick = ()=> showScreen('lobby');
+  document.getElementById('g2-back').onclick = ()=> showScreen('lobby');
 
-  // Admin (conserver le code existant)
+  // Admin
   document.getElementById('show-admin-btn').onclick = ()=> document.getElementById('admin-panel').classList.toggle('hidden');
   document.getElementById('close-admin').onclick = ()=> document.getElementById('admin-panel').classList.add('hidden');
   document.getElementById('admin-login-btn').onclick = ()=>{
@@ -256,18 +206,23 @@ document.addEventListener('DOMContentLoaded', ()=>{
   };
   document.getElementById('add-question-btn').onclick = ()=>{
     const type=document.getElementById('new-question-type').value, q=document.getElementById('new-question-text').value, a=document.getElementById('new-question-answer').value;
-    if(type==='game1' && q && a){ GAME1_QUESTIONS.push({question:q, reponse:a.toLowerCase()}); localStorage.setItem('purge_game1_questions',JSON.stringify(GAME1_QUESTIONS)); }
-    else if(type==='game2'){ const img=document.getElementById('new-question-image').value, pers=document.getElementById('new-question-personnage').value, desc=document.getElementById('new-question-description').value; if(img&&pers&&desc){ GAME2_IMAGES.push({img, personnage:pers, description:desc}); localStorage.setItem('purge_game2_images',JSON.stringify(GAME2_IMAGES)); } }
-    alert('Question ajoutée');
+    if(type==='game1' && q && a){ GAME1_QUESTIONS.push({question:q, reponse:a.toLowerCase()}); localStorage.setItem('purge_game1_questions',JSON.stringify(GAME1_QUESTIONS)); alert('✅ Question ajoutée'); }
+    else if(type==='game2'){ const img=document.getElementById('new-question-image').value, pers=document.getElementById('new-question-personnage').value, desc=document.getElementById('new-question-description').value; if(img&&pers&&desc){ GAME2_IMAGES.push({img, personnage:pers, description:desc}); localStorage.setItem('purge_game2_images',JSON.stringify(GAME2_IMAGES)); alert('✅ Image ajoutée'); } }
   };
   document.getElementById('new-question-type').onchange = (e)=> document.getElementById('game2-image-field').classList.toggle('hidden', e.target.value!=='game2');
   function displayAdminList(){ document.getElementById('admin-list').innerHTML = ADMIN_LIST.map((p,i)=>`<li>${p} <button onclick="removeAdmin(${i})">X</button></li>`).join(''); }
   window.removeAdmin = (i)=>{ ADMIN_LIST.splice(i,1); localStorage.setItem('purge_admin_list',JSON.stringify(ADMIN_LIST)); displayAdminList(); };
 
-  // Charger admin list
+  // Charger données sauvegardées
   if(localStorage.getItem('purge_admin_list')) ADMIN_LIST = JSON.parse(localStorage.getItem('purge_admin_list'));
-  if(localStorage.getItem('purge_game1_questions')) GAME1_QUESTIONS.push(...JSON.parse(localStorage.getItem('purge_game1_questions')));
-  if(localStorage.getItem('purge_game2_images')) GAME2_IMAGES.push(...JSON.parse(localStorage.getItem('purge_game2_images')));
+  if(localStorage.getItem('purge_game1_questions')) {
+    const saved = JSON.parse(localStorage.getItem('purge_game1_questions'));
+    GAME1_QUESTIONS.push(...saved);
+  }
+  if(localStorage.getItem('purge_game2_images')) {
+    const saved = JSON.parse(localStorage.getItem('purge_game2_images'));
+    GAME2_IMAGES.push(...saved);
+  }
   checkBan();
 });
 
@@ -276,9 +231,7 @@ function loadOrCreateTeam(){
   if(saved && state.user){ 
     try{ 
       state.currentTeam = JSON.parse(saved);
-      // Vérifier si l'utilisateur est toujours dans l'équipe
       if(!state.currentTeam.players.find(p=>p.phone===state.user.phone)) {
-        // Recréer l'équipe
         state.currentTeam = { code: generateTeamCode(), players: [state.user] };
         saveTeam();
       }
@@ -296,28 +249,170 @@ function loadOrCreateTeam(){
 function updateLobbyUI(){
   const t=state.currentTeam;
   if(!t || !t.players) return;
-  document.getElementById('online-count').textContent = `(${t.players.length}/4)`;
+  
+  document.getElementById('online-count').innerHTML = `(${t.players.length}/4) ${t.players.length === 4 ? '✅ Complet !' : '⏳ En attente...'}`;
   document.getElementById('invite-code').textContent = t.code;
   document.getElementById('start-game').disabled = t.players.length !== 4;
+  
   const membersDiv = document.getElementById('members-list');
-  membersDiv.innerHTML = t.players.map(p=>`
-    <div class="member-card" title="${p.phone || ''}">
-      <img src="${p.avatar || 'https://i.pravatar.cc/150?img='+Math.floor(Math.random()*70)}" alt="avatar">
-      <span class="member-name">${p.pseudo || 'Anonyme'}</span>
+  
+  if (t.players.length === 0) {
+    membersDiv.innerHTML = '<div class="empty-members">👻 Aucun membre pour le moment.<br>Invitez vos amis avec le code !</div>';
+    return;
+  }
+  
+  membersDiv.innerHTML = t.players.map(p => `
+    <div class="member-card" data-phone="${p.phone || ''}">
+      <div class="member-avatar">
+        <img src="${p.avatar || 'https://i.pravatar.cc/150?img=' + Math.floor(Math.random()*70)}" alt="avatar" onerror="this.src='https://i.pravatar.cc/150?img=7'">
+        ${p.phone === state.user?.phone ? '<span class="owner-badge">👑</span>' : ''}
+      </div>
+      <span class="member-name">${escapeHtml(p.pseudo || 'Anonyme')}</span>
+      <span class="member-phone">${p.phone ? p.phone.substring(0, 12) + '...' : ''}</span>
     </div>
   `).join('');
 }
 
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/[&<>]/g, function(m) {
+    if (m === '&') return '&amp;';
+    if (m === '<') return '&lt;';
+    if (m === '>') return '&gt;';
+    return m;
+  });
+}
+
 function checkBan(){ if(localStorage.getItem('purge_ban') && new Date(localStorage.getItem('purge_ban'))>new Date()){ document.body.innerHTML='<h1 style="color:red;text-align:center;margin-top:50px;">⛔ VOUS ÊTES BANNI ⛔</h1><p style="text-align:center">Contact: PrimePurge@proton.me</p>'; } }
 
-// === GAME FUNCTIONS (à conserver telles quelles) ===
+// === GAME FUNCTIONS ===
 function startGame1(){ state.game1.round=1; state.game1.playerDebts={}; state.currentTeam.players.forEach(p=>state.game1.playerDebts[p.phone]=0); showScreen('game1'); loadQuestion(); }
-function loadQuestion(){ const q=GAME1_QUESTIONS[(state.game1.round-1)%GAME1_QUESTIONS.length]; document.getElementById('question-text').textContent=q.question; document.getElementById('round-current').textContent=state.game1.round; const grid=document.getElementById('players-answers'); grid.innerHTML=''; state.currentTeam.players.forEach((p,i)=>{ grid.innerHTML+=`<div class="answer-box"><img src="${p.avatar}"><div><strong>${p.pseudo}</strong></div><input type="text" id="answer-${i}" placeholder="Réponse..."></div>`; }); document.getElementById('validate-round').disabled=false; startTimer(60); }
-function startTimer(s){ let t=s; const d=document.getElementById('timer'); const i=setInterval(()=>{ t--; d.textContent=`00:${t<10?'0'+t:t}`; if(t<=0){ clearInterval(i); validateGame1Round(); } },1000); }
-function validateGame1Round(){ const a=[]; state.currentTeam.players.forEach((p,i)=>{ const inp=document.getElementById(`answer-${i}`); a.push({player:p, answer:inp?.value.trim().toLowerCase() || ''}); }); const cnt={}; a.forEach(x=>cnt[x.answer]=(cnt[x.answer]||0)+1); const min=Object.entries(cnt).find(([,c])=>c===1)?.[0]; if(min){ const tr=a.find(x=>x.answer===min); state.game1.playerDebts[tr.player.phone]=(state.game1.playerDebts[tr.player.phone]||0)+500; alert(`${tr.player.pseudo} +500 dettes`); } state.game1.round++; if(state.game1.round<=5) loadQuestion(); else { const ph=Object.keys(state.game1.playerDebts); const max=ph.reduce((a,b)=>state.game1.playerDebts[a]>state.game1.playerDebts[b]?a:b); const tot=ph.filter(x=>x!==max).reduce((s,x)=>s+state.game1.playerDebts[x],0); state.game1.playerDebts[max]+=tot; const loser=state.currentTeam.players.find(p=>p.phone===max); alert(`${loser?.pseudo || 'Quelqu\'un'} récupère toutes les dettes`); showScreen('game2'); initGame2(); } }
+
+function loadQuestion(){ 
+  const q=GAME1_QUESTIONS[(state.game1.round-1)%GAME1_QUESTIONS.length]; 
+  document.getElementById('question-text').textContent=q.question; 
+  document.getElementById('round-current').textContent=state.game1.round; 
+  const grid=document.getElementById('players-answers'); 
+  grid.innerHTML=''; 
+  state.currentTeam.players.forEach((p,i)=>{ 
+    grid.innerHTML+=`<div class="answer-box"><img src="${p.avatar}"><div><strong>${p.pseudo}</strong></div><input type="text" id="answer-${i}" placeholder="Réponse..."></div>`; 
+  }); 
+  document.getElementById('validate-round').disabled=false; 
+  startTimer(60); 
+}
+
+function startTimer(s){ 
+  let t=s; 
+  const d=document.getElementById('timer'); 
+  const i=setInterval(()=>{ 
+    t--; 
+    const sec = t<10?'0'+t:t;
+    d.textContent=`00:${sec}`; 
+    if(t<=0){ clearInterval(i); validateGame1Round(); } 
+  },1000); 
+}
+
+function validateGame1Round(){ 
+  const a=[]; 
+  state.currentTeam.players.forEach((p,i)=>{ 
+    const inp=document.getElementById(`answer-${i}`); 
+    const reponseJoueur = inp?.value.trim().toLowerCase() || '';
+    a.push({player:p, answer: reponseJoueur}); 
+  }); 
+  
+  const compteur = {};
+  a.forEach(x => {
+    if(x.answer.length > 0) {
+      compteur[x.answer] = (compteur[x.answer] || 0) + 1;
+    }
+  });
+  
+  let reponseMinoritaire = null;
+  let minCount = Infinity;
+  for (let [reponse, count] of Object.entries(compteur)) {
+    if (count < minCount && count >= 1) {
+      minCount = count;
+      reponseMinoritaire = reponse;
+    }
+  }
+  
+  if (reponseMinoritaire) { 
+    const perdant = a.find(x => x.answer === reponseMinoritaire); 
+    if (perdant) {
+      state.game1.playerDebts[perdant.player.phone] = (state.game1.playerDebts[perdant.player.phone] || 0) + 500; 
+      alert(`⚠️ ${perdant.player.pseudo} a donné une réponse minoritaire ! +500 dettes`); 
+    }
+  } else {
+    alert("🤝 Tout le monde a répondu la même chose ou personne n'a répondu ! Pas de dette cette manche.");
+  }
+  
+  state.game1.round++; 
+  if(state.game1.round <= 5) {
+    loadQuestion(); 
+  } else { 
+    const phones = Object.keys(state.game1.playerDebts); 
+    if (phones.length > 0) {
+      const max = phones.reduce((a,b) => state.game1.playerDebts[a] > state.game1.playerDebts[b] ? a : b); 
+      const totalDettes = Object.values(state.game1.playerDebts).reduce((s,x) => s + x, 0);
+      state.game1.playerDebts[max] = totalDettes;
+      const loser = state.currentTeam.players.find(p => p.phone === max); 
+      alert(`💀 ${loser?.pseudo || 'Quelqu\'un'} est le GRAND PERDANT et récupère ${totalDettes} dettes ! 💀`); 
+    }
+    showScreen('game2'); 
+    initGame2(); 
+  } 
+}
+
 function initGame2(){ state.game2.currentImgIndex=0; state.game2.positions={}; state.currentTeam.players.forEach(p=>state.game2.positions[p.phone]=0); loadDevineImage(); }
-function loadDevineImage(){ const img=GAME2_IMAGES[state.game2.currentImgIndex%GAME2_IMAGES.length]; if(img){ document.getElementById('devine-img').src=img.img; document.getElementById('devine-question').textContent=img.description; } }
-function submitDevine(){ const ans=document.getElementById('devine-input').value.trim().toLowerCase(); const cur=GAME2_IMAGES[state.game2.currentImgIndex%GAME2_IMAGES.length]; const ok=ans===cur.personnage.toLowerCase(); state.currentTeam.players.forEach(p=>state.game2.positions[p.phone]=(state.game2.positions[p.phone]||0)+(ok?2:1)); nextDevine(); }
-function voteBlanc(){ state.currentTeam.players.forEach(p=>state.game2.positions[p.phone]=(state.game2.positions[p.phone]||0)+1); nextDevine(); }
-function nextDevine(){ state.game2.currentImgIndex++; if(state.game2.currentImgIndex<3) loadDevineImage(); else { const pos=Object.entries(state.game2.positions).sort((a,b)=>b[1]-a[1]); const loser=state.currentTeam.players.find(p=>p.phone===pos[0][0]); alert(`${loser?.pseudo || 'Quelqu\'un'} a perdu le jeu 2`); document.getElementById('next-game2').classList.remove('hidden'); } }
-function finishGame(){ const pts=1200; const sz=pts>=1000?300:0; document.getElementById('final-score').textContent=`Score: ${pts}`; if(sz){ document.getElementById('win-reward').classList.remove('hidden'); document.getElementById('group-size').textContent=sz; } else { document.getElementById('lose-ban').classList.remove('hidden'); localStorage.setItem('purge_ban', new Date(Date.now()+7*86400000).toISOString()); } showScreen('results'); }
+
+function loadDevineImage(){ 
+  const img=GAME2_IMAGES[state.game2.currentImgIndex%GAME2_IMAGES.length]; 
+  if(img){ 
+    document.getElementById('devine-img').src=img.img; 
+    document.getElementById('devine-question').textContent=img.description; 
+  } 
+}
+
+function submitDevine(){ 
+  const ans=document.getElementById('devine-input').value.trim().toLowerCase(); 
+  const cur=GAME2_IMAGES[state.game2.currentImgIndex%GAME2_IMAGES.length]; 
+  const ok=ans===cur.personnage.toLowerCase(); 
+  state.currentTeam.players.forEach(p=>state.game2.positions[p.phone]=(state.game2.positions[p.phone]||0)+(ok?2:1)); 
+  alert(ok ? "✅ Bonne réponse ! +2 positions" : "❌ Mauvaise réponse ! +1 position");
+  nextDevine(); 
+}
+
+function voteBlanc(){ 
+  state.currentTeam.players.forEach(p=>state.game2.positions[p.phone]=(state.game2.positions[p.phone]||0)+1); 
+  alert("⚪ Bulletin blanc ! +1 position pour tout le monde");
+  nextDevine(); 
+}
+
+function nextDevine(){ 
+  state.game2.currentImgIndex++; 
+  if(state.game2.currentImgIndex<3) {
+    document.getElementById('devine-input').value = '';
+    loadDevineImage(); 
+  } else { 
+    const pos=Object.entries(state.game2.positions).sort((a,b)=>b[1]-a[1]); 
+    const loser=state.currentTeam.players.find(p=>p.phone===pos[0][0]); 
+    alert(`💀 ${loser?.pseudo || 'Quelqu\'un'} a perdu le jeu 2 avec ${pos[0][1]} points ! 💀`); 
+    document.getElementById('next-game2').classList.remove('hidden'); 
+  } 
+}
+
+function finishGame(){ 
+  const pts=1200; 
+  const sz=pts>=1000?300:0; 
+  document.getElementById('final-score').textContent=`Score: ${pts}`; 
+  if(sz){ 
+    document.getElementById('win-reward').classList.remove('hidden'); 
+    document.getElementById('group-size').textContent=sz; 
+    document.getElementById('lose-ban').classList.add('hidden');
+  } else { 
+    document.getElementById('lose-ban').classList.remove('hidden'); 
+    document.getElementById('win-reward').classList.add('hidden');
+    localStorage.setItem('purge_ban', new Date(Date.now()+7*86400000).toISOString()); 
+  } 
+  showScreen('results'); 
+}
