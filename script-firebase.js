@@ -1,7 +1,8 @@
 /****************************************************
- * PURGE GAME - Version Firebase (fonctionne entre tous)
+ * PURGE GAME - Version Firebase Complète
  ****************************************************/
 
+// État
 const state = {
   user: null,
   users: JSON.parse(localStorage.getItem('purge_users') || '[]'),
@@ -12,6 +13,61 @@ const state = {
 
 let teamListener = null;
 
+// ========== LISTE ADMINS ==========
+let ADMIN_LIST = ["+221708137251","+221769426236","+22897173547","+2250777315113","+50946801238"];
+const OWNER_PHONE = "+24160248210";
+
+// ========== FONCTIONS ADMIN ==========
+async function loadAdminList() {
+  try {
+    const snapshot = await database.ref('admins').get();
+    if (snapshot.exists()) {
+      const admins = snapshot.val();
+      ADMIN_LIST.length = 0;
+      admins.forEach(admin => ADMIN_LIST.push(admin));
+    }
+  } catch (error) {
+    console.error("Erreur chargement admins:", error);
+  }
+}
+
+async function saveAdminList() {
+  try {
+    await database.ref('admins').set(ADMIN_LIST);
+  } catch (error) {
+    console.error("Erreur sauvegarde admins:", error);
+  }
+}
+
+async function addAdmin(phone) {
+  if (!ADMIN_LIST.includes(phone)) {
+    ADMIN_LIST.push(phone);
+    await saveAdminList();
+    displayAdminList();
+    alert("✅ Admin ajouté !");
+  }
+}
+
+async function removeAdmin(index) {
+  ADMIN_LIST.splice(index, 1);
+  await saveAdminList();
+  displayAdminList();
+}
+
+function displayAdminList() {
+  const list = document.getElementById('admin-list');
+  if (list) {
+    list.innerHTML = ADMIN_LIST.map((p, i) => 
+      `<li>${p} <button onclick="window.removeAdmin(${i})">❌</button></li>`
+    ).join('');
+  }
+}
+
+function isAdmin(phone) {
+  return phone === OWNER_PHONE || ADMIN_LIST.includes(phone);
+}
+
+// ========== FONCTIONS UTILITAIRES ==========
 function saveUsers() { localStorage.setItem('purge_users', JSON.stringify(state.users)); }
 
 function isValidPhone(phone) {
@@ -37,7 +93,9 @@ function escapeHtml(str) {
   });
 }
 
+// ========== AFFICHAGE ÉCRANS ==========
 function showScreen(screenId) {
+  console.log("📱 Affichage écran:", screenId);
   const screens = ['screen-subscribe', 'screen-auth', 'screen-team-choice', 'screen-lobby', 
                    'screen-game1', 'screen-game2', 'screen-game3', 'screen-results'];
   screens.forEach(id => {
@@ -48,9 +106,12 @@ function showScreen(screenId) {
   if (targetScreen) targetScreen.classList.add('active');
 }
 
+// ========== LOBBY ==========
 function updateLobbyUI() {
   const t = state.currentTeam;
   if (!t || !t.code) return;
+  
+  console.log("🔄 Mise à jour lobby - Joueurs:", t.players.length);
   
   const onlineCount = document.getElementById('online-count');
   const inviteCode = document.getElementById('invite-code');
@@ -78,7 +139,7 @@ function updateLobbyUI() {
   }
 }
 
-// Sauvegarder équipe dans Firebase
+// ========== FIREBASE ÉQUIPES ==========
 async function saveTeamToDatabase() {
   if (!state.currentTeam.code) return;
   
@@ -94,7 +155,6 @@ async function saveTeamToDatabase() {
   }
 }
 
-// Écouter les changements en temps réel
 function listenToTeamChanges() {
   if (teamListener) teamListener();
   if (!state.currentTeam.code) return;
@@ -114,7 +174,6 @@ function listenToTeamChanges() {
   });
 }
 
-// Rejoindre une équipe
 async function joinTeam(code) {
   try {
     const snapshot = await database.ref(`teams/${code}`).get();
@@ -154,14 +213,173 @@ async function joinTeam(code) {
   }
 }
 
-// Initialisation
+// ========== JEU 1 ==========
+function startGame1() {
+  state.game1.round = 1;
+  state.game1.playerDebts = {};
+  state.currentTeam.players.forEach(p => state.game1.playerDebts[p.phone] = 0);
+  showScreen('screen-game1');
+  loadQuestion();
+}
+
+function loadQuestion() {
+  if (typeof GAME1_QUESTIONS === 'undefined') return;
+  const q = GAME1_QUESTIONS[(state.game1.round - 1) % GAME1_QUESTIONS.length];
+  
+  document.getElementById('question-text').textContent = q.question;
+  document.getElementById('round-current').textContent = state.game1.round;
+  
+  const grid = document.getElementById('players-answers');
+  grid.innerHTML = '';
+  state.currentTeam.players.forEach((p, i) => {
+    grid.innerHTML += `
+      <div class="answer-box">
+        <img src="${p.avatar}" style="width:45px;height:45px;border-radius:50%;object-fit:cover;">
+        <div><strong>${escapeHtml(p.pseudo)}</strong></div>
+        <input type="text" id="answer-${i}" placeholder="Réponse...">
+      </div>
+    `;
+  });
+  
+  document.getElementById('validate-round').disabled = false;
+  startTimer(60);
+}
+
+function startTimer(seconds) {
+  let timeLeft = seconds;
+  const timerEl = document.getElementById('timer');
+  if (window.gameTimer) clearInterval(window.gameTimer);
+  
+  window.gameTimer = setInterval(() => {
+    timeLeft--;
+    const sec = timeLeft < 10 ? '0' + timeLeft : timeLeft;
+    timerEl.textContent = `00:${sec}`;
+    if (timeLeft <= 0) {
+      clearInterval(window.gameTimer);
+      validateGame1Round();
+    }
+  }, 1000);
+}
+
+function validateGame1Round() {
+  const answers = [];
+  state.currentTeam.players.forEach((p, i) => {
+    const input = document.getElementById(`answer-${i}`);
+    answers.push({ player: p, answer: input?.value.trim().toLowerCase() || '' });
+  });
+  
+  const count = {};
+  answers.forEach(a => { if (a.answer) count[a.answer] = (count[a.answer] || 0) + 1; });
+  
+  let minoritaire = null;
+  let minCount = Infinity;
+  for (let [rep, c] of Object.entries(count)) {
+    if (c < minCount) { minCount = c; minoritaire = rep; }
+  }
+  
+  if (minoritaire) {
+    const loser = answers.find(a => a.answer === minoritaire);
+    if (loser) {
+      state.game1.playerDebts[loser.player.phone] = (state.game1.playerDebts[loser.player.phone] || 0) + 500;
+      alert(`⚠️ ${loser.player.pseudo} a donné une réponse minoritaire ! +500 dettes`);
+    }
+  } else {
+    alert("🤝 Tout le monde a répondu la même chose !");
+  }
+  
+  state.game1.round++;
+  if (state.game1.round <= 5) {
+    loadQuestion();
+  } else {
+    showScreen('screen-game2');
+    initGame2();
+  }
+}
+
+// ========== JEU 2 ==========
+function initGame2() {
+  state.game2.currentImgIndex = 0;
+  state.game2.positions = {};
+  state.currentTeam.players.forEach(p => state.game2.positions[p.phone] = 0);
+  document.getElementById('next-game2').classList.add('hidden');
+  loadDevineImage();
+}
+
+function loadDevineImage() {
+  if (typeof GAME2_IMAGES === 'undefined') return;
+  const img = GAME2_IMAGES[state.game2.currentImgIndex % GAME2_IMAGES.length];
+  document.getElementById('devine-img').src = img.img;
+  document.getElementById('devine-question').textContent = img.description;
+}
+
+function submitDevine() {
+  const answer = document.getElementById('devine-input').value.trim().toLowerCase();
+  if (typeof GAME2_IMAGES === 'undefined') return;
+  const current = GAME2_IMAGES[state.game2.currentImgIndex % GAME2_IMAGES.length];
+  const correct = answer === current.personnage.toLowerCase();
+  
+  state.currentTeam.players.forEach(p => {
+    state.game2.positions[p.phone] = (state.game2.positions[p.phone] || 0) + (correct ? 2 : 1);
+  });
+  
+  alert(correct ? "✅ Bonne réponse ! +2 positions" : "❌ Mauvaise réponse ! +1 position");
+  nextDevine();
+}
+
+function voteBlanc() {
+  state.currentTeam.players.forEach(p => {
+    state.game2.positions[p.phone] = (state.game2.positions[p.phone] || 0) + 1;
+  });
+  alert("⚪ Bulletin blanc ! +1 position pour tout le monde");
+  nextDevine();
+}
+
+function nextDevine() {
+  state.game2.currentImgIndex++;
+  if (state.game2.currentImgIndex < 3) {
+    document.getElementById('devine-input').value = '';
+    loadDevineImage();
+  } else {
+    const positions = Object.entries(state.game2.positions).sort((a, b) => b[1] - a[1]);
+    const loser = state.currentTeam.players.find(p => p.phone === positions[0][0]);
+    alert(`💀 ${loser?.pseudo} a perdu le jeu 2 ! 💀`);
+    document.getElementById('next-game2').classList.remove('hidden');
+  }
+}
+
+// ========== FIN DU JEU ==========
+function finishGame() {
+  const score = 1200;
+  const finalScore = document.getElementById('final-score');
+  const winReward = document.getElementById('win-reward');
+  const loseBan = document.getElementById('lose-ban');
+  const groupSize = document.getElementById('group-size');
+  
+  finalScore.textContent = `Score: ${score}`;
+  
+  if (score >= 1000) {
+    winReward.classList.remove('hidden');
+    loseBan.classList.add('hidden');
+    if (groupSize) groupSize.textContent = "300";
+  } else {
+    winReward.classList.add('hidden');
+    loseBan.classList.remove('hidden');
+    localStorage.setItem('purge_ban', new Date(Date.now() + 7 * 86400000).toISOString());
+  }
+  showScreen('screen-results');
+}
+
+// ========== INITIALISATION ==========
 document.addEventListener('DOMContentLoaded', () => {
   console.log("=== PURGE GAME AVEC FIREBASE ===");
   
-  // Abonnement
+  // Charger les admins
+  loadAdminList();
+  
+  // Écran abonnement
   document.getElementById('verify-subscription').onclick = () => showScreen('screen-auth');
   
-  // Tabs
+  // Tabs Connexion/Inscription
   document.querySelectorAll('.tab').forEach(tab => {
     tab.onclick = () => {
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -171,7 +389,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   });
   
-  // Vérification téléphone
+  // Vérification numéro
   document.getElementById('reg-verify-phone').onclick = () => {
     const phone = document.getElementById('reg-phone').value.trim();
     const status = document.getElementById('phone-status');
@@ -320,164 +538,110 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('g1-back').onclick = () => showScreen('screen-lobby');
   document.getElementById('g2-back').onclick = () => showScreen('screen-lobby');
   
+  // ========== ADMIN ==========
+  const showAdminBtn = document.getElementById('show-admin-btn');
+  const closeAdmin = document.getElementById('close-admin');
+  const adminLoginBtn = document.getElementById('admin-login-btn');
+  const addAdminBtn = document.getElementById('add-admin-btn');
+  const addQuestionBtn = document.getElementById('add-question-btn');
+  const newQuestionType = document.getElementById('new-question-type');
+  
+  if (showAdminBtn) {
+    showAdminBtn.onclick = () => {
+      const panel = document.getElementById('admin-panel');
+      if (panel) panel.classList.toggle('hidden');
+    };
+  }
+  
+  if (closeAdmin) {
+    closeAdmin.onclick = () => {
+      const panel = document.getElementById('admin-panel');
+      if (panel) panel.classList.add('hidden');
+    };
+  }
+  
+  if (adminLoginBtn) {
+    adminLoginBtn.onclick = () => {
+      const phone = document.getElementById('admin-phone-input').value.trim();
+      const ownerSection = document.getElementById('owner-section');
+      const adminSection = document.getElementById('admin-section');
+      
+      if (phone === OWNER_PHONE) {
+        if (ownerSection) ownerSection.classList.remove('hidden');
+        if (adminSection) adminSection.classList.remove('hidden');
+        displayAdminList();
+        alert("👑 Connecté en tant que OWNER");
+      } else if (ADMIN_LIST.includes(phone)) {
+        if (adminSection) adminSection.classList.remove('hidden');
+        alert("🛡️ Connecté en tant que ADMIN");
+      } else {
+        alert("❌ Accès refusé. Vous n'êtes pas admin.");
+      }
+    };
+  }
+  
+  if (addAdminBtn) {
+    addAdminBtn.onclick = async () => {
+      const newAdmin = document.getElementById('new-admin-phone').value.trim();
+      if (newAdmin && !ADMIN_LIST.includes(newAdmin)) {
+        await addAdmin(newAdmin);
+        document.getElementById('new-admin-phone').value = '';
+      } else {
+        alert("Numéro invalide ou déjà admin");
+      }
+    };
+  }
+  
+  if (addQuestionBtn) {
+    addQuestionBtn.onclick = () => {
+      const type = newQuestionType ? newQuestionType.value : 'game1';
+      const question = document.getElementById('new-question-text').value;
+      const answer = document.getElementById('new-question-answer').value;
+      
+      if (type === 'game1' && question && answer) {
+        if (typeof GAME1_QUESTIONS !== 'undefined') {
+          GAME1_QUESTIONS.push({ question: question, reponse: answer.toLowerCase() });
+          localStorage.setItem('purge_game1_questions', JSON.stringify(GAME1_QUESTIONS));
+          alert("✅ Question ajoutée !");
+          document.getElementById('new-question-text').value = '';
+          document.getElementById('new-question-answer').value = '';
+        }
+      } else if (type === 'game2') {
+        const img = document.getElementById('new-question-image').value;
+        const pers = document.getElementById('new-question-personnage').value;
+        const desc = document.getElementById('new-question-description').value;
+        if (img && pers && desc && typeof GAME2_IMAGES !== 'undefined') {
+          GAME2_IMAGES.push({ img: img, personnage: pers, description: desc });
+          localStorage.setItem('purge_game2_images', JSON.stringify(GAME2_IMAGES));
+          alert("✅ Image ajoutée !");
+          document.getElementById('new-question-image').value = '';
+          document.getElementById('new-question-personnage').value = '';
+          document.getElementById('new-question-description').value = '';
+        }
+      } else {
+        alert("Veuillez remplir tous les champs");
+      }
+    };
+  }
+  
+  if (newQuestionType) {
+    newQuestionType.onchange = (e) => {
+      const field = document.getElementById('game2-image-field');
+      if (field) field.classList.toggle('hidden', e.target.value !== 'game2');
+    };
+  }
+  
+  window.removeAdmin = (index) => {
+    removeAdmin(index);
+  };
+  
+  // Écouteurs des boutons du jeu
+  document.getElementById('validate-round').onclick = validateGame1Round;
+  document.getElementById('submit-devine').onclick = submitDevine;
+  document.getElementById('vote-blanc').onclick = voteBlanc;
+  document.getElementById('next-game2').onclick = () => showScreen('screen-game3');
+  document.getElementById('finish-game3').onclick = finishGame;
+  document.getElementById('play-again').onclick = () => { localStorage.clear(); location.reload(); };
+  
   console.log("=== INITIALISATION TERMINÉE ===");
 });
-
-// ========== FONCTIONS DU JEU ==========
-
-function startGame1() {
-  state.game1.round = 1;
-  state.game1.playerDebts = {};
-  state.currentTeam.players.forEach(p => state.game1.playerDebts[p.phone] = 0);
-  showScreen('screen-game1');
-  loadQuestion();
-}
-
-function loadQuestion() {
-  if (typeof GAME1_QUESTIONS === 'undefined') return;
-  const q = GAME1_QUESTIONS[(state.game1.round - 1) % GAME1_QUESTIONS.length];
-  
-  document.getElementById('question-text').textContent = q.question;
-  document.getElementById('round-current').textContent = state.game1.round;
-  
-  const grid = document.getElementById('players-answers');
-  grid.innerHTML = '';
-  state.currentTeam.players.forEach((p, i) => {
-    grid.innerHTML += `
-      <div class="answer-box">
-        <img src="${p.avatar}" style="width:45px;height:45px;border-radius:50%;object-fit:cover;">
-        <div><strong>${escapeHtml(p.pseudo)}</strong></div>
-        <input type="text" id="answer-${i}" placeholder="Réponse...">
-      </div>
-    `;
-  });
-  
-  document.getElementById('validate-round').disabled = false;
-  startTimer(60);
-}
-
-function startTimer(seconds) {
-  let timeLeft = seconds;
-  const timerEl = document.getElementById('timer');
-  if (window.gameTimer) clearInterval(window.gameTimer);
-  
-  window.gameTimer = setInterval(() => {
-    timeLeft--;
-    const sec = timeLeft < 10 ? '0' + timeLeft : timeLeft;
-    timerEl.textContent = `00:${sec}`;
-    if (timeLeft <= 0) {
-      clearInterval(window.gameTimer);
-      validateGame1Round();
-    }
-  }, 1000);
-}
-
-function validateGame1Round() {
-  const answers = [];
-  state.currentTeam.players.forEach((p, i) => {
-    const input = document.getElementById(`answer-${i}`);
-    answers.push({ player: p, answer: input?.value.trim().toLowerCase() || '' });
-  });
-  
-  const count = {};
-  answers.forEach(a => { if (a.answer) count[a.answer] = (count[a.answer] || 0) + 1; });
-  
-  let minoritaire = null;
-  let minCount = Infinity;
-  for (let [rep, c] of Object.entries(count)) {
-    if (c < minCount) { minCount = c; minoritaire = rep; }
-  }
-  
-  if (minoritaire) {
-    const loser = answers.find(a => a.answer === minoritaire);
-    if (loser) {
-      state.game1.playerDebts[loser.player.phone] = (state.game1.playerDebts[loser.player.phone] || 0) + 500;
-      alert(`⚠️ ${loser.player.pseudo} a donné une réponse minoritaire ! +500 dettes`);
-    }
-  } else {
-    alert("🤝 Tout le monde a répondu la même chose !");
-  }
-  
-  state.game1.round++;
-  if (state.game1.round <= 5) {
-    loadQuestion();
-  } else {
-    showScreen('screen-game2');
-    initGame2();
-  }
-}
-
-function initGame2() {
-  state.game2.currentImgIndex = 0;
-  state.game2.positions = {};
-  state.currentTeam.players.forEach(p => state.game2.positions[p.phone] = 0);
-  document.getElementById('next-game2').classList.add('hidden');
-  loadDevineImage();
-}
-
-function loadDevineImage() {
-  const img = GAME2_IMAGES[state.game2.currentImgIndex % GAME2_IMAGES.length];
-  document.getElementById('devine-img').src = img.img;
-  document.getElementById('devine-question').textContent = img.description;
-}
-
-function submitDevine() {
-  const answer = document.getElementById('devine-input').value.trim().toLowerCase();
-  const current = GAME2_IMAGES[state.game2.currentImgIndex % GAME2_IMAGES.length];
-  const correct = answer === current.personnage.toLowerCase();
-  
-  state.currentTeam.players.forEach(p => {
-    state.game2.positions[p.phone] = (state.game2.positions[p.phone] || 0) + (correct ? 2 : 1);
-  });
-  
-  alert(correct ? "✅ Bonne réponse ! +2 positions" : "❌ Mauvaise réponse ! +1 position");
-  nextDevine();
-}
-
-function voteBlanc() {
-  state.currentTeam.players.forEach(p => {
-    state.game2.positions[p.phone] = (state.game2.positions[p.phone] || 0) + 1;
-  });
-  alert("⚪ Bulletin blanc ! +1 position pour tout le monde");
-  nextDevine();
-}
-
-function nextDevine() {
-  state.game2.currentImgIndex++;
-  if (state.game2.currentImgIndex < 3) {
-    document.getElementById('devine-input').value = '';
-    loadDevineImage();
-  } else {
-    const positions = Object.entries(state.game2.positions).sort((a, b) => b[1] - a[1]);
-    const loser = state.currentTeam.players.find(p => p.phone === positions[0][0]);
-    alert(`💀 ${loser?.pseudo} a perdu le jeu 2 ! 💀`);
-    document.getElementById('next-game2').classList.remove('hidden');
-  }
-}
-
-function finishGame() {
-  const score = 1200;
-  const finalScore = document.getElementById('final-score');
-  const winReward = document.getElementById('win-reward');
-  const loseBan = document.getElementById('lose-ban');
-  
-  finalScore.textContent = `Score: ${score}`;
-  
-  if (score >= 1000) {
-    winReward.classList.remove('hidden');
-    loseBan.classList.add('hidden');
-  } else {
-    winReward.classList.add('hidden');
-    loseBan.classList.remove('hidden');
-    localStorage.setItem('purge_ban', new Date(Date.now() + 7 * 86400000).toISOString());
-  }
-  showScreen('screen-results');
-}
-
-// Écouteurs d'événements pour les jeux
-document.getElementById('validate-round').onclick = validateGame1Round;
-document.getElementById('submit-devine').onclick = submitDevine;
-document.getElementById('vote-blanc').onclick = voteBlanc;
-document.getElementById('next-game2').onclick = () => showScreen('screen-game3');
-document.getElementById('finish-game3').onclick = finishGame;
-document.getElementById('play-again').onclick = () => { localStorage.clear(); location.reload(); };
