@@ -4,286 +4,210 @@ INFO PURGE ADMIN
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Info Purge 24 - Panel Admin Luxueux</title>
+    <title>Info Purge 24 - Panel Admin</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
         
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%);
+            font-family: 'Montserrat', sans-serif;
+            background: #0a0a0a;
             color: #ffffff;
             min-height: 100vh;
-            position: relative;
         }
         
-        /* PARTICULES */
-        .particles {
+        /* BANDEAU ROUGE */
+        .red-banner {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-        
-        .particle {
-            position: absolute;
-            background: radial-gradient(circle, #ffd700, #ff8c00);
-            border-radius: 50%;
-            opacity: 0.4;
-            animation: floatParticle linear infinite;
-        }
-        
-        @keyframes floatParticle {
-            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
-            10% { opacity: 0.5; }
-            90% { opacity: 0.5; }
-            100% { transform: translateY(-20vh) translateX(calc(100px * var(--direction))); opacity: 0; }
-        }
-        
-        /* BANDEAU */
-        .luxury-marquee {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: linear-gradient(135deg, #0a0a0f, #1a1a2e, #0a0a0f);
-            backdrop-filter: blur(20px);
-            color: #ffd700;
-            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #8B0000, #cc0000, #8B0000);
+            color: #FFD700;
+            font-family: 'Cormorant Garamond', serif;
             font-size: 1em;
+            font-weight: bold;
             padding: 10px 0;
-            overflow: hidden;
-            white-space: nowrap;
+            text-align: center;
             z-index: 1000;
-            border-bottom: 2px solid #ffd700;
-        }
-        
-        .marquee-content {
-            display: inline-block;
-            animation: marquee 25s linear infinite;
-            letter-spacing: 4px;
-        }
-        
-        .marquee-content span { margin: 0 40px; }
-        
-        @keyframes marquee {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-50%); }
+            border-bottom: 2px solid #FFD700;
         }
         
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
-            padding-top: 70px;
-            position: relative;
-            z-index: 1;
+            padding-top: 80px;
         }
         
-        /* LOGIN BOX LUXUEUX */
+        /* LOGIN BOX */
         .login-box {
-            max-width: 500px;
-            margin: 100px auto;
-            background: linear-gradient(135deg, rgba(26,26,46,0.98), rgba(10,10,15,0.98));
-            backdrop-filter: blur(20px);
-            border: 2px solid #ffd700;
-            border-radius: 40px;
-            padding: 50px 40px;
+            max-width: 450px;
+            margin: 120px auto;
+            background: linear-gradient(135deg, #1a1a1a, #2a0000);
+            border: 2px solid #8B0000;
+            border-radius: 25px;
+            padding: 45px 35px;
             text-align: center;
-            box-shadow: 0 0 50px rgba(255,215,0,0.2);
-            animation: glowPulse 2s infinite;
-        }
-        
-        @keyframes glowPulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(255,215,0,0.2); }
-            50% { box-shadow: 0 0 50px rgba(255,215,0,0.4); }
+            box-shadow: 0 0 40px rgba(204,0,0,0.3);
         }
         
         .login-logo {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #8B0000, #cc0000);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 50px;
-            margin: 0 auto 25px;
-            box-shadow: 0 0 30px rgba(255,215,0,0.5);
+            font-size: 40px;
+            margin: 0 auto 20px;
+            border: 2px solid #FFD700;
         }
         
         .pin-input {
-            font-size: 38px;
+            font-size: 32px;
             text-align: center;
-            letter-spacing: 15px;
-            width: 260px;
-            margin: 25px auto;
-            background: rgba(0,0,0,0.6);
-            border: 2px solid #ffd700;
-            color: #ffd700;
+            letter-spacing: 12px;
+            width: 220px;
+            margin: 20px auto;
+            background: #0a0a0a;
+            border: 2px solid #8B0000;
+            color: #FFD700;
             padding: 12px;
-            border-radius: 20px;
-            font-family: 'Playfair Display', monospace;
+            border-radius: 15px;
+            font-family: monospace;
+        }
+        
+        .pin-input:focus {
+            outline: none;
+            border-color: #FFD700;
         }
         
         /* HEADER ADMIN */
         .admin-header {
-            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(26,26,46,0.9));
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,215,0,0.3);
-            border-radius: 30px;
-            padding: 30px;
+            background: linear-gradient(135deg, #1a1a1a, #2a0000);
+            border-radius: 20px;
+            padding: 25px 30px;
             margin-bottom: 30px;
-            position: relative;
-            overflow: hidden;
+            border: 1px solid #8B0000;
+            text-align: center;
         }
         
-        .admin-header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
-            animation: rotateGlow 20s linear infinite;
-        }
-        
-        @keyframes rotateGlow {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .admin-header h1 {
+            font-family: 'Cormorant Garamond', serif;
+            color: #FFD700;
+            font-size: 2em;
         }
         
         .stats-bar {
             display: flex;
             gap: 20px;
             justify-content: center;
-            margin-top: 25px;
             flex-wrap: wrap;
-            position: relative;
-            z-index: 1;
+            margin: 20px 0;
         }
         
         .stat-card {
-            background: rgba(0,0,0,0.5);
-            border-radius: 20px;
-            padding: 15px 25px;
+            background: rgba(139,0,0,0.3);
+            border-radius: 15px;
+            padding: 12px 25px;
             text-align: center;
-            border: 1px solid #ffd700;
-            min-width: 120px;
+            border: 1px solid #8B0000;
         }
         
         .stat-card span {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: bold;
-            color: #ffd700;
-            font-family: 'Playfair Display', serif;
+            color: #FFD700;
+            font-family: 'Cormorant Garamond', serif;
         }
         
         /* BOUTONS */
         .btn-group {
             display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
+            gap: 12px;
             justify-content: center;
-            margin: 25px 0 15px;
-            position: relative;
-            z-index: 1;
+            flex-wrap: wrap;
+            margin: 20px 0;
         }
         
         button {
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            background: linear-gradient(135deg, #8B0000, #cc0000);
             border: none;
-            padding: 12px 25px;
-            border-radius: 50px;
-            color: #0a0a0f;
+            padding: 10px 22px;
+            border-radius: 40px;
+            color: #FFD700;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
-            font-family: 'Poppins', sans-serif;
-            font-size: 14px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
         }
         
         button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255,215,0,0.3);
+            box-shadow: 0 5px 15px rgba(204,0,0,0.4);
         }
         
-        .btn-danger { background: linear-gradient(135deg, #c0392b, #922b21); color: white; }
-        .btn-success { background: linear-gradient(135deg, #27ae60, #1e8449); color: white; }
-        .btn-warning { background: linear-gradient(135deg, #f39c12, #e67e22); color: white; }
-        .btn-info { background: linear-gradient(135deg, #3498db, #2980b9); color: white; }
+        .btn-danger { background: linear-gradient(135deg, #660000, #8B0000); }
+        .btn-success { background: linear-gradient(135deg, #006600, #008800); }
+        .btn-warning { background: linear-gradient(135deg, #cc6600, #ff8800); }
+        .btn-info { background: linear-gradient(135deg, #006699, #0088cc); }
         
         /* CARTES */
         .card {
-            background: rgba(26,26,46,0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,215,0,0.2);
-            border-radius: 25px;
+            background: #1a1a1a;
+            border: 1px solid #8B0000;
+            border-radius: 20px;
             padding: 25px;
             margin-bottom: 30px;
         }
         
         .card h2 {
-            font-family: 'Playfair Display', serif;
-            color: #ffd700;
+            font-family: 'Cormorant Garamond', serif;
+            color: #FFD700;
             margin-bottom: 20px;
-            border-left: 4px solid #ffd700;
-            padding-left: 20px;
+            border-left: 4px solid #8B0000;
+            padding-left: 15px;
+            font-size: 1.5em;
         }
         
         /* RECHERCHE */
-        .search-wrapper {
-            margin-bottom: 30px;
-        }
-        
         .search-box {
             width: 100%;
-            max-width: 500px;
-            background: rgba(0,0,0,0.6);
-            border: 2px solid #ffd700;
-            border-radius: 60px;
-            padding: 14px 25px;
+            max-width: 400px;
+            background: #0a0a0a;
+            border: 2px solid #8B0000;
+            border-radius: 50px;
+            padding: 12px 20px;
             color: white;
-            font-size: 1.1em;
-            transition: all 0.3s;
+            margin-bottom: 20px;
         }
         
         .search-box:focus {
             outline: none;
-            box-shadow: 0 0 20px rgba(255,215,0,0.3);
+            border-color: #FFD700;
         }
         
         /* CLAN CARD */
         .clan-card {
-            background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(26,26,46,0.5));
-            border: 1px solid rgba(255,215,0,0.2);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 18px;
+            background: linear-gradient(95deg, #1a1a1a, #2a0a0a);
+            border: 1px solid #8B0000;
+            border-radius: 15px;
+            padding: 18px;
+            margin-bottom: 12px;
             transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
         }
         
         .clan-card:hover {
-            transform: translateX(8px);
-            border-color: #ffd700;
-        }
-        
-        .clan-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 5px;
-            height: 100%;
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            border-color: #FFD700;
+            transform: translateX(5px);
         }
         
         .clan-header {
@@ -292,38 +216,37 @@ INFO PURGE ADMIN
             align-items: center;
             flex-wrap: wrap;
             gap: 15px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
         
         .clan-name {
-            font-size: 1.4em;
+            font-size: 1.3em;
             font-weight: bold;
-            color: #ffd700;
-            font-family: 'Playfair Display', serif;
+            color: #FFD700;
+            font-family: 'Cormorant Garamond', serif;
         }
         
         .clan-scores {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
         }
         
         .score-badge {
-            background: rgba(255,215,0,0.15);
-            border-radius: 30px;
-            padding: 5px 12px;
-            font-size: 0.8em;
-            border: 1px solid rgba(255,215,0,0.3);
+            background: rgba(139,0,0,0.3);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
         }
         
         .clan-actions {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
-            margin-top: 15px;
+            margin-top: 12px;
         }
         
-        .clan-actions button { padding: 6px 15px; font-size: 12px; }
+        .clan-actions button { padding: 5px 12px; font-size: 11px; }
         
         /* FORMULAIRES */
         .form-row {
@@ -333,20 +256,19 @@ INFO PURGE ADMIN
             margin-bottom: 15px;
         }
         
-        .form-row input, .form-row textarea, .form-row select {
+        .form-row input, .form-row textarea {
             flex: 1;
-            min-width: 200px;
-            background: rgba(0,0,0,0.6);
-            border: 1px solid #ffd700;
+            background: #0a0a0a;
+            border: 1px solid #8B0000;
             padding: 12px;
-            border-radius: 15px;
+            border-radius: 12px;
             color: white;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Montserrat', sans-serif;
         }
         
         .form-row input:focus, .form-row textarea:focus {
             outline: none;
-            box-shadow: 0 0 10px rgba(255,215,0,0.2);
+            border-color: #FFD700;
         }
         
         .score-input-group {
@@ -357,86 +279,140 @@ INFO PURGE ADMIN
         }
         
         .score-input-group input {
-            width: 130px;
-            background: rgba(0,0,0,0.6);
-            border: 1px solid #ffd700;
-            padding: 10px;
-            border-radius: 12px;
+            width: 120px;
+            background: #0a0a0a;
+            border: 1px solid #8B0000;
+            padding: 8px;
+            border-radius: 10px;
             color: white;
             text-align: center;
         }
         
-        .notes-section {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px dashed rgba(255,215,0,0.3);
+        /* CHAT ADMIN */
+        .chat-container {
+            background: #0a0a0a;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid #8B0000;
         }
         
-        .note-item {
-            background: rgba(255,215,0,0.1);
+        .chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            padding: 15px;
+            background: #0a0a0a;
+        }
+        
+        .chat-message {
+            margin-bottom: 12px;
             padding: 8px 12px;
-            margin: 5px 0;
+            background: #1a1a1a;
             border-radius: 12px;
-            font-size: 13px;
+            border-left: 3px solid #FFD700;
+        }
+        
+        .chat-author {
+            color: #FFD700;
+            font-weight: bold;
+            font-size: 0.85em;
+        }
+        
+        .chat-time {
+            color: #888;
+            font-size: 0.7em;
+            margin-left: 10px;
+        }
+        
+        .chat-text {
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+        
+        .chat-input-area {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            background: #1a1a1a;
+            border-top: 1px solid #8B0000;
+        }
+        
+        .chat-input {
+            flex: 1;
+            background: #0a0a0a;
+            border: 1px solid #8B0000;
+            padding: 10px 15px;
+            border-radius: 25px;
+            color: white;
+        }
+        
+        .chat-input:focus {
+            outline: none;
+            border-color: #FFD700;
+        }
+        
+        .send-btn {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #8B0000, #cc0000);
+        }
+        
+        /* NOTE ITEM */
+        .note-item {
+            background: rgba(139,0,0,0.2);
+            padding: 6px 10px;
+            margin: 5px 0;
+            border-radius: 10px;
+            font-size: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 10px;
         }
         
         .delete-note-btn {
-            background: #c0392b;
-            padding: 3px 12px;
-            font-size: 11px;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 50px;
-            color: #ffd700;
-            font-family: 'Playfair Display', serif;
+            background: #660000;
+            padding: 2px 10px;
+            font-size: 10px;
         }
         
         /* SCROLLBAR */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: #1a1a2e; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #ffd700, #ff8c00); border-radius: 10px; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1a1a1a; }
+        ::-webkit-scrollbar-thumb { background: #8B0000; border-radius: 10px; }
+        
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #FFD700;
+        }
         
         @media (max-width: 768px) {
-            .container { padding: 15px; padding-top: 65px; }
-            .stat-card span { font-size: 22px; }
-            .clan-name { font-size: 1.1em; }
+            .container { padding: 15px; padding-top: 70px; }
+            .stat-card span { font-size: 20px; }
+            .chat-messages { height: 250px; }
         }
     </style>
 </head>
 <body>
-    <div class="particles" id="particles"></div>
-    
-    <div class="luxury-marquee">
-        <div class="marquee-content">
-            <span>⚜️ INFO PURGE 24 - PANEL ADMIN ⚜️</span>
-            <span>👑 JOYBOY 👑</span>
-            <span>⚜️ GESTION DES CLANS ⚜️</span>
-        </div>
+    <div class="red-banner">
+        🔴 JOY INFO PURGE 24 - PANEL ADMINISTRATEUR 🔴
     </div>
     
     <div class="container">
         <!-- ÉCRAN DE CONNEXION -->
         <div id="loginScreen" class="login-box">
             <div class="login-logo">👑</div>
-            <h1 style="color:#ffd700; font-family:'Playfair Display';">INFO PURGE 24</h1>
-            <p style="color:#ffaa44; margin-bottom:20px;">Espace réservé aux administrateurs</p>
+            <h2 style="color:#FFD700;">INFO PURGE 24</h2>
+            <p style="color:#ff8888; margin-bottom:20px;">Espace réservé aux administrateurs</p>
             <input type="password" id="pinCode" class="pin-input" maxlength="4" placeholder="****">
             <button onclick="checkPin()" style="width:100%; margin-top:20px;">🔐 SE CONNECTER</button>
             <div id="loginError" style="color:#ff6666; margin-top:15px;"></div>
-            <a href="index.html" style="color:#ffd700; display:block; margin-top:25px; text-decoration:none;">← Retour au site public</a>
+            <a href="index.html" style="color:#FFD700; display:block; margin-top:20px; text-decoration:none;">← Retour au site public</a>
         </div>
 
         <!-- PANEL ADMIN -->
         <div id="adminPanel" style="display:none;">
             <div class="admin-header">
-                <h1 style="font-family:'Playfair Display'; font-size:2em; text-align:center; color:#ffd700;">⚜️ PANEL ADMINISTRATEUR ⚜️</h1>
+                <h1>⚜️ PANEL ADMINISTRATEUR ⚜️</h1>
                 <div class="stats-bar">
                     <div class="stat-card"><span id="statClans">0</span><br>Clans</div>
                     <div class="stat-card"><span id="statTotalPoints">0</span><br>Points totaux</div>
@@ -446,27 +422,27 @@ INFO PURGE ADMIN
                     <button onclick="logout()" class="btn-danger">🚪 DÉCONNEXION</button>
                     <a href="index.html"><button class="btn-info">🏠 VOIR LE SITE</button></a>
                     <button onclick="syncToFirebase()" class="btn-success">💾 SAUVEGARDER</button>
-                    <button onclick="importOldClans()" class="btn-warning">📥 IMPORTER ANCIENS CLANS</button>
-                    <button onclick="exportToJSON()" class="btn-primary">📤 EXPORTER JSON</button>
+                    <button onclick="exportToJSON()" class="btn-warning">📤 EXPORTER JSON</button>
                 </div>
             </div>
 
-            <div class="search-wrapper">
-                <input type="text" id="searchInput" class="search-box" placeholder="🔍 Rechercher un clan..." onkeyup="filterClans()">
-                <div id="searchInfo" style="margin-top:8px; font-size:12px; color:#ffaa44;"></div>
-            </div>
+            <!-- RECHERCHE -->
+            <input type="text" id="searchInput" class="search-box" placeholder="🔍 Rechercher un clan..." onkeyup="filterClans()">
+            <div id="searchInfo" style="font-size:12px; color:#ff8888; margin-bottom:15px;"></div>
 
+            <!-- RÉINITIALISATION RAPIDE -->
             <div class="card">
-                <h2>🔄 RÉINITIALISATION DES SCORES</h2>
-                <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
-                    <button onclick="resetWeekScores()" style="background:#e74c3c;">📅 RÉINITIALISER SEMAINE</button>
-                    <button onclick="resetMonthScores()" style="background:#e67e22;">📆 RÉINITIALISER MOIS</button>
-                    <button onclick="resetYearScores()" style="background:#f39c12;">🗓️ RÉINITIALISER ANNÉE</button>
+                <h2>🔄 RÉINITIALISATION RAPIDE</h2>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <button onclick="resetWeekScores()" style="background:#e74c3c;">📅 RÉINIT SEMAINE</button>
+                    <button onclick="resetMonthScores()" style="background:#e67e22;">📆 RÉINIT MOIS</button>
+                    <button onclick="resetYearScores()" style="background:#f39c12;">🗓️ RÉINIT ANNÉE</button>
                 </div>
             </div>
 
+            <!-- AJOUTER CLAN -->
             <div class="card">
-                <h2>➕ AJOUTER UN NOUVEAU CLAN</h2>
+                <h2>➕ AJOUTER UN CLAN</h2>
                 <div class="form-row">
                     <input type="text" id="newClanName" placeholder="Nom du clan">
                     <input type="text" id="newClanLeader" placeholder="Chef du clan">
@@ -479,31 +455,43 @@ INFO PURGE ADMIN
                     <input type="number" id="newClanMonth" placeholder="Points mois">
                     <input type="number" id="newClanYear" placeholder="Points année">
                 </div>
-                <button onclick="addNewClan()" class="btn-success">✅ AJOUTER CE CLAN</button>
+                <button onclick="addNewClan()" class="btn-success">✅ AJOUTER</button>
             </div>
 
+            <!-- LISTE DES CLANS -->
             <div class="card">
                 <h2>📋 LISTE DES CLANS</h2>
                 <div id="clansList"><div class="loading">⏳ Chargement...</div></div>
             </div>
 
+            <!-- AJOUTER POINTS -->
             <div class="card">
-                <h2>⭐ AJOUTER AUX 3 CLASSEMENTS</h2>
+                <h2>⭐ AJOUTER AUX CLASSEMENTS</h2>
                 <div id="scoreInputs"><div class="loading">Chargement...</div></div>
             </div>
 
+            <!-- CHAT ADMIN -->
             <div class="card">
-                <h2>🎯 AJOUTER UNIQUEMENT À L'ANNÉE</h2>
-                <div id="yearScoreInputs"><div class="loading">Chargement...</div></div>
+                <h2>💬 CHAT ADMIN</h2>
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="loading">⏳ Chargement du chat...</div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" id="chatInput" class="chat-input" placeholder="Message aux autres admins..." onkeypress="if(event.key==='Enter') sendChatMessage()">
+                        <button class="send-btn" onclick="sendChatMessage()">📤 ENVOYER</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Firebase -->
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
     <script>
+        // Configuration Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyB3yYAuiGqbtrbZ1aSYxAjduZ65adNIpag",
             authDomain: "purge-game-58718.firebaseapp.com",
@@ -520,56 +508,51 @@ INFO PURGE ADMIN
         const ADMIN_PIN = "2007";
         let currentClans = [];
         let searchTerm = "";
+        let currentAdmin = null;
         
-        // Particules
-        function createParticles() {
-            const container = document.getElementById('particles');
-            for(let i = 0; i < 50; i++) {
-                const p = document.createElement('div');
-                p.className = 'particle';
-                const size = Math.random() * 6 + 2;
-                p.style.width = size + 'px';
-                p.style.height = size + 'px';
-                p.style.left = Math.random() * 100 + '%';
-                p.style.animationDuration = (Math.random() * 10 + 5) + 's';
-                p.style.animationDelay = (Math.random() * 15) + 's';
-                p.style.setProperty('--direction', Math.random() > 0.5 ? 1 : -1);
-                container.appendChild(p);
-            }
-        }
-        createParticles();
-        
+        // ========== CONNEXION ==========
         function checkPin() {
-            if(document.getElementById('pinCode').value === ADMIN_PIN) {
+            const pin = document.getElementById('pinCode').value;
+            if(pin === ADMIN_PIN) {
+                currentAdmin = "Joyboy";
                 localStorage.setItem('adminLoggedIn', 'true');
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('adminPanel').style.display = 'block';
                 loadDataFromFirebase();
+                loadChatMessages();
             } else {
                 document.getElementById('loginError').innerText = '❌ Code incorrect';
+                document.getElementById('pinCode').value = '';
             }
         }
         
         if(localStorage.getItem('adminLoggedIn') === 'true') {
+            currentAdmin = "Joyboy";
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'block';
             loadDataFromFirebase();
+            loadChatMessages();
         }
         
         function logout() {
             localStorage.removeItem('adminLoggedIn');
+            currentAdmin = null;
             document.getElementById('loginScreen').style.display = 'block';
             document.getElementById('adminPanel').style.display = 'none';
         }
         
+        // ========== GESTION DES CLANS ==========
         async function loadDataFromFirebase() {
             const snapshot = await database.ref('clans').once('value');
-            currentClans = [];
+            const clansMap = new Map();
             snapshot.forEach(child => {
                 const clan = child.val();
-                clan.id = child.key;
-                currentClans.push(clan);
+                if(!clansMap.has(clan.name)) {
+                    clan.id = child.key;
+                    clansMap.set(clan.name, clan);
+                }
             });
+            currentClans = Array.from(clansMap.values());
             updateStats();
             displayAdmin();
         }
@@ -592,29 +575,6 @@ INFO PURGE ADMIN
                 await database.ref(`clans/${clan.id}`).set(data);
             }
             alert("✅ Données sauvegardées !");
-        }
-        
-        async function importOldClans() {
-            const url = "https://raw.githubusercontent.com/ablaye2020/info-purge-24/main/data.json";
-            if(confirm("Importer les anciens clans ?")) {
-                const res = await fetch(url + "?t=" + Date.now());
-                const data = await res.json();
-                let count = 0;
-                const existingNames = currentClans.map(c => c.name);
-                for(const clan of data.clans) {
-                    if(!existingNames.includes(clan.name)) {
-                        await database.ref('clans').push({
-                            name: clan.name, leader: clan.leader || "Inconnu",
-                            description: clan.description || "",
-                            score_week: clan.score_week || 0, score_month: clan.score_month || 0,
-                            score_year: clan.score_year || 0, likes: clan.likes || 0, notes: clan.notes || []
-                        });
-                        count++;
-                    }
-                }
-                alert(`✅ ${count} clans importés !`);
-                loadDataFromFirebase();
-            }
         }
         
         async function exportToJSON() {
@@ -642,6 +602,7 @@ INFO PURGE ADMIN
             const newLeader = prompt("Nouveau chef :", clan.leader);
             if(newLeader) clan.leader = newLeader;
             syncToFirebase();
+            displayAdmin();
         }
         
         function addNoteToClan(id) {
@@ -653,6 +614,7 @@ INFO PURGE ADMIN
                 clan.notes.push({ year: parseInt(year), content });
                 syncToFirebase();
                 alert("✅ Note ajoutée");
+                displayAdmin();
             }
         }
         
@@ -660,6 +622,7 @@ INFO PURGE ADMIN
             const clan = currentClans.find(c => c.id === clanId);
             clan.notes.splice(idx, 1);
             syncToFirebase();
+            displayAdmin();
         }
         
         function resetWeekScores() {
@@ -688,7 +651,8 @@ INFO PURGE ADMIN
             const leader = document.getElementById('newClanLeader').value;
             if(!name || !leader) { alert("Nom et chef requis"); return; }
             database.ref('clans').push({
-                name, leader, description: document.getElementById('newClanDesc').value,
+                name, leader,
+                description: document.getElementById('newClanDesc').value,
                 score_week: parseInt(document.getElementById('newClanWeek').value) || 0,
                 score_month: parseInt(document.getElementById('newClanMonth').value) || 0,
                 score_year: parseInt(document.getElementById('newClanYear').value) || 0,
@@ -721,6 +685,7 @@ INFO PURGE ADMIN
                 syncToFirebase();
                 alert(`✅ +${pts} points pour ${clan.name}`);
                 document.getElementById(`points_${id}`).value = '';
+                displayAdmin();
             }
         }
         
@@ -732,6 +697,7 @@ INFO PURGE ADMIN
                 syncToFirebase();
                 alert(`✅ +${pts} points annuels pour ${clan.name}`);
                 document.getElementById(`year_points_${id}`).value = '';
+                displayAdmin();
             }
         }
         
@@ -753,7 +719,7 @@ INFO PURGE ADMIN
                     </div>
                     <div>👑 ${escapeHtml(c.leader)}</div>
                     <div>📝 ${escapeHtml(c.description) || "Aucune description"}</div>
-                    ${c.notes?.length ? `<div class="notes-section"><strong>📝 Notes:</strong>${c.notes.map((n,i)=>`<div class="note-item">📅 ${n.year}: ${escapeHtml(n.content)}<button onclick="deleteNote('${c.id}',${i})" class="delete-note-btn">🗑️</button></div>`).join('')}</div>` : ''}
+                    ${c.notes?.length ? `<div style="margin-top:10px;"><strong>📝 Notes:</strong>${c.notes.map((n,i)=>`<div class="note-item">📅 ${n.year}: ${escapeHtml(n.content)}<button onclick="deleteNote('${c.id}',${i})" class="delete-note-btn">🗑️</button></div>`).join('')}</div>` : ''}
                     <div class="clan-actions">
                         <button onclick="editClan('${c.id}')" class="btn-info">✏️ MODIFIER</button>
                         <button onclick="addNoteToClan('${c.id}')" style="background:#3498db;">📝 NOTE</button>
@@ -762,32 +728,79 @@ INFO PURGE ADMIN
                 </div>
             `).join('');
             
-            // Ajout points 3 classements
+            // Ajout points
             document.getElementById('scoreInputs').innerHTML = filtered.map(c => `
                 <div class="clan-card">
                     <div class="clan-header"><span class="clan-name">⚔️ ${escapeHtml(c.name)}</span></div>
                     <div class="score-input-group">
                         <input type="number" id="points_${c.id}" placeholder="Points">
-                        <button onclick="addPointsToAll('${c.id}')" class="btn-primary">➕ AJOUTER AUX 3 CLASSEMENTS</button>
-                    </div>
-                </div>
-            `).join('');
-            
-            // Ajout points année
-            document.getElementById('yearScoreInputs').innerHTML = filtered.map(c => `
-                <div class="clan-card">
-                    <div class="clan-header"><span class="clan-name">⚔️ ${escapeHtml(c.name)}</span><span class="score-badge">🗓️ A:${c.score_year||0}</span></div>
-                    <div class="score-input-group">
-                        <input type="number" id="year_points_${c.id}" placeholder="Points Année">
-                        <button onclick="addPointsToYear('${c.id}')" class="btn-warning">🎯 AJOUTER À L'ANNÉE</button>
+                        <button onclick="addPointsToAll('${c.id}')" class="btn-success">➕ AJOUTER AUX 3 CLASSEMENTS</button>
                     </div>
                 </div>
             `).join('');
         }
         
-        function escapeHtml(str) { return str?.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])) || ''; }
+        // ========== CHAT ADMIN ==========
+        async function loadChatMessages() {
+            const snapshot = await database.ref('admin_chat').once('value');
+            const messages = [];
+            snapshot.forEach(child => {
+                messages.push({ id: child.key, ...child.val() });
+            });
+            messages.reverse();
+            
+            const container = document.getElementById('chatMessages');
+            if(messages.length === 0) {
+                container.innerHTML = '<div class="loading">💬 Aucun message, soyez le premier !</div>';
+                return;
+            }
+            
+            container.innerHTML = messages.map(msg => `
+                <div class="chat-message">
+                    <div class="chat-author">
+                        👑 ${escapeHtml(msg.author)}
+                        <span class="chat-time">${msg.time || ''}</span>
+                    </div>
+                    <div class="chat-text">${escapeHtml(msg.message)}</div>
+                </div>
+            `).join('');
+            
+            // Scroll en bas
+            container.scrollTop = container.scrollHeight;
+        }
         
-        setInterval(() => { if(document.getElementById('adminPanel').style.display !== 'none') loadDataFromFirebase(); }, 15000);
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if(!message) return;
+            
+            await database.ref('admin_chat').push({
+                author: currentAdmin || "Admin",
+                message: message,
+                time: new Date().toLocaleTimeString(),
+                date: new Date().toISOString()
+            });
+            
+            input.value = '';
+            loadChatMessages();
+        }
+        
+        // Écouter les nouveaux messages en temps réel
+        database.ref('admin_chat').on('child_added', () => {
+            loadChatMessages();
+        });
+        
+        function escapeHtml(str) {
+            if(!str) return '';
+            return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
+        }
+        
+        // Rafraîchissement auto
+        setInterval(() => {
+            if(document.getElementById('adminPanel').style.display !== 'none') {
+                loadDataFromFirebase();
+            }
+        }, 15000);
     </script>
 </body>
 </html>
