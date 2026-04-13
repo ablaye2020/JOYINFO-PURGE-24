@@ -1,0 +1,611 @@
+INFO PURGE ADMIN 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - INFO PURGE 24</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);
+            color: #ffffff;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        header {
+            text-align: center;
+            padding: 30px;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid #ff4444;
+            border-radius: 20px;
+            margin-bottom: 30px;
+        }
+        
+        h1 { font-family: 'Orbitron', monospace; color: #ff6666; font-size: 2em; }
+        
+        button {
+            background: #ff4444;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 5px;
+            font-family: 'Orbitron', monospace;
+        }
+        
+        button:hover { background: #cc0000; }
+        
+        .login-box {
+            max-width: 400px;
+            margin: 100px auto;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid #ff4444;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+        }
+        
+        .pin-input {
+            font-size: 32px;
+            text-align: center;
+            letter-spacing: 10px;
+            width: 200px;
+            margin: 20px auto;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid #ff4444;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        
+        .clan-card {
+            background: rgba(255,68,68,0.05);
+            border: 1px solid rgba(255,68,68,0.3);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+        
+        input, textarea {
+            background: rgba(0,0,0,0.6);
+            border: 1px solid #ff4444;
+            padding: 10px;
+            color: white;
+            border-radius: 8px;
+            margin: 5px;
+        }
+        
+        .search-box {
+            background: rgba(0,0,0,0.8);
+            border: 1px solid #ff4444;
+            border-radius: 30px;
+            padding: 10px 20px;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: #ff6666;
+            box-shadow: 0 0 10px rgba(255,0,0,0.3);
+        }
+        
+        .current-scores {
+            display: flex;
+            gap: 20px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+        
+        .current-scores span {
+            background: rgba(255,68,68,0.2);
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+        
+        .delete-btn { background: #cc0000; }
+        .reset-btn { background: #f39c12; color: #1a1a2e; }
+        .reset-btn:hover { background: #e67e22; }
+        .year-btn { background: #e74c3c; }
+        
+        .error { color: #ff8888; margin-top: 10px; }
+        
+        .add-clan-form {
+            background: rgba(255,68,68,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255,68,68,0.3);
+        }
+        
+        .add-clan-form input, .add-clan-form textarea { width: 100%; margin: 10px 0; }
+        
+        h2 {
+            color: #ff6666;
+            margin: 20px 0 15px;
+            font-family: 'Orbitron', monospace;
+            border-left: 3px solid #ff4444;
+            padding-left: 15px;
+        }
+        
+        .info-box {
+            background: rgba(255,68,68,0.2);
+            border: 1px solid #ff4444;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .reset-section {
+            background: rgba(255,68,68,0.15);
+            border: 1px solid #ff4444;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .pending-data {
+            background: rgba(255,68,68,0.2);
+            border: 1px solid #ff4444;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .year-note {
+            border-left: 3px solid #e74c3c;
+            background: rgba(231,76,60,0.1);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #ff8888;
+        }
+        
+        .search-info {
+            font-size: 0.8em;
+            color: #ff8888;
+            margin-bottom: 15px;
+        }
+        
+        .edit-btn {
+            background: #3498db;
+            margin-top: 10px;
+        }
+        
+        .edit-btn:hover { background: #2980b9; }
+        
+        .save-btn {
+            background: #27ae60;
+        }
+        
+        .save-btn:hover { background: #219a52; }
+        
+        .note-item {
+            background: rgba(255,68,68,0.1);
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+        
+        .delete-note-btn {
+            background: #cc0000;
+            padding: 2px 8px;
+            font-size: 11px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="loginScreen" class="login-box">
+            <h1>🔐 JOYBOY ADMIN</h1>
+            <p>Entrez votre code</p>
+            <input type="password" id="pinCode" class="pin-input" maxlength="4" pattern="[0-9]{4}" inputmode="numeric" placeholder="****">
+            <button onclick="checkPin()">Se connecter</button>
+            <div id="loginError" class="error"></div>
+            <a href="index.html" style="color:#ff6666; display:block; margin-top:20px;">← Retour au site</a>
+        </div>
+
+        <div id="adminPanel" style="display:none;">
+            <header>
+                <h1>⚡ ADMIN INFO PURGE 24 ⚡</h1>
+                <p>Bienvenue Joyboy</p>
+                <button onclick="logout()">🚪 Déconnexion</button>
+                <a href="index.html"><button>🏠 Voir le site</button></a>
+                <button onclick="syncToFirebase()" style="background:#27ae60;" class="save-btn">💾 SAUVEGARDER DANS FIREBASE</button>
+            </header>
+
+            <div class="info-box">
+                <strong>📌 RECHERCHE :</strong><br>
+                Tapez le nom d'un clan dans la barre de recherche pour le trouver rapidement.
+            </div>
+
+            <input type="text" id="searchInput" class="search-box" placeholder="🔍 Rechercher un clan par son nom..." onkeyup="filterClans()">
+            <div class="search-info" id="searchInfo"></div>
+
+            <div class="reset-section">
+                <button onclick="resetWeekScores()" class="reset-btn" style="background:#e74c3c;">🔄 RÉINITIALISER SEMAINE</button>
+                <button onclick="resetMonthScores()" class="reset-btn" style="background:#e67e22;">🔄 RÉINITIALISER MOIS</button>
+                <button onclick="resetYearScores()" class="reset-btn" style="background:#f1c40f;">🔄 RÉINITIALISER ANNÉE</button>
+            </div>
+
+            <div class="add-clan-form">
+                <h2>📝 ENREGISTRER UN NOUVEAU CLAN</h2>
+                <input type="text" id="newClanName" placeholder="Nom du clan">
+                <input type="text" id="newClanLeader" placeholder="Nom du chef">
+                <textarea id="newClanDesc" placeholder="Description du clan" rows="2"></textarea>
+                <button onclick="addNewClan()" style="background:#27ae60;">✅ AJOUTER CE CLAN</button>
+            </div>
+
+            <h2>📋 LISTE DES CLANS EXISTANTS</h2>
+            <div id="clansList"><div class="loading">⏳ Chargement depuis Firebase...</div></div>
+
+            <h2>⭐ AJOUTER AUX 3 CLASSEMENTS</h2>
+            <p style="margin-bottom:15px;">⚠️ Ajoute aux classements : SEMAINE + MOIS + ANNÉE</p>
+            <div id="scoreInputs"><div class="loading">Chargement...</div></div>
+
+            <h2>🎯 AJOUTER UNIQUEMENT À L'ANNÉE</h2>
+            <p style="margin-bottom:15px;">⚠️ Ces points vont uniquement dans le classement ANNUEL</p>
+            <div id="yearScoreInputs"><div class="loading">Chargement...</div></div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+    <script>
+        // Configuration Firebase (la même que ton index.html)
+        const firebaseConfig = {
+            apiKey: "AIzaSyB3yYAuiGqbtrbZ1aSYxAjduZ65adNIpag",
+            authDomain: "purge-game-58718.firebaseapp.com",
+            databaseURL: "https://purge-game-58718-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "purge-game-58718",
+            storageBucket: "purge-game-58718.firebasestorage.app",
+            messagingSenderId: "554574972856",
+            appId: "1:554574972856:web:9de17e7f77eb7b5be4b14d"
+        };
+        
+        // Initialiser Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        
+        // Variables
+        const ADMIN_PIN = "2007";
+        let currentClans = [];
+        let searchTerm = "";
+        
+        // Vérification du code admin
+        function checkPin() {
+            const enteredPin = document.getElementById('pinCode').value;
+            if(enteredPin === ADMIN_PIN) {
+                localStorage.setItem('adminLoggedIn', 'true');
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                loadDataFromFirebase();
+            } else {
+                document.getElementById('loginError').innerText = '❌ Code incorrect';
+                document.getElementById('pinCode').value = '';
+            }
+        }
+        
+        if(localStorage.getItem('adminLoggedIn') === 'true') {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            loadDataFromFirebase();
+        }
+        
+        function logout() {
+            localStorage.removeItem('adminLoggedIn');
+            document.getElementById('loginScreen').style.display = 'block';
+            document.getElementById('adminPanel').style.display = 'none';
+        }
+        
+        // Charger depuis Firebase
+        async function loadDataFromFirebase() {
+            try {
+                const snapshot = await database.ref('clans').once('value');
+                const clans = [];
+                snapshot.forEach(childSnapshot => {
+                    const clan = childSnapshot.val();
+                    clan.id = childSnapshot.key;
+                    clans.push(clan);
+                });
+                currentClans = clans;
+                displayAdmin();
+            } catch(e) {
+                console.error(e);
+                document.getElementById('clansList').innerHTML = '<div class="loading">❌ Erreur de chargement Firebase</div>';
+            }
+        }
+        
+        // Sauvegarder dans Firebase
+        async function syncToFirebase() {
+            try {
+                for (const clan of currentClans) {
+                    const clanData = { ...clan };
+                    delete clanData.id;
+                    await database.ref(`clans/${clan.id}`).set(clanData);
+                }
+                alert("✅ Données sauvegardées dans Firebase !");
+                loadDataFromFirebase();
+            } catch(e) {
+                alert("❌ Erreur de sauvegarde: " + e.message);
+            }
+        }
+        
+        function filterClans() {
+            searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const searchInfo = document.getElementById('searchInfo');
+            const filteredCount = currentClans.filter(clan => clan.name.toLowerCase().includes(searchTerm)).length;
+            
+            if (searchTerm === "") {
+                searchInfo.innerHTML = `📋 ${currentClans.length} clans au total`;
+            } else {
+                searchInfo.innerHTML = `🔍 ${filteredCount} clan(s) trouvé(s) pour "${searchTerm}"`;
+            }
+            displayAdmin();
+        }
+        
+        // Modifier un clan
+        function editClan(id) {
+            const clan = currentClans.find(c => c.id === id);
+            if (!clan) return;
+            
+            const newName = prompt("Nouveau nom du clan :", clan.name);
+            if (newName && newName.trim() !== "") clan.name = newName.trim();
+            
+            const newLeader = prompt("Nouveau nom du chef :", clan.leader);
+            if (newLeader && newLeader.trim() !== "") clan.leader = newLeader.trim();
+            
+            const newDesc = prompt("Nouvelle description :", clan.description || "");
+            clan.description = newDesc || "";
+            
+            syncToFirebase();
+        }
+        
+        // Ajouter une note à un clan
+        function addNoteToClan(id) {
+            const year = prompt("Année de la note (ex: 2024) :");
+            if (!year) return;
+            
+            const content = prompt("Contenu de la note :");
+            if (!content) return;
+            
+            const clan = currentClans.find(c => c.id === id);
+            if (clan) {
+                if (!clan.notes) clan.notes = [];
+                clan.notes.push({ year: parseInt(year), content: content });
+                syncToFirebase();
+                alert(`✅ Note ajoutée à ${clan.name}`);
+            }
+        }
+        
+        // Supprimer une note
+        function deleteNote(clanId, noteIndex) {
+            const clan = currentClans.find(c => c.id === clanId);
+            if (clan && clan.notes[noteIndex]) {
+                clan.notes.splice(noteIndex, 1);
+                syncToFirebase();
+                alert("✅ Note supprimée");
+            }
+        }
+        
+        function resetWeekScores() {
+            if(confirm("⚠️ Réinitialiser TOUS les scores de la SEMAINE ?")) {
+                currentClans.forEach(clan => { clan.score_week = 0; });
+                syncToFirebase();
+                alert("✅ Scores de la SEMAINE réinitialisés !");
+            }
+        }
+        
+        function resetMonthScores() {
+            if(confirm("⚠️ Réinitialiser TOUS les scores du MOIS ?")) {
+                currentClans.forEach(clan => { clan.score_month = 0; });
+                syncToFirebase();
+                alert("✅ Scores du MOIS réinitialisés !");
+            }
+        }
+        
+        function resetYearScores() {
+            if(confirm("⚠️ Réinitialiser TOUS les scores de l'ANNÉE ?")) {
+                currentClans.forEach(clan => { clan.score_year = 0; });
+                syncToFirebase();
+                alert("✅ Scores de l'ANNÉE réinitialisés !");
+            }
+        }
+        
+        function addNewClan() {
+            const name = document.getElementById('newClanName').value;
+            const leader = document.getElementById('newClanLeader').value;
+            const description = document.getElementById('newClanDesc').value;
+            
+            if(!name || !leader) {
+                alert('❌ Veuillez entrer le nom du clan et le chef');
+                return;
+            }
+            
+            const newClan = {
+                name: name,
+                leader: leader,
+                description: description || "",
+                score_week: 0,
+                score_month: 0,
+                score_year: 0,
+                likes: 0,
+                notes: [],
+                created_at: new Date().toISOString()
+            };
+            
+            database.ref('clans').push(newClan).then(() => {
+                document.getElementById('newClanName').value = '';
+                document.getElementById('newClanLeader').value = '';
+                document.getElementById('newClanDesc').value = '';
+                alert(`✅ Clan "${name}" ajouté !`);
+                loadDataFromFirebase();
+            });
+        }
+        
+        function deleteClan(id) {
+            const clan = currentClans.find(c => c.id === id);
+            if(confirm(`Supprimer "${clan.name}" ?`)) {
+                database.ref(`clans/${id}`).remove().then(() => {
+                    alert(`✅ "${clan.name}" supprimé.`);
+                    loadDataFromFirebase();
+                });
+            }
+        }
+        
+        function addPointsToAll(id) {
+            const input = document.getElementById(`points_${id}`);
+            const points = parseInt(input.value);
+            if(!isNaN(points) && points > 0) {
+                const clan = currentClans.find(c => c.id === id);
+                if(clan) {
+                    clan.score_week = (clan.score_week || 0) + points;
+                    clan.score_month = (clan.score_month || 0) + points;
+                    clan.score_year = (clan.score_year || 0) + points;
+                    syncToFirebase();
+                    alert(`✅ ${points} points ajoutés à ${clan.name} dans les 3 classements !`);
+                }
+                input.value = '';
+            } else {
+                alert('❌ Entrez un nombre valide');
+            }
+        }
+        
+        function addPointsToYear(id) {
+            const input = document.getElementById(`year_points_${id}`);
+            const points = parseInt(input.value);
+            if(!isNaN(points) && points > 0) {
+                const clan = currentClans.find(c => c.id === id);
+                if(clan) {
+                    clan.score_year = (clan.score_year || 0) + points;
+                    syncToFirebase();
+                    alert(`✅ ${points} points ajoutés à ${clan.name} dans le classement ANNÉE !`);
+                }
+                input.value = '';
+            } else {
+                alert('❌ Entrez un nombre valide');
+            }
+        }
+        
+        function displayAdmin() {
+            let filteredClans = currentClans;
+            if (searchTerm !== "") {
+                filteredClans = currentClans.filter(clan => clan.name.toLowerCase().includes(searchTerm));
+            }
+            
+            // Liste des clans
+            const clansContainer = document.getElementById('clansList');
+            if(currentClans.length === 0) {
+                clansContainer.innerHTML = '<div class="loading">📭 Aucun clan.</div>';
+            } else if (filteredClans.length === 0 && searchTerm !== "") {
+                clansContainer.innerHTML = `<div class="loading">🔍 Aucun clan trouvé pour "${searchTerm}"</div>`;
+            } else {
+                clansContainer.innerHTML = filteredClans.map(clan => `
+                    <div class="clan-card">
+                        <strong>⚔️ ${escapeHtml(clan.name)}</strong> - Chef: ${escapeHtml(clan.leader)}<br>
+                        📝 ${escapeHtml(clan.description) || "Aucune description"}<br>
+                        ❤️ ${clan.likes || 0} likes<br>
+                        ${clan.notes && clan.notes.length > 0 ? `
+                            <div style="margin-top:10px;">
+                                <strong>📝 Notes:</strong>
+                                ${clan.notes.map((note, idx) => `
+                                    <div class="note-item">
+                                        📅 ${note.year}: ${escapeHtml(note.content)}
+                                        <button onclick="deleteNote('${clan.id}', ${idx})" class="delete-note-btn">🗑️</button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                        <button onclick="editClan('${clan.id}')" class="edit-btn">✏️ MODIFIER</button>
+                        <button onclick="addNoteToClan('${clan.id}')" style="background:#3498db;">📝 AJOUTER NOTE</button>
+                        <button onclick="deleteClan('${clan.id}')" class="delete-btn">🗑️ SUPPRIMER</button>
+                    </div>
+                `).join('');
+            }
+            
+            // Ajout aux 3 classements
+            const scoreContainer = document.getElementById('scoreInputs');
+            if(currentClans.length === 0) {
+                scoreContainer.innerHTML = '<div class="loading">Aucun clan</div>';
+            } else {
+                scoreContainer.innerHTML = filteredClans.map(clan => `
+                    <div class="clan-card">
+                        <strong>⚔️ ${escapeHtml(clan.name)}</strong>
+                        <div class="current-scores">
+                            <span>📅 SEMAINE: ${clan.score_week || 0} pts</span>
+                            <span>📆 MOIS: ${clan.score_month || 0} pts</span>
+                            <span>🗓️ ANNÉE: ${clan.score_year || 0} pts</span>
+                        </div>
+                        <div style="margin-top:15px;">
+                            <input type="number" id="points_${clan.id}" placeholder="Points" style="width:150px;">
+                            <button onclick="addPointsToAll('${clan.id}')">➕ AJOUTER AUX 3 CLASSEMENTS</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            // Ajout uniquement à l'année
+            const yearContainer = document.getElementById('yearScoreInputs');
+            if(currentClans.length === 0) {
+                yearContainer.innerHTML = '<div class="loading">Aucun clan</div>';
+            } else {
+                yearContainer.innerHTML = filteredClans.map(clan => `
+                    <div class="clan-card year-note">
+                        <strong>⚔️ ${escapeHtml(clan.name)}</strong>
+                        <div class="current-scores">
+                            <span>🗓️ ANNÉE ACTUELLE: ${clan.score_year || 0} pts</span>
+                        </div>
+                        <div style="margin-top:15px;">
+                            <input type="number" id="year_points_${clan.id}" placeholder="Points Année" style="width:150px;">
+                            <button onclick="addPointsToYear('${clan.id}')" class="year-btn">🎯 AJOUTER À L'ANNÉE</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+        
+        function escapeHtml(str) {
+            if(!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if(m === '&') return '&amp;';
+                if(m === '<') return '&lt;';
+                if(m === '>') return '&gt;';
+                return m;
+            });
+        }
+        
+        // Rafraîchissement automatique toutes les 10 secondes
+        setInterval(() => {
+            if(document.getElementById('adminPanel').style.display === 'block') {
+                loadDataFromFirebase();
+            }
+        }, 10000);
+    </script>
+</body>
+</html>
+BY JOYBOY
