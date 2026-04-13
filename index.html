@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>INFO PURGE 24 - Le Classement des Clans</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinema:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap');
         
         * {
             margin: 0;
@@ -14,14 +14,14 @@
         }
         
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%);
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0000 25%, #2a0000 50%, #1a0000 75%, #0a0a0a 100%);
             color: #ffffff;
             min-height: 100vh;
             position: relative;
         }
         
-        /* PARTICULES D'OR */
+        /* PARTICULES ROUGES ET OR */
         .particles {
             position: fixed;
             top: 0;
@@ -35,43 +35,37 @@
         
         .particle {
             position: absolute;
-            background: radial-gradient(circle, #ffd700, #ff8c00);
+            background: radial-gradient(circle, #ff0000, #ffd700);
             border-radius: 50%;
-            opacity: 0.4;
+            opacity: 0.3;
             animation: floatParticle linear infinite;
         }
         
         @keyframes floatParticle {
-            0% {
-                transform: translateY(100vh) translateX(0) rotate(0deg);
-                opacity: 0;
-            }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.6; }
-            100% {
-                transform: translateY(-20vh) translateX(calc(100px * var(--direction))) rotate(360deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-20vh) translateX(calc(100px * var(--direction))); opacity: 0; }
         }
         
-        /* BANDEAU LUXUEUX */
+        /* BANDEAU LUXUEUX ROUGE */
         .luxury-marquee {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: linear-gradient(135deg, #0a0a0f, #1a1a2e, #0a0a0f);
+            background: linear-gradient(135deg, #000000, #ff0000, #000000);
             backdrop-filter: blur(20px);
             color: #ffd700;
-            font-family: 'Playfair Display', serif;
+            font-family: 'Cinema', cursive;
             font-size: 1.2em;
             font-weight: bold;
-            padding: 12px 0;
+            padding: 15px 0;
             overflow: hidden;
             white-space: nowrap;
             z-index: 1000;
-            border-bottom: 2px solid #ffd700;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            border-bottom: 3px solid #ffd700;
+            box-shadow: 0 5px 30px rgba(255,0,0,0.3);
         }
         
         .marquee-content {
@@ -98,21 +92,21 @@
             max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
-            padding-top: 80px;
+            padding-top: 90px;
             position: relative;
             z-index: 1;
         }
         
-        /* HEADER LUXUEUX */
+        /* HEADER LUXUEUX ROUGE */
         .luxury-header {
-            background: linear-gradient(135deg, rgba(26,26,46,0.95), rgba(10,10,15,0.95));
+            background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(255,0,0,0.2), rgba(0,0,0,0.95));
             backdrop-filter: blur(20px);
-            border-radius: 30px;
+            border-radius: 40px;
             padding: 50px 30px;
             text-align: center;
             margin-bottom: 40px;
-            border: 1px solid rgba(255,215,0,0.3);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border: 2px solid #ffd700;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 30px rgba(255,0,0,0.3);
             position: relative;
             overflow: hidden;
         }
@@ -124,7 +118,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(255,0,0,0.2) 0%, transparent 70%);
             animation: rotateGlow 20s linear infinite;
         }
         
@@ -135,88 +129,89 @@
         
         .live-badge {
             display: inline-block;
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
-            color: #0a0a0f;
-            font-size: 12px;
+            background: linear-gradient(135deg, #ff0000, #ffd700);
+            color: #000000;
+            font-size: 14px;
             font-weight: bold;
-            padding: 5px 15px;
-            border-radius: 30px;
+            padding: 6px 20px;
+            border-radius: 50px;
             margin-bottom: 20px;
             animation: pulse 1.5s infinite;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Montserrat', sans-serif;
         }
         
         @keyframes pulse {
-            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255,215,0,0.7); }
-            50% { opacity: 0.9; box-shadow: 0 0 0 15px rgba(255,215,0,0); }
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255,0,0,0.7); }
+            50% { opacity: 0.9; box-shadow: 0 0 0 20px rgba(255,0,0,0); }
         }
         
         h1 {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Cinema', cursive;
             font-size: 4em;
             font-weight: 900;
-            letter-spacing: 8px;
-            background: linear-gradient(135deg, #ffd700, #ff8c00, #ffd700);
+            letter-spacing: 10px;
+            background: linear-gradient(135deg, #ffd700, #ff0000, #ffd700);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             margin-bottom: 15px;
-            text-shadow: 0 0 30px rgba(255,215,0,0.3);
+            text-shadow: 0 0 40px rgba(255,0,0,0.5);
         }
         
         .citation {
             font-style: italic;
-            font-size: 1.1em;
+            font-size: 1.2em;
             color: #ffd700;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             margin-top: 20px;
-            border-top: 1px solid rgba(255,215,0,0.3);
-            border-bottom: 1px solid rgba(255,215,0,0.3);
+            border-top: 2px solid #ff0000;
+            border-bottom: 2px solid #ff0000;
             display: inline-block;
-            padding: 12px 25px;
-            font-family: 'Playfair Display', serif;
+            padding: 12px 30px;
+            font-family: 'Cinema', cursive;
         }
         
-        /* NAVIGATION LUXUEUSE */
+        /* NAVIGATION */
         .luxury-nav {
             display: flex;
-            gap: 20px;
+            gap: 25px;
             justify-content: center;
             flex-wrap: wrap;
-            margin-top: 35px;
+            margin-top: 40px;
         }
         
         .nav-btn {
-            background: rgba(255,215,0,0.1);
-            border: 1px solid rgba(255,215,0,0.3);
-            padding: 14px 35px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
+            background: linear-gradient(135deg, rgba(255,0,0,0.2), rgba(0,0,0,0.8));
+            border: 2px solid #ffd700;
+            padding: 14px 40px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
             color: #ffd700;
             cursor: pointer;
             transition: all 0.4s;
-            border-radius: 50px;
+            border-radius: 60px;
             backdrop-filter: blur(10px);
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            font-size: 1.1em;
         }
         
         .nav-btn:hover {
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
-            color: #0a0a0f;
+            background: linear-gradient(135deg, #ff0000, #ffd700);
+            color: #000000;
             transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(255,215,0,0.3);
+            box-shadow: 0 10px 30px rgba(255,0,0,0.5);
         }
         
         /* SECTIONS */
         .section {
-            background: rgba(26,26,46,0.9);
+            background: rgba(0,0,0,0.85);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,215,0,0.2);
-            border-radius: 30px;
+            border: 2px solid rgba(255,215,0,0.3);
+            border-radius: 40px;
             padding: 35px;
             margin-bottom: 30px;
             display: none;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
         }
         
         .section.active {
@@ -236,49 +231,50 @@
         }
         
         .section h2 {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Cinema', cursive;
             color: #ffd700;
             margin-bottom: 25px;
-            border-left: 4px solid #ffd700;
+            border-left: 5px solid #ff0000;
             padding-left: 20px;
-            font-size: 1.8em;
+            font-size: 2em;
         }
         
         /* TABS CLASSEMENT */
         .ranking-tabs {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             margin-bottom: 30px;
             flex-wrap: wrap;
         }
         
         .rank-tab {
-            background: rgba(255,215,0,0.1);
-            border: 1px solid rgba(255,215,0,0.3);
-            padding: 10px 25px;
-            border-radius: 40px;
+            background: rgba(255,0,0,0.2);
+            border: 2px solid rgba(255,215,0,0.5);
+            padding: 12px 30px;
+            border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s;
-            font-weight: 600;
+            font-weight: 700;
             color: #ffd700;
+            font-size: 1em;
         }
         
         .rank-tab:hover {
-            background: rgba(255,215,0,0.2);
+            background: rgba(255,0,0,0.4);
             transform: translateY(-2px);
         }
         
         .rank-tab.active {
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
-            color: #0a0a0f;
+            background: linear-gradient(135deg, #ff0000, #ffd700);
+            color: #000000;
             border-color: transparent;
         }
         
-        /* CARTES CLANS LUXUEUSES */
+        /* CARTES CLANS LUXUEUSES ROUGES */
         .clan-card {
-            background: linear-gradient(135deg, rgba(255,215,0,0.05), rgba(26,26,46,0.5));
-            border: 1px solid rgba(255,215,0,0.2);
-            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(255,0,0,0.1), rgba(0,0,0,0.7));
+            border: 2px solid rgba(255,215,0,0.3);
+            border-radius: 25px;
             padding: 25px;
             margin-bottom: 20px;
             transition: all 0.4s;
@@ -289,7 +285,7 @@
         .clan-card:hover {
             transform: translateX(10px);
             border-color: #ffd700;
-            box-shadow: 0 10px 30px rgba(255,215,0,0.15);
+            box-shadow: 0 10px 30px rgba(255,0,0,0.3);
         }
         
         .clan-card::before {
@@ -297,9 +293,9 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 5px;
+            width: 8px;
             height: 100%;
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            background: linear-gradient(135deg, #ff0000, #ffd700);
         }
         
         .clan-header {
@@ -312,15 +308,17 @@
         }
         
         .clan-name {
-            font-size: 1.6em;
-            font-weight: 700;
+            font-size: 1.8em;
+            font-weight: 800;
             color: #ffd700;
-            font-family: 'Playfair Display', serif;
+            font-family: 'Cinema', cursive;
+            text-shadow: 0 0 10px rgba(255,0,0,0.5);
         }
         
         .clan-leader {
-            color: #ffaa44;
-            font-size: 0.9em;
+            color: #ff6666;
+            font-size: 1em;
+            margin-top: 5px;
         }
         
         .clan-scores {
@@ -331,18 +329,19 @@
         }
         
         .score-badge {
-            background: rgba(255,215,0,0.15);
-            border-radius: 30px;
-            padding: 6px 15px;
-            font-size: 0.85em;
+            background: rgba(255,0,0,0.2);
+            border-radius: 40px;
+            padding: 8px 18px;
+            font-size: 0.9em;
             font-weight: 600;
-            border: 1px solid rgba(255,215,0,0.3);
+            border: 1px solid rgba(255,215,0,0.5);
+            color: #ffd700;
         }
         
         .clan-description {
-            color: #ccc;
+            color: #cccccc;
             margin: 15px 0;
-            line-height: 1.5;
+            line-height: 1.6;
         }
         
         .clan-actions {
@@ -352,59 +351,61 @@
         }
         
         .like-btn {
-            background: rgba(255,215,0,0.15);
-            border: 1px solid rgba(255,215,0,0.3);
-            padding: 8px 20px;
-            border-radius: 30px;
+            background: linear-gradient(135deg, rgba(255,0,0,0.3), rgba(0,0,0,0.6));
+            border: 2px solid #ffd700;
+            padding: 10px 25px;
+            border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s;
             color: #ffd700;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 0.9em;
         }
         
         .like-btn:hover {
-            background: #ffd700;
-            color: #0a0a0f;
+            background: linear-gradient(135deg, #ff0000, #ffd700);
+            color: #000000;
             transform: scale(1.05);
         }
         
-        /* FORUM LUXUEUX */
+        /* FORUM */
         .forum-form {
-            background: rgba(255,215,0,0.05);
-            border-radius: 20px;
+            background: rgba(255,0,0,0.1);
+            border-radius: 25px;
             padding: 25px;
             margin-bottom: 30px;
-            border: 1px solid rgba(255,215,0,0.2);
+            border: 2px solid rgba(255,215,0,0.3);
         }
         
         .forum-form input, .forum-form textarea {
             width: 100%;
-            padding: 14px;
+            padding: 15px;
             margin: 10px 0;
-            border-radius: 15px;
-            border: 1px solid rgba(255,215,0,0.3);
-            background: rgba(10,10,15,0.8);
+            border-radius: 20px;
+            border: 2px solid rgba(255,215,0,0.5);
+            background: rgba(0,0,0,0.8);
             color: white;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1em;
         }
         
         .forum-form input:focus, .forum-form textarea:focus {
             outline: none;
-            border-color: #ffd700;
-            box-shadow: 0 0 10px rgba(255,215,0,0.2);
+            border-color: #ff0000;
+            box-shadow: 0 0 15px rgba(255,0,0,0.3);
         }
         
         .forum-message {
-            background: rgba(255,215,0,0.05);
-            border: 1px solid rgba(255,215,0,0.15);
-            border-radius: 20px;
+            background: rgba(255,0,0,0.08);
+            border: 1px solid rgba(255,215,0,0.2);
+            border-radius: 25px;
             padding: 20px;
             margin-bottom: 15px;
             transition: all 0.3s;
         }
         
         .forum-message:hover {
-            border-color: rgba(255,215,0,0.4);
+            border-color: #ffd700;
             transform: translateX(5px);
         }
         
@@ -415,27 +416,29 @@
             align-items: center;
             gap: 10px;
             margin-bottom: 10px;
+            font-size: 1.1em;
         }
         
         .forum-date {
             font-size: 0.7em;
-            color: #888;
+            color: #ff8888;
         }
         
         .forum-content {
-            margin: 10px 0;
+            margin: 12px 0;
             line-height: 1.5;
         }
         
         .forum-like {
             background: transparent;
-            border: 1px solid rgba(255,215,0,0.3);
-            padding: 5px 15px;
-            border-radius: 25px;
+            border: 1px solid #ffd700;
+            padding: 6px 18px;
+            border-radius: 30px;
             cursor: pointer;
             margin-top: 10px;
             color: #ffd700;
             font-size: 0.8em;
+            transition: all 0.3s;
         }
         
         .forum-like:hover {
@@ -444,27 +447,28 @@
         
         /* BOUTONS */
         .btn-primary {
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            background: linear-gradient(135deg, #ff0000, #ffd700);
             border: none;
-            padding: 14px 30px;
-            border-radius: 50px;
-            color: #0a0a0f;
+            padding: 15px 35px;
+            border-radius: 60px;
+            color: #000000;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1em;
         }
         
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(255,215,0,0.3);
+            box-shadow: 0 10px 30px rgba(255,0,0,0.4);
         }
         
         .refresh-btn {
-            background: rgba(255,215,0,0.15);
-            border: 1px solid rgba(255,215,0,0.3);
-            padding: 10px 25px;
-            border-radius: 40px;
+            background: rgba(255,0,0,0.2);
+            border: 2px solid #ffd700;
+            padding: 10px 28px;
+            border-radius: 50px;
             color: #ffd700;
             cursor: pointer;
             margin-bottom: 20px;
@@ -472,7 +476,7 @@
         }
         
         .refresh-btn:hover {
-            background: rgba(255,215,0,0.3);
+            background: rgba(255,0,0,0.4);
         }
         
         /* ADMIN LINK */
@@ -480,23 +484,23 @@
             position: fixed;
             bottom: 25px;
             left: 25px;
-            background: rgba(0,0,0,0.8);
+            background: linear-gradient(135deg, #000000, #ff0000);
             backdrop-filter: blur(10px);
-            border: 1px solid #ffd700;
-            padding: 12px 20px;
-            border-radius: 50px;
+            border: 2px solid #ffd700;
+            padding: 12px 25px;
+            border-radius: 60px;
             font-size: 14px;
             color: #ffd700;
             text-decoration: none;
             z-index: 100;
-            font-weight: 600;
+            font-weight: 700;
             transition: all 0.3s;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Montserrat', sans-serif;
         }
         
         .admin-link:hover {
-            background: #ffd700;
-            color: #0a0a0f;
+            background: linear-gradient(135deg, #ff0000, #ffd700);
+            color: #000000;
             transform: scale(1.05);
         }
         
@@ -505,9 +509,9 @@
             position: fixed;
             bottom: 25px;
             right: 25px;
-            background: rgba(0,0,0,0.8);
+            background: linear-gradient(135deg, #000000, #ff0000);
             backdrop-filter: blur(10px);
-            border: 1px solid #ffd700;
+            border: 2px solid #ffd700;
             border-radius: 50%;
             width: 55px;
             height: 55px;
@@ -522,37 +526,39 @@
         }
         
         .music-control:hover {
-            background: #ffd700;
-            color: #0a0a0f;
+            background: linear-gradient(135deg, #ff0000, #ffd700);
+            color: #000000;
             transform: scale(1.05);
         }
         
         /* SCROLLBAR */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: #1a1a2e; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #ffd700, #ff8c00); border-radius: 10px; }
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { background: #1a0000; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #ff0000, #ffd700); border-radius: 10px; }
         
         /* RESPONSIVE */
         @media (max-width: 768px) {
-            h1 { font-size: 2em; letter-spacing: 3px; }
+            h1 { font-size: 2em; letter-spacing: 5px; }
             .luxury-header { padding: 30px 20px; }
             .section { padding: 20px; }
-            .clan-name { font-size: 1.2em; }
+            .clan-name { font-size: 1.3em; }
             .admin-link, .music-control { padding: 8px 15px; font-size: 12px; }
+            .nav-btn { padding: 10px 20px; font-size: 0.9em; }
         }
         
         .loading {
             text-align: center;
             padding: 60px;
             color: #ffd700;
-            font-family: 'Playfair Display', serif;
+            font-family: 'Cinema', cursive;
+            font-size: 1.3em;
         }
         
         .error-box {
             text-align: center;
             padding: 40px;
-            background: rgba(255,68,68,0.1);
-            border-radius: 20px;
+            background: rgba(255,0,0,0.2);
+            border-radius: 25px;
             color: #ff6666;
         }
     </style>
@@ -566,6 +572,8 @@
             <span><i>🏆</i> LE RESPECT NE SE DEMANDE PAS, IL S'IMPOSE <i>🏆</i></span>
             <span><i>👑</i> LA COMMUNAUTÉ DES CLANS <i>👑</i></span>
             <span><i>🔥</i> PURGE TOUS LES JOURS <i>🔥</i></span>
+            <span><i>⚜️</i> INFO PURGE 24 <i>⚜️</i></span>
+            <span><i>💀</i> SANG ET HONNEUR <i>💀</i></span>
             <span><i>⚜️</i> INFO PURGE 24 <i>⚜️</i></span>
         </div>
     </div>
@@ -632,15 +640,15 @@
         let backgroundMusic = null;
         let musicPlaying = false;
         
-        // Particules dorées
+        // Particules rouges et or
         function createParticles() {
             const container = document.getElementById('particles');
-            for(let i = 0; i < 60; i++) {
+            for(let i = 0; i < 80; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
-                const size = Math.random() * 6 + 2;
-                const duration = Math.random() * 12 + 6;
-                const delay = Math.random() * 15;
+                const size = Math.random() * 8 + 2;
+                const duration = Math.random() * 15 + 8;
+                const delay = Math.random() * 20;
                 const startX = Math.random() * 100;
                 const direction = Math.random() > 0.5 ? 1 : -1;
                 particle.style.width = size + 'px';
@@ -657,7 +665,7 @@
         
         // Icônes aléatoires pour les clans
         function getClanIcon(index) {
-            const icons = ['⚔️', '🛡️', '👑', '🏰', '🐉', '⚡', '🔥', '❄️', '🌊', '💀', '🦅', '🐺', '🦁', '🏹', '🗡️', '🔱', '🌙', '⭐', '🌀'];
+            const icons = ['⚔️', '🛡️', '👑', '🏰', '🐉', '⚡', '🔥', '❄️', '💀', '🦅', '🐺', '🦁', '🏹', '🗡️', '🔱', '🌙', '⭐', '🌀', '💎', '🔮'];
             return icons[index % icons.length];
         }
         
@@ -673,23 +681,29 @@
         
         function showTempMessage(msg, isError = false) {
             const tempDiv = document.createElement('div');
-            tempDiv.style.cssText = `position:fixed; bottom:100px; left:50%; transform:translateX(-50%); background:${isError ? '#c0392b' : '#ffd700'}; color:${isError ? 'white' : '#0a0a0f'}; padding:12px 25px; border-radius:50px; z-index:2000; animation:fadeOut 2s ease forwards; font-weight:bold;`;
+            tempDiv.style.cssText = `position:fixed; bottom:100px; left:50%; transform:translateX(-50%); background:${isError ? '#ff0000' : '#ffd700'}; color:${isError ? 'white' : '#000000'}; padding:12px 25px; border-radius:50px; z-index:2000; animation:fadeOut 2s ease forwards; font-weight:bold; font-family:Montserrat;`;
             tempDiv.innerHTML = msg;
             document.body.appendChild(tempDiv);
             setTimeout(() => { tempDiv.remove(); }, 2000);
         }
         
-        // Chargement des clans
+        // Chargement des clans (sans doublons)
         async function loadClans() {
             try {
                 const snapshot = await database.ref('clans').once('value');
-                const clans = [];
+                const clansMap = new Map();
+                
                 snapshot.forEach(childSnapshot => {
                     const clan = childSnapshot.val();
-                    clan.id = childSnapshot.key;
-                    clans.push(clan);
+                    const key = childSnapshot.key;
+                    // Éviter les doublons par nom
+                    if (!clansMap.has(clan.name)) {
+                        clan.id = key;
+                        clansMap.set(clan.name, clan);
+                    }
                 });
-                currentClans = clans;
+                
+                currentClans = Array.from(clansMap.values());
                 updateRanking();
             } catch(e) {
                 console.error(e);
@@ -746,7 +760,7 @@
                         <div class="clan-actions">
                             <button class="like-btn" onclick="likeClan('${clan.id}')">❤️ ${clan.likes || 0} likes</button>
                         </div>
-                        <div style="margin-top:10px; font-size:11px; color:#ffd700; text-align:right;">
+                        <div style="margin-top:10px; font-size:12px; color:#ffd700; text-align:right;">
                             ⭐ ${score} ${periodLabel}
                         </div>
                     </div>
@@ -837,7 +851,8 @@
             
             await database.ref('forum').push(newMsg);
             showTempMessage("✅ Message publié !");
-            document.getElementById('forumForm').reset();
+            document.getElementById('authorName').value = '';
+            document.getElementById('forumMessage').value = '';
             loadForum();
         }
         
@@ -906,4 +921,5 @@
         document.head.appendChild(style);
     </script>
 </body>
-</html>
+</html>u
+DIANNY WILLI NIGHT SHIRO SHADOW JOYBOY
