@@ -21,7 +21,7 @@ INFO PURGE 24 VOIX DE LA PURGE
             min-height: 100vh;
         }
         
-        /* BANDEAU DÉFILANT CINÉMATIQUE */
+        /* BANDEAU DÉFILANT HAUT */
         .marquee-cinema {
             position: fixed;
             top: 0;
@@ -51,21 +51,12 @@ INFO PURGE 24 VOIX DE LA PURGE
             margin: 0 40px;
         }
         
-        .marquee-content span i {
-            margin-right: 8px;
-            color: #FFD700;
-        }
-        
         @keyframes marqueeScroll {
-            0% {
-                transform: translateX(0%);
-            }
-            100% {
-                transform: translateX(-50%);
-            }
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
         }
         
-        /* DEUXIÈME BANDEAU DÉFILANT (optionnel - sens inverse) */
+        /* BANDEAU DÉFILANT BAS */
         .marquee-cinema-bottom {
             position: fixed;
             bottom: 0;
@@ -81,7 +72,6 @@ INFO PURGE 24 VOIX DE LA PURGE
             white-space: nowrap;
             z-index: 1000;
             border-top: 1px solid #FFD700;
-            border-bottom: 1px solid #8B0000;
         }
         
         .marquee-content-reverse {
@@ -91,12 +81,8 @@ INFO PURGE 24 VOIX DE LA PURGE
         }
         
         @keyframes marqueeScrollReverse {
-            0% {
-                transform: translateX(-50%);
-            }
-            100% {
-                transform: translateX(0%);
-            }
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0%); }
         }
         
         .container {
@@ -107,15 +93,111 @@ INFO PURGE 24 VOIX DE LA PURGE
             padding-bottom: 60px;
         }
         
+        /* EMPEREUR - SECTION SPÉCIALE */
+        .emperor-section {
+            background: linear-gradient(135deg, #1a0000, #2a0a0a, #1a0000);
+            border: 2px solid #FFD700;
+            border-radius: 30px;
+            padding: 25px 30px;
+            margin-bottom: 35px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(255,215,0,0.3);
+            animation: emperorGlow 2s infinite;
+        }
+        
+        @keyframes emperorGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255,215,0,0.3); }
+            50% { box-shadow: 0 0 40px rgba(255,215,0,0.6); }
+        }
+        
+        .emperor-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
+            animation: rotateGlow 15s linear infinite;
+        }
+        
+        .emperor-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2em;
+            color: #FFD700;
+            letter-spacing: 5px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .emperor-card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .emperor-crown {
+            font-size: 3.5em;
+            filter: drop-shadow(0 0 10px #FFD700);
+            animation: crownFloat 2s ease-in-out infinite;
+        }
+        
+        @keyframes crownFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .emperor-info {
+            text-align: center;
+        }
+        
+        .emperor-clan {
+            font-family: 'Cinzel', serif;
+            font-size: 2em;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255,215,0,0.5);
+        }
+        
+        .emperor-leader {
+            font-size: 1.2em;
+            color: #ffffff;
+            margin-top: 5px;
+        }
+        
+        .emperor-points {
+            font-size: 1.1em;
+            color: #ff8888;
+            margin-top: 5px;
+        }
+        
+        .emperor-icon {
+            font-size: 2.5em;
+        }
+        
+        .no-emperor {
+            color: #ff8888;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+        
         /* HEADER ROYAL */
         .royal-header {
             background: linear-gradient(135deg, #0a0a0a, #1a0000, #0a0a0a);
             border-radius: 30px;
-            padding: 50px 30px;
+            padding: 40px 30px;
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             border: 1px solid #8B0000;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px rgba(139,0,0,0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
             position: relative;
             overflow: hidden;
         }
@@ -146,7 +228,6 @@ INFO PURGE 24 VOIX DE LA PURGE
             border-radius: 50px;
             margin-bottom: 20px;
             animation: pulse 1.5s infinite;
-            letter-spacing: 2px;
         }
         
         @keyframes pulse {
@@ -156,7 +237,7 @@ INFO PURGE 24 VOIX DE LA PURGE
         
         h1 {
             font-family: 'Cinzel', serif;
-            font-size: 3.8em;
+            font-size: 3.5em;
             font-weight: 900;
             letter-spacing: 8px;
             background: linear-gradient(135deg, #FFD700, #FFA500, #FFD700);
@@ -176,35 +257,35 @@ INFO PURGE 24 VOIX DE LA PURGE
         .citation {
             font-family: 'Cinzel', serif;
             font-style: italic;
-            font-size: 1em;
+            font-size: 0.9em;
             color: #FFD700;
-            margin-top: 25px;
-            padding: 12px 25px;
+            margin-top: 20px;
+            padding: 10px 25px;
             border-top: 1px solid #8B0000;
             border-bottom: 1px solid #8B0000;
             display: inline-block;
         }
         
-        /* NAVIGATION ROYALE */
+        /* NAVIGATION */
         .royal-nav {
             display: flex;
             gap: 25px;
             justify-content: center;
             flex-wrap: wrap;
-            margin-top: 35px;
+            margin-top: 30px;
         }
         
         .nav-btn {
             background: transparent;
             border: 2px solid #8B0000;
-            padding: 14px 40px;
+            padding: 12px 35px;
             font-family: 'Cinzel', serif;
             font-weight: 600;
             color: #FFD700;
             cursor: pointer;
             transition: all 0.4s;
             border-radius: 60px;
-            font-size: 1em;
+            font-size: 0.9em;
             letter-spacing: 2px;
         }
         
@@ -236,20 +317,20 @@ INFO PURGE 24 VOIX DE LA PURGE
             display: flex;
             gap: 20px;
             justify-content: center;
-            margin-bottom: 35px;
+            margin-bottom: 30px;
             flex-wrap: wrap;
         }
         
         .tab-btn {
             background: rgba(139,0,0,0.3);
             border: 1px solid #8B0000;
-            padding: 12px 35px;
+            padding: 10px 30px;
             border-radius: 50px;
             cursor: pointer;
             font-weight: 600;
             color: #FFD700;
             transition: all 0.3s;
-            font-size: 1em;
+            font-size: 0.9em;
             font-family: 'Cinzel', serif;
         }
         
@@ -262,21 +343,20 @@ INFO PURGE 24 VOIX DE LA PURGE
             background: linear-gradient(135deg, #8B0000, #cc0000);
             border-color: #FFD700;
             color: white;
-            box-shadow: 0 5px 15px rgba(204,0,0,0.4);
         }
         
         /* GRILLE DES CLANS */
         .clans-grid {
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: 15px;
         }
         
         .clan-card {
             background: linear-gradient(95deg, #121212 0%, #1a0505 100%);
             border: 1px solid #8B0000;
             border-radius: 20px;
-            padding: 22px 25px;
+            padding: 18px 22px;
             transition: all 0.4s;
             position: relative;
             overflow: hidden;
@@ -293,7 +373,7 @@ INFO PURGE 24 VOIX DE LA PURGE
         }
         
         .clan-card:hover {
-            transform: translateX(10px);
+            transform: translateX(8px);
             border-color: #FFD700;
             box-shadow: 0 10px 30px rgba(204,0,0,0.3);
         }
@@ -303,28 +383,26 @@ INFO PURGE 24 VOIX DE LA PURGE
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 15px;
         }
         
         .clan-info {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
             flex: 2;
         }
         
         .clan-rank {
             font-family: 'Cinzel', serif;
-            font-size: 2em;
+            font-size: 1.8em;
             font-weight: bold;
             color: #FFD700;
-            min-width: 65px;
-            text-shadow: 0 0 5px rgba(255,215,0,0.5);
+            min-width: 55px;
         }
         
         .clan-icon {
-            font-size: 2.5em;
-            filter: drop-shadow(0 0 5px rgba(255,215,0,0.5));
+            font-size: 2em;
         }
         
         .clan-details {
@@ -332,53 +410,52 @@ INFO PURGE 24 VOIX DE LA PURGE
         }
         
         .clan-name {
-            font-size: 1.5em;
+            font-size: 1.3em;
             font-weight: 800;
             color: #FFD700;
             font-family: 'Cinzel', serif;
         }
         
         .clan-leader {
-            font-size: 0.8em;
+            font-size: 0.75em;
             color: #ff8888;
-            margin-top: 4px;
+            margin-top: 3px;
         }
         
         .clan-stats {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
         }
         
         .stat {
             background: rgba(139,0,0,0.3);
-            padding: 6px 15px;
+            padding: 4px 12px;
             border-radius: 30px;
-            font-size: 0.8em;
+            font-size: 0.75em;
             font-weight: 600;
             color: #FFD700;
-            border: 1px solid rgba(255,215,0,0.3);
         }
         
         .clan-points {
-            font-size: 1.4em;
+            font-size: 1.2em;
             font-weight: bold;
             color: #FFD700;
             font-family: 'Cinzel', serif;
-            min-width: 130px;
+            min-width: 110px;
             text-align: right;
         }
         
         .like-btn {
             background: rgba(139,0,0,0.5);
             border: 1px solid #FFD700;
-            padding: 8px 22px;
+            padding: 6px 18px;
             border-radius: 40px;
             cursor: pointer;
             color: #FFD700;
             font-weight: 700;
             transition: all 0.3s;
-            font-size: 0.85em;
+            font-size: 0.8em;
         }
         
         .like-btn:hover {
@@ -389,15 +466,6 @@ INFO PURGE 24 VOIX DE LA PURGE
         .like-btn.liked {
             background: #FFD700;
             color: #000000;
-            border-color: #FFD700;
-        }
-        
-        .clan-description {
-            margin-top: 12px;
-            font-size: 0.8em;
-            color: #aaaaaa;
-            padding-left: 10px;
-            border-left: 2px solid #8B0000;
         }
         
         /* FORUM */
@@ -418,6 +486,7 @@ INFO PURGE 24 VOIX DE LA PURGE
             background: #0a0a0a;
             color: white;
             font-family: 'Montserrat', sans-serif;
+            font-size: 1em;
         }
         
         .forum-form input:focus, .forum-form textarea:focus {
@@ -464,7 +533,7 @@ INFO PURGE 24 VOIX DE LA PURGE
         .forum-like {
             background: transparent;
             border: 1px solid #8B0000;
-            padding: 6px 20px;
+            padding: 6px 18px;
             border-radius: 30px;
             cursor: pointer;
             color: #FFD700;
@@ -481,11 +550,11 @@ INFO PURGE 24 VOIX DE LA PURGE
             color: #000000;
         }
         
-        /* BOUTONS GÉNÉRAUX */
+        /* BOUTONS */
         .btn-gold {
             background: linear-gradient(135deg, #8B0000, #cc0000);
             border: none;
-            padding: 12px 35px;
+            padding: 12px 30px;
             border-radius: 50px;
             color: #FFD700;
             font-weight: bold;
@@ -503,16 +572,11 @@ INFO PURGE 24 VOIX DE LA PURGE
         .refresh-btn {
             background: rgba(139,0,0,0.3);
             border: 1px solid #8B0000;
-            padding: 8px 28px;
+            padding: 8px 25px;
             border-radius: 40px;
             color: #FFD700;
             cursor: pointer;
             margin-bottom: 25px;
-            transition: all 0.3s;
-        }
-        
-        .refresh-btn:hover {
-            background: rgba(139,0,0,0.5);
         }
         
         /* ADMIN LINK */
@@ -522,11 +586,11 @@ INFO PURGE 24 VOIX DE LA PURGE
             left: 25px;
             background: #121212;
             border: 1px solid #8B0000;
-            padding: 10px 22px;
+            padding: 8px 18px;
             border-radius: 50px;
             color: #FFD700;
             text-decoration: none;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
             z-index: 100;
             transition: all 0.3s;
@@ -547,13 +611,13 @@ INFO PURGE 24 VOIX DE LA PURGE
             background: #121212;
             border: 1px solid #8B0000;
             border-radius: 50%;
-            width: 52px;
-            height: 52px;
+            width: 48px;
+            height: 48px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 22px;
+            font-size: 20px;
             z-index: 100;
             color: #FFD700;
             transition: all 0.3s;
@@ -565,30 +629,26 @@ INFO PURGE 24 VOIX DE LA PURGE
         }
         
         /* SCROLLBAR */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: #121212; border-radius: 10px; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #121212; }
         ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #8B0000, #FFD700); border-radius: 10px; }
         
         /* RESPONSIVE */
         @media (max-width: 768px) {
             h1 { font-size: 2em; letter-spacing: 3px; }
-            .royal-header { padding: 30px 20px; }
+            .royal-header { padding: 25px 20px; }
             .clan-row { flex-direction: column; text-align: center; }
             .clan-info { flex-direction: column; text-align: center; }
             .clan-points { text-align: center; }
-            .stat { font-size: 0.7em; }
-            .nav-btn { padding: 10px 20px; font-size: 0.8em; }
-            .marquee-cinema { font-size: 0.7em; padding: 8px 0; }
-            .marquee-cinema-bottom { font-size: 0.6em; padding: 5px 0; }
-            .admin-link, .music-control { bottom: 15px; }
+            .emperor-clan { font-size: 1.3em; }
+            .emperor-crown { font-size: 2.5em; }
         }
         
         .loading {
             text-align: center;
-            padding: 60px;
+            padding: 50px;
             color: #FFD700;
             font-family: 'Cinzel', serif;
-            font-size: 1.2em;
         }
         
         .toast-message {
@@ -598,7 +658,7 @@ INFO PURGE 24 VOIX DE LA PURGE
             transform: translateX(-50%);
             background: #FFD700;
             color: #000;
-            padding: 12px 25px;
+            padding: 10px 20px;
             border-radius: 50px;
             z-index: 2000;
             font-weight: bold;
@@ -608,7 +668,7 @@ INFO PURGE 24 VOIX DE LA PURGE
         @keyframes toastFade {
             0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
             10% { opacity: 1; transform: translateX(-50%) translateY(0); }
-            90% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            90% { opacity: 1; }
             100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
         }
     </style>
@@ -617,24 +677,19 @@ INFO PURGE 24 VOIX DE LA PURGE
     <!-- BANDEAU DÉFILANT HAUT -->
     <div class="marquee-cinema">
         <div class="marquee-content">
-            <span><i>⚜️</i> JOY INFO PURGE 24 PRODUCTION <i>⚜️</i></span>
-            <span><i>🏆</i> LE RESPECT NE SE DEMANDE PAS, IL S'IMPOSE <i>🏆</i></span>
-            <span><i>👑</i> LA COMMUNAUTÉ DES CLANS <i>👑</i></span>
-            <span><i>🔥</i> PURGE TOUS LES JOURS <i>🔥</i></span>
-            <span><i>⚜️</i> ÉDITION SPÉCIALE <i>⚜️</i></span>
-            <span><i>💀</i> SANG ET HONNEUR <i>💀</i></span>
-            <span><i>⚜️</i> INFO PURGE 24 <i>⚜️</i></span>
-            <span><i>🏆</i> LE RESPECT NE SE DEMANDE PAS, IL S'IMPOSE <i>🏆</i></span>
-            <span><i>⚜️</i> JOY INFO PURGE 24 PRODUCTION <i>⚜️</i></span>
+            <span>⚜️ JOY INFO PURGE 24 PRODUCTION ⚜️</span>
+            <span>🏆 LE RESPECT NE SE DEMANDE PAS, IL S'IMPOSE 🏆</span>
+            <span>👑 LA COMMUNAUTÉ DES CLANS 👑</span>
+            <span>🔥 PURGE TOUS LES JOURS 🔥</span>
+            <span>⚜️ ÉDITION SPÉCIALE ⚜️</span>
+            <span>💀 SANG ET HONNEUR 💀</span>
+            <span>⚜️ INFO PURGE 24 ⚜️</span>
         </div>
     </div>
     
-    <!-- BANDEAU DÉFILANT BAS (optionnel - sens inverse) -->
+    <!-- BANDEAU DÉFILANT BAS -->
     <div class="marquee-cinema-bottom">
         <div class="marquee-content-reverse">
-            <span>⭐ CLASSEMENT OFFICIEL DES CLANS ⭐</span>
-            <span>🏆 FORUM PURGE 24 🏆</span>
-            <span>🔥 REJOIGNEZ LA COMMUNAUTÉ 🔥</span>
             <span>⭐ CLASSEMENT OFFICIEL DES CLANS ⭐</span>
             <span>🏆 FORUM PURGE 24 🏆</span>
             <span>🔥 REJOIGNEZ LA COMMUNAUTÉ 🔥</span>
@@ -645,6 +700,14 @@ INFO PURGE 24 VOIX DE LA PURGE
     <div class="container">
         <a href="admin.html" class="admin-link">👑 JOYBOY ADMIN</a>
         <div class="music-control" onclick="toggleMusic()" id="musicBtn">🎵</div>
+        
+        <!-- SECTION EMPEREUR -->
+        <div class="emperor-section" id="emperorSection">
+            <div class="emperor-title">🏆 EMPEREUR DE LA PURGE 🏆</div>
+            <div id="emperorContent">
+                <div class="loading">👑 Recherche de l'Empereur...</div>
+            </div>
+        </div>
         
         <div class="royal-header">
             <div class="live-badge">🔴 EN DIRECT</div>
@@ -659,9 +722,9 @@ INFO PURGE 24 VOIX DE LA PURGE
 
         <div id="ranking" class="section active">
             <div class="ranking-tabs">
-                <button class="tab-btn active" onclick="showRankingPeriod('week', this)">📅 CLASSEMENT SEMAINE</button>
-                <button class="tab-btn" onclick="showRankingPeriod('month', this)">📆 CLASSEMENT MOIS</button>
-                <button class="tab-btn" onclick="showRankingPeriod('year', this)">🗓️ CLASSEMENT ANNÉE</button>
+                <button class="tab-btn active" onclick="showRankingPeriod('week', this)">📅 SEMAINE</button>
+                <button class="tab-btn" onclick="showRankingPeriod('month', this)">📆 MOIS</button>
+                <button class="tab-btn" onclick="showRankingPeriod('year', this)">🗓️ ANNÉE</button>
             </div>
             <button class="refresh-btn" onclick="loadClans()">🔄 RAFRAÎCHIR</button>
             <div id="rankingList" class="clans-grid">⏳ Chargement...</div>
@@ -671,7 +734,7 @@ INFO PURGE 24 VOIX DE LA PURGE
             <div class="forum-form">
                 <input type="text" id="authorName" placeholder="Votre pseudo" required>
                 <textarea id="forumMessage" placeholder="Votre message" rows="3" required></textarea>
-                <button class="btn-gold" onclick="publishMessage()">📢 PUBLIER</button>
+                <button class="btn-gold" id="publishBtn">📢 PUBLIER</button>
             </div>
             <div id="forumMessages">⏳ Chargement...</div>
         </div>
@@ -721,7 +784,37 @@ INFO PURGE 24 VOIX DE LA PURGE
             setTimeout(() => toast.remove(), 2000);
         }
         
-        // Chargement des clans
+        // ========== EMPEREUR ==========
+        function updateEmperor() {
+            const emperorContainer = document.getElementById('emperorContent');
+            // Chercher le clan avec score_year >= 2500
+            const emperor = currentClans.find(clan => (clan.score_year || 0) >= 2500);
+            
+            if (emperor) {
+                const icons = ['👑', '⚜️', '🏆', '⭐', '🔥'];
+                const randomIcon = icons[Math.floor(Math.random() * icons.length)];
+                emperorContainer.innerHTML = `
+                    <div class="emperor-card">
+                        <div class="emperor-crown">👑</div>
+                        <div class="emperor-info">
+                            <div class="emperor-clan">${randomIcon} ${escapeHtml(emperor.name)} ${randomIcon}</div>
+                            <div class="emperor-leader">Dirigé par 👑 ${escapeHtml(emperor.leader)}</div>
+                            <div class="emperor-points">🏆 ${emperor.score_year || 0} points à l'année 🏆</div>
+                        </div>
+                        <div class="emperor-crown">👑</div>
+                    </div>
+                `;
+            } else {
+                emperorContainer.innerHTML = `
+                    <div class="no-emperor">
+                        ⚔️ Aucun clan n'a encore atteint 2500 points ⚔️<br>
+                        <span style="font-size:0.8em;">Le prochain empereur sera affiché ici !</span>
+                    </div>
+                `;
+            }
+        }
+        
+        // ========== CHARGEMENT DES CLANS ==========
         async function loadClans() {
             try {
                 const snapshot = await database.ref('clans').once('value');
@@ -734,8 +827,10 @@ INFO PURGE 24 VOIX DE LA PURGE
                     }
                 });
                 currentClans = Array.from(clansMap.values());
+                updateEmperor();
                 updateRanking();
             } catch(e) {
+                console.error(e);
                 document.getElementById('rankingList').innerHTML = '<div class="loading">❌ Erreur de chargement</div>';
             }
         }
@@ -754,10 +849,10 @@ INFO PURGE 24 VOIX DE LA PURGE
             }
             
             const periodLabel = currentPeriod === 'week' ? 'SEMAINE' : (currentPeriod === 'month' ? 'MOIS' : 'ANNÉE');
-            const icons = ['⚔️', '🛡️', '👑', '🏰', '🐉', '⚡', '🔥', '💀', '🦅', '🐺', '🦁', '🗡️', '🔱', '🌙', '⭐', '🌀'];
+            const icons = ['⚔️', '🛡️', '👑', '🏰', '🐉', '⚡', '🔥', '💀', '🦅', '🐺', '🦁', '🗡️'];
             
             container.innerHTML = clans.map((clan, idx) => {
-                const score = currentPeriod === 'week' ? (clan.score_week || 0) : (currentPeriod === 'month' ? (clan.score_month || 0) : (clan.score_year || 0));
+                let score = currentPeriod === 'week' ? (clan.score_week || 0) : (currentPeriod === 'month' ? (clan.score_month || 0) : (clan.score_year || 0));
                 const hasLiked = userLikedClans[clan.id] === true;
                 
                 return `
@@ -782,7 +877,7 @@ INFO PURGE 24 VOIX DE LA PURGE
                                 ${hasLiked ? '❤️ LIKÉ' : '❤️ LIKER'}
                             </button>
                         </div>
-                        ${clan.description ? `<div class="clan-description">📝 ${escapeHtml(clan.description)}</div>` : ''}
+                        ${clan.description ? `<div class="clan-description" style="margin-top:12px; font-size:0.75em; color:#aaa;">📝 ${escapeHtml(clan.description)}</div>` : ''}
                     </div>
                 `;
             }).join('');
@@ -812,34 +907,41 @@ INFO PURGE 24 VOIX DE LA PURGE
             }
         }
         
-        // Forum
+        // ========== FORUM ==========
         async function loadForum() {
-            const snapshot = await database.ref('forum').once('value');
-            const messages = [];
-            snapshot.forEach(child => messages.push({ id: child.key, ...child.val() }));
-            messages.reverse();
-            
-            const container = document.getElementById('forumMessages');
-            if(messages.length === 0) {
-                container.innerHTML = '<div class="loading">💬 Aucun message, soyez le premier !</div>';
-                return;
-            }
-            
-            container.innerHTML = messages.map(msg => {
-                const hasLiked = userLikedMessages[msg.id] === true;
-                return `
-                    <div class="forum-message">
-                        <div class="forum-author">
-                            🔥 <strong>${escapeHtml(msg.author)}</strong>
-                            <span class="forum-date">${msg.date || ''}</span>
+            try {
+                const snapshot = await database.ref('forum').once('value');
+                const messages = [];
+                snapshot.forEach(child => {
+                    messages.push({ id: child.key, ...child.val() });
+                });
+                messages.reverse();
+                
+                const container = document.getElementById('forumMessages');
+                if(messages.length === 0) {
+                    container.innerHTML = '<div class="loading">💬 Aucun message, soyez le premier !</div>';
+                    return;
+                }
+                
+                container.innerHTML = messages.map(msg => {
+                    const hasLiked = userLikedMessages[msg.id] === true;
+                    return `
+                        <div class="forum-message">
+                            <div class="forum-author">
+                                🔥 <strong>${escapeHtml(msg.author)}</strong>
+                                <span class="forum-date">${msg.date || ''}</span>
+                            </div>
+                            <div class="forum-content">${escapeHtml(msg.message)}</div>
+                            <button class="forum-like ${hasLiked ? 'liked' : ''}" onclick="likeMessage('${msg.id}')">
+                                ${hasLiked ? '❤️ LIKÉ' : `❤️ ${msg.likes || 0} likes`}
+                            </button>
                         </div>
-                        <div class="forum-content">${escapeHtml(msg.message)}</div>
-                        <button class="forum-like ${hasLiked ? 'liked' : ''}" onclick="likeMessage('${msg.id}')">
-                            ${hasLiked ? '❤️ LIKÉ' : `❤️ ${msg.likes || 0} likes`}
-                        </button>
-                    </div>
-                `;
-            }).join('');
+                    `;
+                }).join('');
+            } catch(e) {
+                console.error("Erreur chargement forum:", e);
+                document.getElementById('forumMessages').innerHTML = '<div class="loading">❌ Erreur de chargement du forum</div>';
+            }
         }
         
         // Like unique pour message
@@ -867,25 +969,31 @@ INFO PURGE 24 VOIX DE LA PURGE
         }
         
         async function publishMessage() {
-            const author = document.getElementById('authorName').value;
-            const message = document.getElementById('forumMessage').value;
+            const author = document.getElementById('authorName').value.trim();
+            const message = document.getElementById('forumMessage').value.trim();
+            
             if(!author || !message) {
                 showToast("❌ Pseudo et message requis", true);
                 return;
             }
-            await database.ref('forum').push({ 
-                author, 
-                message, 
-                likes: 0, 
-                date: new Date().toLocaleString() 
-            });
-            showToast("✅ Message publié !");
-            document.getElementById('authorName').value = '';
-            document.getElementById('forumMessage').value = '';
-            loadForum();
+            
+            try {
+                await database.ref('forum').push({ 
+                    author: author, 
+                    message: message, 
+                    likes: 0, 
+                    date: new Date().toLocaleString() 
+                });
+                showToast("✅ Message publié !");
+                document.getElementById('authorName').value = '';
+                document.getElementById('forumMessage').value = '';
+                loadForum();
+            } catch(e) {
+                showToast("❌ Erreur lors de la publication", true);
+            }
         }
         
-        // Affichage
+        // ========== AFFICHAGE ==========
         function showSection(section) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(section).classList.add('active');
@@ -902,11 +1010,13 @@ INFO PURGE 24 VOIX DE LA PURGE
             updateRanking();
         }
         
-        // Musique
+        // ========== MUSIQUE ==========
         function initMusic() {
-            backgroundMusic = new Audio('song.mp3.m4a');
-            backgroundMusic.loop = true;
-            backgroundMusic.volume = 0.1;
+            try {
+                backgroundMusic = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3');
+                backgroundMusic.loop = true;
+                backgroundMusic.volume = 0.1;
+            } catch(e) {}
         }
         
         function toggleMusic() {
@@ -916,7 +1026,7 @@ INFO PURGE 24 VOIX DE LA PURGE
                 musicPlaying = false;
                 document.getElementById('musicBtn').innerHTML = '🎵';
             } else {
-                backgroundMusic.play().catch(e => {});
+                backgroundMusic.play().catch(e => console.log("Auto-play bloqué"));
                 musicPlaying = true;
                 document.getElementById('musicBtn').innerHTML = '🎵🔊';
             }
@@ -930,10 +1040,13 @@ INFO PURGE 24 VOIX DE LA PURGE
             }
         }, { once: true });
         
-        // Initialisation
+        // ========== INITIALISATION ==========
         initMusic();
         loadClans();
         loadForum();
+        
+        // Attacher l'événement du bouton publish
+        document.getElementById('publishBtn').onclick = publishMessage;
         
         // Rafraîchissement auto
         setInterval(() => {
@@ -943,3 +1056,4 @@ INFO PURGE 24 VOIX DE LA PURGE
     </script>
 </body>
 </html>
+DIANNY SHIRO WILLI NIGHT SHADOW...Info purge 24
