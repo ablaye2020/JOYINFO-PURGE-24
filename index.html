@@ -83,6 +83,7 @@ JOY INFO PURGE 24 PRODUCTION
             padding-bottom: 60px;
         }
         
+        /* EMPEREUR */
         .emperor-section {
             background: linear-gradient(135deg, #1a0000, #2a0a0a, #1a0000);
             border: 2px solid #FFD700;
@@ -162,6 +163,7 @@ JOY INFO PURGE 24 PRODUCTION
         .emperor-points { font-size: 1em; color: #ff8888; margin-top: 8px; }
         .no-emperor { color: #ff8888; font-style: italic; position: relative; z-index: 1; }
         
+        /* HEADER */
         .royal-header {
             background: linear-gradient(135deg, #0a0a0a, #1a0000, #0a0a0a);
             border-radius: 30px;
@@ -247,6 +249,7 @@ JOY INFO PURGE 24 PRODUCTION
             to { opacity: 1; transform: translateY(0); }
         }
         
+        /* TABS CLASSEMENT */
         .ranking-tabs {
             display: flex;
             gap: 20px;
@@ -410,6 +413,7 @@ JOY INFO PURGE 24 PRODUCTION
             font-size: 0.75em;
         }
         
+        /* FORUM */
         .forum-form {
             background: #121212;
             border: 1px solid #8B0000;
@@ -418,7 +422,7 @@ JOY INFO PURGE 24 PRODUCTION
             margin-bottom: 30px;
         }
         
-        .forum-form input, .forum-form textarea {
+        .forum-form input, .forum-form textarea, .forum-form select {
             width: 100%;
             padding: 14px;
             margin: 10px 0;
@@ -429,7 +433,20 @@ JOY INFO PURGE 24 PRODUCTION
             font-family: 'Montserrat', sans-serif;
         }
         
-        .forum-form input:focus, .forum-form textarea:focus { outline: none; border-color: #FFD700; }
+        .forum-form input:focus, .forum-form textarea:focus, .forum-form select:focus { outline: none; border-color: #FFD700; }
+        
+        .photo-inputs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .photo-inputs input {
+            margin: 0;
+            padding: 8px;
+            font-size: 0.8em;
+        }
         
         .forum-message {
             background: #121212;
@@ -467,6 +484,18 @@ JOY INFO PURGE 24 PRODUCTION
         
         .forum-like:hover { background: #8B0000; }
         .forum-like.liked { background: #FFD700; color: #000000; }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            font-weight: bold;
+        }
+        
+        .status-badge.pending { background: #f39c12; color: #000; }
+        .status-badge.approved { background: #27ae60; color: #fff; }
+        .status-badge.rejected { background: #c0392b; color: #fff; }
         
         .btn-gold {
             background: linear-gradient(135deg, #8B0000, #cc0000);
@@ -538,6 +567,7 @@ JOY INFO PURGE 24 PRODUCTION
             .clan-info { flex-direction: column; }
             .emperor-leader { font-size: 1.3em; }
             .emperor-crown { font-size: 2.5em; }
+            .photo-inputs { grid-template-columns: 1fr; }
         }
         
         .loading { text-align: center; padding: 50px; color: #FFD700; }
@@ -578,7 +608,7 @@ JOY INFO PURGE 24 PRODUCTION
         <div class="marquee-content-reverse">
             <span>⭐ CLASSEMENT OFFICIEL DES CLANS ⭐</span>
             <span>🏆 FORUM PURGE 24 🏆</span>
-            <span>🔥 COMMENTEZ SUR LES CLANS 🔥</span>
+            <span>🔥 SOUMETTEZ VOS PURGES 🔥</span>
         </div>
     </div>
     
@@ -597,6 +627,7 @@ JOY INFO PURGE 24 PRODUCTION
             <div class="citation">"Le respect ne se demande pas, il s'impose" - Joyboy</div>
             <div class="royal-nav">
                 <button class="nav-btn active" onclick="showSection('ranking')">🏆 CLASSEMENT</button>
+                <button class="nav-btn" onclick="showSection('purge')">⚔️ SOUMETTRE UNE PURGE</button>
                 <button class="nav-btn" onclick="showSection('forum')">💬 FORUM</button>
             </div>
         </div>
@@ -611,6 +642,36 @@ JOY INFO PURGE 24 PRODUCTION
             <div id="rankingList" class="clans-grid">⏳ Chargement...</div>
         </div>
 
+        <!-- SECTION SOUMETTRE UNE PURGE -->
+        <div id="purge" class="section">
+            <div class="forum-form">
+                <h3 style="color:#FFD700; margin-bottom:15px;">⚔️ SOUMETTRE UNE PURGE ⚔️</h3>
+                <p style="margin-bottom:15px; color:#ff8888;">Votre clan a purgé un autre groupe ? Envoyez les preuves et gagnez des points !</p>
+                
+                <select id="clanSelect" style="width:100%; padding:14px; margin:10px 0; border-radius:12px; background:#0a0a0a; border:1px solid #8B0000; color:white;">
+                    <option value="">-- Choisissez votre clan --</option>
+                </select>
+                
+                <input type="text" id="groupLink" placeholder="Lien du groupe purgé (WhatsApp, Telegram, etc.)" style="width:100%; padding:14px; margin:10px 0; border-radius:12px; background:#0a0a0a; border:1px solid #8B0000; color:white;">
+                
+                <div style="margin:15px 0;">
+                    <label style="color:#FFD700;">📸 Captures d'écran (4 max) :</label>
+                    <div class="photo-inputs">
+                        <input type="file" id="photo1" accept="image/*">
+                        <input type="file" id="photo2" accept="image/*">
+                        <input type="file" id="photo3" accept="image/*">
+                        <input type="file" id="photo4" accept="image/*">
+                    </div>
+                </div>
+                
+                <button id="submitPurgeBtn" class="btn-gold">📤 SOUMETTRE LA PURGE</button>
+                <div id="purgeMessage" style="margin-top:15px;"></div>
+            </div>
+            
+            <h3 style="color:#FFD700; margin:20px 0 10px;">📋 HISTORIQUE DES SOUMISSIONS</h3>
+            <div id="submissionsList">⏳ Chargement...</div>
+        </div>
+
         <div id="forum" class="section">
             <div class="forum-form">
                 <input type="text" id="forumPseudo" placeholder="Votre pseudo" required>
@@ -621,8 +682,10 @@ JOY INFO PURGE 24 PRODUCTION
         </div>
     </div>
 
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 
     <script>
         const firebaseConfig = {
@@ -637,11 +700,13 @@ JOY INFO PURGE 24 PRODUCTION
         
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
+        const storage = firebase.storage();
         
         let currentClans = [];
         let currentPeriod = 'year';
         let backgroundMusic = null;
         let musicPlaying = false;
+        let currentUser = { pseudo: "Visiteur" };
         
         let userLikedClans = JSON.parse(localStorage.getItem('userLikedClans') || '{}');
         let userLikedMessages = JSON.parse(localStorage.getItem('userLikedMessages') || '{}');
@@ -751,9 +816,19 @@ JOY INFO PURGE 24 PRODUCTION
                 currentClans = Array.from(clansMap.values());
                 updateEmperor();
                 updateRanking();
+                loadClanSelect();
             } catch(e) {
                 document.getElementById('rankingList').innerHTML = '<div class="loading">❌ Erreur</div>';
             }
+        }
+        
+        function loadClanSelect() {
+            const select = document.getElementById('clanSelect');
+            if(!select) return;
+            select.innerHTML = '<option value="">-- Choisissez votre clan --</option>';
+            currentClans.forEach(clan => {
+                select.innerHTML += `<option value="${clan.id}">${escapeHtml(clan.name)}</option>`;
+            });
         }
         
         function updateRanking() {
@@ -829,6 +904,127 @@ JOY INFO PURGE 24 PRODUCTION
             } catch(e) { showToast("❌ Erreur", true); }
         }
         
+        // ========== SYSTÈME DE PURGE ==========
+        
+        async function submitPurge() {
+            const clanId = document.getElementById('clanSelect').value;
+            const groupLink = document.getElementById('groupLink').value.trim();
+            const messageDiv = document.getElementById('purgeMessage');
+            
+            if(!clanId) {
+                messageDiv.innerHTML = '<span style="color:#ff8888;">❌ Choisissez votre clan</span>';
+                return;
+            }
+            if(!groupLink) {
+                messageDiv.innerHTML = '<span style="color:#ff8888;">❌ Entrez le lien du groupe purgé</span>';
+                return;
+            }
+            
+            // Vérifier si le lien a déjà été utilisé
+            const existingSnapshot = await database.ref('submissions').orderByChild('link').equalTo(groupLink).once('value');
+            if(existingSnapshot.exists()) {
+                messageDiv.innerHTML = '<span style="color:#ff8888;">❌ Ce lien a déjà été soumis !</span>';
+                return;
+            }
+            
+            // Récupérer les photos
+            const photoFiles = [];
+            for(let i = 1; i <= 4; i++) {
+                const input = document.getElementById(`photo${i}`);
+                if(input.files.length > 0) {
+                    photoFiles.push(input.files[0]);
+                }
+            }
+            
+            if(photoFiles.length === 0) {
+                messageDiv.innerHTML = '<span style="color:#ff8888;">❌ Ajoutez au moins une capture d\'écran</span>';
+                return;
+            }
+            
+            messageDiv.innerHTML = '<span style="color:#FFD700;">⏳ Envoi en cours...</span>';
+            
+            try {
+                // Upload des photos
+                const photoUrls = [];
+                for(let i = 0; i < photoFiles.length; i++) {
+                    const file = photoFiles[i];
+                    const storageRef = storage.ref(`purges/${Date.now()}_${i}_${file.name}`);
+                    const snapshot = await storageRef.put(file);
+                    const url = await snapshot.ref.getDownloadURL();
+                    photoUrls.push(url);
+                }
+                
+                // Sauvegarder la soumission
+                const submission = {
+                    clanId: clanId,
+                    clanName: currentClans.find(c => c.id === clanId)?.name || "Inconnu",
+                    link: groupLink,
+                    photos: photoUrls,
+                    status: 'pending',
+                    points: 0,
+                    submittedAt: Date.now(),
+                    submittedBy: "Membre"
+                };
+                
+                await database.ref('submissions').push(submission);
+                
+                messageDiv.innerHTML = '<span style="color:#2ecc71;">✅ Purge soumise ! En attente de validation par un admin.</span>';
+                
+                // Réinitialiser
+                document.getElementById('groupLink').value = '';
+                for(let i = 1; i <= 4; i++) {
+                    document.getElementById(`photo${i}`).value = '';
+                }
+                
+                loadSubmissions();
+                
+            } catch(e) {
+                messageDiv.innerHTML = `<span style="color:#ff8888;">❌ Erreur: ${e.message}</span>`;
+            }
+        }
+        
+        async function loadSubmissions() {
+            const snapshot = await database.ref('submissions').once('value');
+            const submissions = [];
+            snapshot.forEach(child => submissions.push({ id: child.key, ...child.val() }));
+            submissions.reverse();
+            
+            const container = document.getElementById('submissionsList');
+            if(!container) return;
+            
+            if(submissions.length === 0) {
+                container.innerHTML = '<div class="loading">📭 Aucune soumission pour le moment</div>';
+                return;
+            }
+            
+            container.innerHTML = submissions.map(sub => `
+                <div class="clan-card" style="margin-bottom:15px;">
+                    <div class="clan-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+                        <span class="clan-name">⚔️ ${escapeHtml(sub.clanName)}</span>
+                        <span class="status-badge ${sub.status}">${getStatusText(sub.status)}</span>
+                    </div>
+                    <div style="margin:10px 0;"><strong>🔗 Lien:</strong> <a href="${escapeHtml(sub.link)}" target="_blank" style="color:#FFD700;">${escapeHtml(sub.link)}</a></div>
+                    ${sub.photos && sub.photos.length > 0 ? `
+                        <div style="display:flex; gap:10px; flex-wrap:wrap; margin:10px 0;">
+                            ${sub.photos.map(photo => `<img src="${photo}" style="width:70px; height:70px; object-fit:cover; border-radius:10px; cursor:pointer;" onclick="window.open('${photo}')">`).join('')}
+                        </div>
+                    ` : ''}
+                    <div style="font-size:0.7em; color:#888; margin-top:10px;">Soumis le ${new Date(sub.submittedAt).toLocaleString()}</div>
+                    ${sub.status === 'approved' ? `<div style="margin-top:10px; color:#2ecc71;">🏆 Points attribués: +${sub.points}</div>` : ''}
+                    ${sub.status === 'rejected' ? `<div style="margin-top:10px; color:#ff8888;">❌ Rejeté: ${sub.rejectReason || ''}</div>` : ''}
+                </div>
+            `).join('');
+        }
+        
+        function getStatusText(status) {
+            switch(status) {
+                case 'pending': return '⏳ En attente';
+                case 'approved': return '✅ Approuvé';
+                case 'rejected': return '❌ Rejeté';
+                default: return '❓ Inconnu';
+            }
+        }
+        
         // FORUM
         async function loadForum() {
             try {
@@ -893,6 +1089,7 @@ JOY INFO PURGE 24 PRODUCTION
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
             if(section === 'ranking') loadClans();
+            if(section === 'purge') { loadSubmissions(); loadClanSelect(); }
             if(section === 'forum') loadForum();
         }
         
@@ -903,6 +1100,7 @@ JOY INFO PURGE 24 PRODUCTION
             updateRanking();
         }
         
+        // Musique
         function initMusic() {
             try {
                 backgroundMusic = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3');
@@ -932,17 +1130,24 @@ JOY INFO PURGE 24 PRODUCTION
             }
         }, { once: true });
         
+        // Initialisation
         initMusic();
         loadClans();
         loadForum();
+        loadSubmissions();
         
         document.getElementById('publishForumBtn').onclick = publishForumMessage;
+        document.getElementById('submitPurgeBtn').onclick = submitPurge;
         
         setInterval(() => {
             if(document.getElementById('ranking').classList.contains('active')) loadClans();
+            if(document.getElementById('purge').classList.contains('active')) { loadSubmissions(); loadClanSelect(); }
             if(document.getElementById('forum').classList.contains('active')) loadForum();
         }, 20000);
     </script>
+    
+    <!-- Adsterra Popunder Code -->
+    <script src="https://pl29155574.profitablecpmratenetwork.com/5c/8f/2d/5c8f2d0d8cbac76fdb32e5e137ea89df.js"></script>
 </body>
 </html>
-WILLI NUGHT DIANNY SHIRO SHADOW......
+WILLI DIANNY NIGHT SHIRO SHADOW 
