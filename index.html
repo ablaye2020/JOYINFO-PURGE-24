@@ -6,41 +6,607 @@ JOY INFO PURGE 24 PRODUCTION
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>INFO PURGE 24 - Le Journal Officiel des Clans</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;900&family=Montserrat:wght@300;400;500;600;700&display=swap');
+        
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: 'Montserrat', sans-serif;
             background: #0a0a0a;
             color: #ffffff;
             min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
         }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        h1 { text-align: center; color: #FFD700; margin-bottom: 30px; }
-        .clan-card {
-            background: #1a1a1a;
+        
+        /* PARTICULES FLOTTANTES */
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, #FFD700, #8B0000);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: floatParticle linear infinite;
+        }
+        
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-20vh) translateX(calc(100px * var(--direction))) rotate(360deg); opacity: 0; }
+        }
+        
+        /* BANDEAU DÉFILANT */
+        .marquee-cinema {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(135deg, #000000, #8B0000, #000000);
+            color: #FFD700;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9em;
+            font-weight: 500;
+            padding: 12px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            z-index: 1000;
+            border-bottom: 2px solid #FFD700;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+        
+        .marquee-content {
+            display: inline-block;
+            animation: marqueeScroll 25s linear infinite;
+            letter-spacing: 3px;
+        }
+        
+        .marquee-content span { margin: 0 40px; }
+        
+        @keyframes marqueeScroll {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        .marquee-cinema-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(135deg, #000000, #8B0000, #000000);
+            color: #FFD700;
+            font-family: 'Cinzel', serif;
+            font-size: 0.8em;
+            padding: 8px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            z-index: 1000;
+            border-top: 1px solid #FFD700;
+        }
+        
+        .marquee-content-reverse {
+            display: inline-block;
+            animation: marqueeScrollReverse 30s linear infinite;
+            letter-spacing: 3px;
+        }
+        
+        @keyframes marqueeScrollReverse {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0%); }
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-top: 90px;
+            padding-bottom: 60px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* EMPEREUR */
+        .emperor-section {
+            background: linear-gradient(135deg, #1a0000, #2a0a0a, #1a0000);
+            border: 2px solid #FFD700;
+            border-radius: 30px;
+            padding: 25px 30px;
+            margin-bottom: 35px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(255,215,0,0.3);
+            animation: emperorGlow 2s infinite;
+        }
+        
+        @keyframes emperorGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255,215,0,0.3); }
+            50% { box-shadow: 0 0 40px rgba(255,215,0,0.6); }
+        }
+        
+        .emperor-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
+            animation: rotateGlow 15s linear infinite;
+        }
+        
+        @keyframes rotateGlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .emperor-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2em;
+            color: #FFD700;
+            letter-spacing: 5px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .emperor-card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .emperor-crown {
+            font-size: 3.5em;
+            filter: drop-shadow(0 0 10px #FFD700);
+            animation: crownFloat 2s ease-in-out infinite;
+        }
+        
+        @keyframes crownFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .emperor-info { text-align: center; }
+        
+        .emperor-leader {
+            font-family: 'Cinzel', serif;
+            font-size: 2em;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255,215,0,0.5);
+        }
+        
+        .emperor-clan { font-size: 1.2em; color: #ffffff; margin-top: 5px; }
+        .emperor-points { font-size: 1em; color: #ff8888; margin-top: 8px; }
+        .no-emperor { color: #ff8888; font-style: italic; position: relative; z-index: 1; }
+        
+        /* HEADER */
+        .royal-header {
+            background: linear-gradient(135deg, #0a0a0a, #1a0000, #0a0a0a);
+            border-radius: 30px;
+            padding: 40px 30px;
+            text-align: center;
+            margin-bottom: 30px;
             border: 1px solid #8B0000;
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .live-badge {
+            display: inline-block;
+            background: #cc0000;
+            color: #FFD700;
+            font-size: 11px;
+            padding: 6px 18px;
+            border-radius: 50px;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(204,0,0,0.7); }
+            50% { opacity: 0.8; box-shadow: 0 0 0 15px rgba(204,0,0,0); }
+        }
+        
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3.5em;
+            font-weight: 900;
+            letter-spacing: 8px;
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FFD700);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .citation {
+            font-family: 'Cinzel', serif;
+            font-style: italic;
+            font-size: 0.9em;
+            color: #FFD700;
+            margin-top: 20px;
+            padding: 10px 25px;
+            border-top: 1px solid #8B0000;
+            border-bottom: 1px solid #8B0000;
+            display: inline-block;
+        }
+        
+        .royal-nav {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        
+        .nav-btn {
+            background: transparent;
+            border: 2px solid #8B0000;
+            padding: 12px 35px;
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+            color: #FFD700;
+            cursor: pointer;
+            transition: all 0.4s;
+            border-radius: 60px;
+        }
+        
+        .nav-btn:hover, .nav-btn.active {
+            background: linear-gradient(135deg, #8B0000, #cc0000);
+            border-color: #FFD700;
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .section { display: none; animation: fadeInUp 0.6s ease; }
+        .section.active { display: block; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* TABS CLASSEMENT */
+        .ranking-tabs {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            background: rgba(139,0,0,0.3);
+            border: 1px solid #8B0000;
+            padding: 10px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            color: #FFD700;
+            transition: all 0.3s;
+            font-family: 'Cinzel', serif;
+        }
+        
+        .tab-btn:hover { background: #8B0000; }
+        .tab-btn.active { background: linear-gradient(135deg, #8B0000, #cc0000); color: white; }
+        
+        .clans-grid { display: flex; flex-direction: column; gap: 15px; }
+        
+        .clan-card {
+            background: linear-gradient(95deg, #121212 0%, #1a0505 100%);
+            border: 1px solid #8B0000;
+            border-radius: 20px;
+            padding: 18px 22px;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .clan-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 5px;
+            background: linear-gradient(135deg, #8B0000, #FFD700);
+        }
+        
+        .clan-card:hover { transform: translateX(8px); border-color: #FFD700; }
+        
+        .clan-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+            gap: 15px;
         }
-        .clan-name { font-size: 1.3em; font-weight: bold; color: #FFD700; }
-        .clan-points { color: #FFD700; font-weight: bold; }
+        
+        .clan-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 2;
+        }
+        
+        .clan-rank {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #FFD700;
+            min-width: 55px;
+        }
+        
+        .clan-icon { font-size: 2em; }
+        .clan-name { font-size: 1.3em; font-weight: 800; color: #FFD700; font-family: 'Cinzel', serif; }
+        .clan-leader { font-size: 0.75em; color: #ff8888; margin-top: 3px; }
+        .clan-stats { display: flex; gap: 10px; flex-wrap: wrap; }
+        
+        .stat {
+            background: rgba(139,0,0,0.3);
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.75em;
+            color: #FFD700;
+        }
+        
+        .clan-points {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #FFD700;
+            min-width: 110px;
+            text-align: right;
+        }
+        
+        .like-btn {
+            background: rgba(139,0,0,0.5);
+            border: 1px solid #FFD700;
+            padding: 6px 18px;
+            border-radius: 40px;
+            cursor: pointer;
+            color: #FFD700;
+            transition: all 0.3s;
+        }
+        
+        .like-btn:hover { background: #8B0000; transform: scale(1.05); }
+        .like-btn.liked { background: #FFD700; color: #000000; }
+        
+        /* FORUM */
+        .forum-form {
+            background: #121212;
+            border: 1px solid #8B0000;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .forum-form input, .forum-form textarea {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border-radius: 12px;
+            border: 1px solid #8B0000;
+            background: #0a0a0a;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .forum-form input:focus, .forum-form textarea:focus { outline: none; border-color: #FFD700; }
+        
+        .forum-message {
+            background: #121212;
+            border: 1px solid #8B0000;
+            border-radius: 18px;
+            padding: 20px;
+            margin-bottom: 18px;
+            transition: all 0.3s;
+        }
+        
+        .forum-message:hover { border-color: #FFD700; transform: translateX(5px); }
+        
+        .forum-author {
+            color: #FFD700;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        
+        .forum-date { font-size: 0.7em; color: #ff8888; }
+        .forum-content { margin: 12px 0; line-height: 1.6; }
+        
+        .forum-like {
+            background: transparent;
+            border: 1px solid #8B0000;
+            padding: 6px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            color: #FFD700;
+            margin-top: 10px;
+        }
+        
+        .forum-like:hover { background: #8B0000; }
+        .forum-like.liked { background: #FFD700; color: #000000; }
+        
+        .btn-gold {
+            background: linear-gradient(135deg, #8B0000, #cc0000);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            color: #FFD700;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(204,0,0,0.4); }
+        
+        .refresh-btn {
+            background: rgba(139,0,0,0.3);
+            border: 1px solid #8B0000;
+            padding: 8px 25px;
+            border-radius: 40px;
+            color: #FFD700;
+            cursor: pointer;
+            margin-bottom: 25px;
+        }
+        
+        .admin-link {
+            position: fixed;
+            bottom: 65px;
+            left: 25px;
+            background: #121212;
+            border: 1px solid #8B0000;
+            padding: 8px 18px;
+            border-radius: 50px;
+            color: #FFD700;
+            text-decoration: none;
+            font-size: 11px;
+            z-index: 100;
+            transition: all 0.3s;
+        }
+        
+        .admin-link:hover { background: #8B0000; transform: scale(1.05); }
+        
+        .music-control {
+            position: fixed;
+            bottom: 65px;
+            right: 25px;
+            background: #121212;
+            border: 1px solid #8B0000;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+            z-index: 100;
+            color: #FFD700;
+        }
+        
+        .music-control:hover { background: #8B0000; transform: scale(1.05); }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #121212; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #8B0000, #FFD700); border-radius: 10px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; letter-spacing: 3px; }
+            .clan-row { flex-direction: column; text-align: center; }
+            .clan-info { flex-direction: column; }
+            .emperor-leader { font-size: 1.3em; }
+            .emperor-crown { font-size: 2.5em; }
+        }
+        
         .loading { text-align: center; padding: 50px; color: #FFD700; }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 130px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #FFD700;
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 50px;
+            z-index: 2000;
+            font-weight: bold;
+            animation: toastFade 2s ease forwards;
+        }
+        
+        @keyframes toastFade {
+            0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            90% { opacity: 1; }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+        }
     </style>
 </head>
 <body>
+    <!-- PARTICULES FLOTTANTES -->
+    <div class="floating-particles" id="floatingParticles"></div>
+    
+    <div class="marquee-cinema">
+        <div class="marquee-content">
+            <span>⚜️ JOY INFO PURGE 24 PRODUCTION ⚜️</span>
+            <span>🏆 LE RESPECT NE SE DEMANDE PAS, IL S'IMPOSE 🏆</span>
+            <span>👑 LA COMMUNAUTÉ DES CLANS 👑</span>
+            <span>🔥 PURGE TOUS LES JOURS 🔥</span>
+        </div>
+    </div>
+    
+    <div class="marquee-cinema-bottom">
+        <div class="marquee-content-reverse">
+            <span>⭐ CLASSEMENT OFFICIEL DES CLANS ⭐</span>
+            <span>🏆 FORUM PURGE 24 🏆</span>
+            <span>🔥 COMMENTEZ ET LIKEZ 🔥</span>
+        </div>
+    </div>
+    
     <div class="container">
-        <h1>⚔️ INFO PURGE 24 ⚔️</h1>
-        <div id="clansList" class="loading">⏳ Chargement des clans...</div>
+        <a href="admin.html" class="admin-link">👑 JOYBOY ADMIN</a>
+        <div class="music-control" onclick="toggleMusic()" id="musicBtn">🎵</div>
+        
+        <!-- EMPEREUR -->
+        <div class="emperor-section" id="emperorSection">
+            <div class="emperor-title">🏆 EMPEREUR DE LA PURGE 🏆</div>
+            <div id="emperorContent"><div class="loading">👑 Recherche...</div></div>
+        </div>
+        
+        <div class="royal-header">
+            <div class="live-badge">🔴 EN DIRECT</div>
+            <h1>⚜️ INFO PURGE 24 ⚜️</h1>
+            <div class="citation">"Le respect ne se demande pas, il s'impose" - Joyboy</div>
+            <div class="royal-nav">
+                <button class="nav-btn active" onclick="showSection('ranking')">🏆 CLASSEMENT</button>
+                <button class="nav-btn" onclick="showSection('forum')">💬 FORUM</button>
+            </div>
+        </div>
+
+        <div id="ranking" class="section active">
+            <div class="ranking-tabs">
+                <button class="tab-btn active" onclick="showRankingPeriod('week', this)">📅 SEMAINE</button>
+                <button class="tab-btn" onclick="showRankingPeriod('month', this)">📆 MOIS</button>
+                <button class="tab-btn" onclick="showRankingPeriod('year', this)">🗓️ ANNÉE</button>
+            </div>
+            <button class="refresh-btn" onclick="loadClans()">🔄 RAFRAÎCHIR</button>
+            <div id="rankingList" class="clans-grid">⏳ Chargement...</div>
+        </div>
+
+        <div id="forum" class="section">
+            <div class="forum-form">
+                <input type="text" id="forumPseudo" placeholder="Votre pseudo" required>
+                <textarea id="forumMessage" placeholder="Votre message" rows="3" required></textarea>
+                <button class="btn-gold" id="publishForumBtn">📢 PUBLIER</button>
+            </div>
+            <div id="forumMessages">⏳ Chargement...</div>
+        </div>
     </div>
 
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
     <script>
+        // Configuration Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyB3yYAuiGqbtrbZ1aSYxAjduZ65adNIpag",
             authDomain: "purge-game-58718.firebaseapp.com",
@@ -54,45 +620,291 @@ JOY INFO PURGE 24 PRODUCTION
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         
-        async function chargerClans() {
-            const container = document.getElementById('clansList');
-            container.innerHTML = '<div class="loading">⏳ Chargement...</div>';
-            
-            try {
-                const snapshot = await database.ref('clans').once('value');
-                const clans = [];
-                snapshot.forEach(child => {
-                    clans.push({ id: child.key, ...child.val() });
-                });
-                
-                if(clans.length === 0) {
-                    container.innerHTML = '<div class="loading">🏆 Aucun clan. Utilisez l\'admin pour importer.</div>';
-                    return;
-                }
-                
-                // Trier par points année
-                clans.sort((a,b) => (b.score_year || 0) - (a.score_year || 0));
-                
-                container.innerHTML = clans.map((clan, index) => `
-                    <div class="clan-card">
-                        <div>
-                            <span style="color:#FFD700; font-size:1.2em;">#${index+1}</span>
-                            <span class="clan-name"> ${clan.name}</span>
-                            <div style="font-size:0.8em; color:#888;">👑 ${clan.leader}</div>
-                        </div>
-                        <div class="clan-points">⭐ ${clan.score_year || 0} pts</div>
-                    </div>
-                `).join('');
-                
-                console.log("✅ " + clans.length + " clans affichés");
-                
-            } catch(e) {
-                console.error("Erreur:", e);
-                container.innerHTML = '<div class="loading">❌ Erreur de chargement: ' + e.message + '</div>';
+        // Variables
+        let currentClans = [];
+        let currentPeriod = 'year';
+        let backgroundMusic = null;
+        let musicPlaying = false;
+        
+        // Likes stockés localement
+        let userLikedClans = JSON.parse(localStorage.getItem('userLikedClans') || '{}');
+        let userLikedMessages = JSON.parse(localStorage.getItem('userLikedMessages') || '{}');
+        
+        // Création des particules flottantes
+        function createParticles() {
+            const container = document.getElementById('floatingParticles');
+            for(let i = 0; i < 60; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                const size = Math.random() * 6 + 2;
+                const duration = Math.random() * 12 + 6;
+                const delay = Math.random() * 15;
+                const startX = Math.random() * 100;
+                const direction = Math.random() > 0.5 ? 1 : -1;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = startX + '%';
+                particle.style.animationDuration = duration + 's';
+                particle.style.animationDelay = delay + 's';
+                particle.style.setProperty('--direction', direction);
+                container.appendChild(particle);
             }
         }
         
-        chargerClans();
+        createParticles();
+        
+        function escapeHtml(str) {
+            if(!str) return '';
+            return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
+        }
+        
+        function showToast(msg, isError = false) {
+            const toast = document.createElement('div');
+            toast.className = 'toast-message';
+            toast.style.background = isError ? '#8B0000' : '#FFD700';
+            toast.style.color = isError ? '#fff' : '#000';
+            toast.innerHTML = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2000);
+        }
+        
+        // Mise à jour de l'empereur
+        function updateEmperor() {
+            const container = document.getElementById('emperorContent');
+            const emperor = currentClans.find(clan => (clan.score_year || 0) >= 2500);
+            
+            if (emperor) {
+                container.innerHTML = `
+                    <div class="emperor-card">
+                        <div class="emperor-crown">👑</div>
+                        <div class="emperor-info">
+                            <div class="emperor-leader">${escapeHtml(emperor.leader)}</div>
+                            <div class="emperor-clan">⚔️ ${escapeHtml(emperor.name)} ⚔️</div>
+                            <div class="emperor-points">🏆 ${emperor.score_year || 0} points à l'année 🏆</div>
+                        </div>
+                        <div class="emperor-crown">👑</div>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `<div class="no-emperor">⚔️ Aucun clan n'a encore atteint 2500 points ⚔️<br><span style="font-size:0.8em;">Le prochain empereur sera affiché ici !</span></div>`;
+            }
+        }
+        
+        // Chargement des clans (SANS DOUBLONS)
+        async function loadClans() {
+            try {
+                const snapshot = await database.ref('clans').once('value');
+                const clansMap = new Map(); // Utilisation d'une Map pour éliminer les doublons
+                
+                snapshot.forEach(child => {
+                    const clan = child.val();
+                    const clanName = clan.name;
+                    // Si le clan n'existe pas déjà dans la Map, on l'ajoute
+                    if (!clansMap.has(clanName)) {
+                        clan.id = child.key;
+                        clansMap.set(clanName, clan);
+                    }
+                });
+                
+                currentClans = Array.from(clansMap.values());
+                console.log("✅ " + currentClans.length + " clans chargés (sans doublons)");
+                updateEmperor();
+                updateRanking();
+            } catch(e) {
+                console.error(e);
+                document.getElementById('rankingList').innerHTML = '<div class="loading">❌ Erreur de chargement</div>';
+            }
+        }
+        
+        function updateRanking() {
+            let clans = [...currentClans];
+            
+            if(currentPeriod === 'week') clans.sort((a,b) => (b.score_week || 0) - (a.score_week || 0));
+            else if(currentPeriod === 'month') clans.sort((a,b) => (b.score_month || 0) - (a.score_month || 0));
+            else clans.sort((a,b) => (b.score_year || 0) - (a.score_year || 0));
+            
+            const container = document.getElementById('rankingList');
+            if(clans.length === 0) {
+                container.innerHTML = '<div class="loading">🏆 Aucun clan enregistré</div>';
+                return;
+            }
+            
+            const icons = ['⚔️', '🛡️', '👑', '🏰', '🐉', '⚡', '🔥', '💀', '🦅', '🐺', '🦁', '🗡️'];
+            
+            container.innerHTML = clans.map((clan, idx) => {
+                let score = currentPeriod === 'week' ? (clan.score_week || 0) : (currentPeriod === 'month' ? (clan.score_month || 0) : (clan.score_year || 0));
+                const hasLiked = userLikedClans[clan.id] === true;
+                
+                return `
+                    <div class="clan-card">
+                        <div class="clan-row">
+                            <div class="clan-info">
+                                <div class="clan-rank">#${idx+1}</div>
+                                <div class="clan-icon">${icons[idx % icons.length]}</div>
+                                <div class="clan-details">
+                                    <div class="clan-name">${escapeHtml(clan.name)}</div>
+                                    <div class="clan-leader">👑 ${escapeHtml(clan.leader)}</div>
+                                </div>
+                            </div>
+                            <div class="clan-stats">
+                                <span class="stat">📅 S: ${clan.score_week || 0}</span>
+                                <span class="stat">📆 M: ${clan.score_month || 0}</span>
+                                <span class="stat">🗓️ A: ${clan.score_year || 0}</span>
+                                <span class="stat">❤️ ${clan.likes || 0}</span>
+                            </div>
+                            <div class="clan-points">⭐ ${score} pts</div>
+                            <button class="like-btn ${hasLiked ? 'liked' : ''}" onclick="likeClan('${clan.id}')">
+                                ${hasLiked ? '❤️ LIKÉ' : '❤️ LIKER'}
+                            </button>
+                        </div>
+                        ${clan.description ? `<div style="margin-top:12px; font-size:0.75em; color:#aaa;">📝 ${escapeHtml(clan.description)}</div>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        async function likeClan(id) {
+            if(userLikedClans[id]) { showToast("❌ Vous avez déjà liké ce clan !", true); return; }
+            try {
+                const clanRef = database.ref(`clans/${id}`);
+                const snapshot = await clanRef.once('value');
+                const clan = snapshot.val();
+                if(clan) {
+                    await clanRef.update({ likes: (clan.likes || 0) + 1 });
+                    userLikedClans[id] = true;
+                    localStorage.setItem('userLikedClans', JSON.stringify(userLikedClans));
+                    showToast("❤️ Like enregistré !");
+                    loadClans();
+                }
+            } catch(e) { showToast("❌ Erreur", true); }
+        }
+        
+        // FORUM
+        async function loadForum() {
+            try {
+                const snapshot = await database.ref('forum').once('value');
+                const messages = [];
+                snapshot.forEach(child => messages.push({ id: child.key, ...child.val() }));
+                messages.reverse();
+                
+                const container = document.getElementById('forumMessages');
+                if(messages.length === 0) {
+                    container.innerHTML = '<div class="loading">💬 Aucun message, soyez le premier !</div>';
+                    return;
+                }
+                
+                container.innerHTML = messages.map(msg => {
+                    const hasLiked = userLikedMessages[msg.id] === true;
+                    return `
+                        <div class="forum-message">
+                            <div class="forum-author">
+                                🔥 <strong>${escapeHtml(msg.author)}</strong>
+                                <span class="forum-date">${msg.date || ''}</span>
+                            </div>
+                            <div class="forum-content">${escapeHtml(msg.message)}</div>
+                            <button class="forum-like ${hasLiked ? 'liked' : ''}" onclick="likeMessage('${msg.id}')">
+                                ${hasLiked ? '❤️ LIKÉ' : `❤️ ${msg.likes || 0} likes`}
+                            </button>
+                        </div>
+                    `;
+                }).join('');
+            } catch(e) { console.error(e); }
+        }
+        
+        async function likeMessage(id) {
+            if(userLikedMessages[id]) { showToast("❌ Vous avez déjà liké ce message !", true); return; }
+            try {
+                const msgRef = database.ref(`forum/${id}`);
+                const snapshot = await msgRef.once('value');
+                const msg = snapshot.val();
+                if(msg) {
+                    await msgRef.update({ likes: (msg.likes || 0) + 1 });
+                    userLikedMessages[id] = true;
+                    localStorage.setItem('userLikedMessages', JSON.stringify(userLikedMessages));
+                    showToast("💬 Like enregistré !");
+                    loadForum();
+                }
+            } catch(e) { showToast("❌ Erreur", true); }
+        }
+        
+        async function publishForumMessage() {
+            const author = document.getElementById('forumPseudo').value.trim();
+            const message = document.getElementById('forumMessage').value.trim();
+            if(!author || !message) {
+                showToast("❌ Pseudo et message requis", true);
+                return;
+            }
+            try {
+                await database.ref('forum').push({ 
+                    author: author, 
+                    message: message, 
+                    likes: 0, 
+                    date: new Date().toLocaleString() 
+                });
+                showToast("✅ Message publié !");
+                document.getElementById('forumPseudo').value = '';
+                document.getElementById('forumMessage').value = '';
+                loadForum();
+            } catch(e) { showToast("❌ Erreur", true); }
+        }
+        
+        function showSection(section) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(section).classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            if(section === 'ranking') loadClans();
+            if(section === 'forum') loadForum();
+        }
+        
+        function showRankingPeriod(period, btn) {
+            currentPeriod = period;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            updateRanking();
+        }
+        
+        // Musique
+        function initMusic() {
+            try {
+                backgroundMusic = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3');
+                backgroundMusic.loop = true;
+                backgroundMusic.volume = 0.1;
+            } catch(e) {}
+        }
+        
+        function toggleMusic() {
+            if(!backgroundMusic) initMusic();
+            if(musicPlaying) {
+                backgroundMusic.pause();
+                musicPlaying = false;
+                document.getElementById('musicBtn').innerHTML = '🎵';
+            } else {
+                backgroundMusic.play().catch(e => {});
+                musicPlaying = true;
+                document.getElementById('musicBtn').innerHTML = '🎵🔊';
+            }
+        }
+        
+        document.body.addEventListener('click', () => {
+            if(!musicPlaying && backgroundMusic) {
+                backgroundMusic.play().catch(e => {});
+                musicPlaying = true;
+                document.getElementById('musicBtn').innerHTML = '🎵🔊';
+            }
+        }, { once: true });
+        
+        // Initialisation
+        initMusic();
+        loadClans();
+        loadForum();
+        
+        document.getElementById('publishForumBtn').onclick = publishForumMessage;
+        
+        setInterval(() => {
+            if(document.getElementById('ranking').classList.contains('active')) loadClans();
+            if(document.getElementById('forum').classList.contains('active')) loadForum();
+        }, 20000);
     </script>
 </body>
 </html>
