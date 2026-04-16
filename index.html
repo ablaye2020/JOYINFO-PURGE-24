@@ -248,7 +248,7 @@ JOY INFO PURGE 24 PRODUCTION
         
         .royal-nav {
             display: flex;
-            gap: 25px;
+            gap: 15px;
             justify-content: center;
             flex-wrap: wrap;
             margin-top: 30px;
@@ -257,13 +257,14 @@ JOY INFO PURGE 24 PRODUCTION
         .nav-btn {
             background: transparent;
             border: 2px solid #8B0000;
-            padding: 12px 35px;
+            padding: 10px 25px;
             font-family: 'Cinzel', serif;
             font-weight: 600;
             color: #FFD700;
             cursor: pointer;
             transition: all 0.4s;
             border-radius: 60px;
+            font-size: 0.9em;
         }
         
         .nav-btn:hover, .nav-btn.active {
@@ -385,7 +386,7 @@ JOY INFO PURGE 24 PRODUCTION
         .like-btn:hover { background: #8B0000; transform: scale(1.05); }
         .like-btn.liked { background: #FFD700; color: #000000; }
         
-        /* FORMULAIRE DE SOUMISSION DE PURGE */
+        /* FORMULAIRES */
         .submit-form {
             background: #121212;
             border: 1px solid #8B0000;
@@ -394,7 +395,7 @@ JOY INFO PURGE 24 PRODUCTION
             margin-bottom: 30px;
         }
         
-        .submit-form select, .submit-form input, .submit-form textarea {
+        .submit-form input, .submit-form select, .submit-form textarea {
             width: 100%;
             padding: 14px;
             margin: 10px 0;
@@ -405,7 +406,7 @@ JOY INFO PURGE 24 PRODUCTION
             font-family: 'Montserrat', sans-serif;
         }
         
-        .submit-form select:focus, .submit-form input:focus, .submit-form textarea:focus {
+        .submit-form input:focus, .submit-form select:focus, .submit-form textarea:focus {
             outline: none;
             border-color: #FFD700;
         }
@@ -586,6 +587,7 @@ JOY INFO PURGE 24 PRODUCTION
             .emperor-leader { font-size: 1.3em; }
             .emperor-crown { font-size: 2.5em; }
             .photo-inputs { grid-template-columns: 1fr; }
+            .nav-btn { padding: 8px 15px; font-size: 0.7em; }
         }
         
         .loading { text-align: center; padding: 50px; color: #FFD700; }
@@ -656,6 +658,7 @@ JOY INFO PURGE 24 PRODUCTION
             <div class="royal-nav">
                 <button class="nav-btn active" onclick="showSection('ranking')">🏆 CLASSEMENT</button>
                 <button class="nav-btn" onclick="showSection('submit')">⚔️ SOUMETTRE UNE PURGE</button>
+                <button class="nav-btn" onclick="showSection('requestClan')">📝 DEMANDER UN CLAN</button>
                 <button class="nav-btn" onclick="showSection('forum')">💬 FORUM</button>
             </div>
         </div>
@@ -699,6 +702,25 @@ JOY INFO PURGE 24 PRODUCTION
             
             <h3 style="color:#FFD700; margin:20px 0 10px;">📋 MES SOUMISSIONS</h3>
             <div id="mySubmissionsList">⏳ Chargement...</div>
+        </div>
+
+        <!-- SECTION DEMANDE D'AJOUT DE CLAN -->
+        <div id="requestClan" class="section">
+            <div class="submit-form">
+                <h3 style="color:#FFD700; margin-bottom:15px;">📝 DEMANDE D'AJOUT DE CLAN</h3>
+                <p style="margin-bottom:15px; color:#ff8888;">Vous voulez ajouter votre clan ? Remplissez ce formulaire et un admin validera votre demande.</p>
+                
+                <input type="text" id="requestClanName" placeholder="Nom du clan" required>
+                <input type="text" id="requestClanLeader" placeholder="Nom du chef" required>
+                <input type="text" id="requestContact" placeholder="Votre contact (WhatsApp/Telegram)" required>
+                <textarea id="requestDescription" placeholder="Description du clan (optionnel)" rows="3"></textarea>
+                
+                <button id="submitClanRequestBtn" class="btn-gold">📤 ENVOYER LA DEMANDE</button>
+                <div id="clanRequestMessage" style="margin-top:15px;"></div>
+            </div>
+            
+            <h3 style="color:#FFD700; margin:20px 0 10px;">📋 MES DEMANDES</h3>
+            <div id="myClanRequestsList">⏳ Chargement...</div>
         </div>
 
         <!-- SECTION FORUM -->
@@ -803,7 +825,6 @@ JOY INFO PURGE 24 PRODUCTION
             }
         }
         
-        // Démarrer la musique au premier clic
         document.body.addEventListener('click', () => {
             if(!musicPlaying && bgMusic) {
                 bgMusic.play().catch(e => {});
@@ -1040,6 +1061,91 @@ JOY INFO PURGE 24 PRODUCTION
             }
         }
         
+        // ========== DEMANDE D'AJOUT DE CLAN ==========
+        async function submitClanRequest() {
+            const clanName = document.getElementById('requestClanName').value.trim();
+            const clanLeader = document.getElementById('requestClanLeader').value.trim();
+            const contact = document.getElementById('requestContact').value.trim();
+            const description = document.getElementById('requestDescription').value.trim();
+            const messageDiv = document.getElementById('clanRequestMessage');
+            
+            if(!clanName || !clanLeader || !contact) {
+                messageDiv.innerHTML = '<span style="color:#ff8888;">❌ Veuillez remplir tous les champs obligatoires</span>';
+                return;
+            }
+            
+            // Vérifier si le clan existe déjà
+            const existingClan = currentClans.find(c => c.name.toLowerCase() === clanName.toLowerCase());
+            if(existingClan) {
+                messageDiv.innerHTML = '<span style="color:#ff8888;">❌ Ce clan existe déjà !</span>';
+                return;
+            }
+            
+            messageDiv.innerHTML = '<span style="color:#FFD700;">⏳ Envoi en cours...</span>';
+            
+            try {
+                const request = {
+                    clanName: clanName,
+                    clanLeader: clanLeader,
+                    contact: contact,
+                    description: description || "",
+                    status: 'pending',
+                    submittedAt: Date.now()
+                };
+                
+                await database.ref('clan_requests').push(request);
+                
+                messageDiv.innerHTML = '<span style="color:#2ecc71;">✅ Demande envoyée ! Un admin va la valider.</span>';
+                
+                document.getElementById('requestClanName').value = '';
+                document.getElementById('requestClanLeader').value = '';
+                document.getElementById('requestContact').value = '';
+                document.getElementById('requestDescription').value = '';
+                
+                loadMyClanRequests();
+                
+            } catch(e) {
+                messageDiv.innerHTML = `<span style="color:#ff8888;">❌ Erreur: ${e.message}</span>`;
+            }
+        }
+        
+        async function loadMyClanRequests() {
+            const snapshot = await database.ref('clan_requests').once('value');
+            const requests = [];
+            snapshot.forEach(child => requests.push({ id: child.key, ...child.val() }));
+            requests.reverse();
+            
+            const container = document.getElementById('myClanRequestsList');
+            if(!container) return;
+            
+            if(requests.length === 0) {
+                container.innerHTML = '<div class="loading">📭 Aucune demande</div>';
+                return;
+            }
+            
+            container.innerHTML = requests.map(req => `
+                <div class="submission-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+                        <span class="clan-name">⚔️ ${escapeHtml(req.clanName)}</span>
+                        <span class="status-badge ${req.status}">${getRequestStatusText(req.status)}</span>
+                    </div>
+                    <div><strong>👑 Chef:</strong> ${escapeHtml(req.clanLeader)}</div>
+                    <div><strong>📞 Contact:</strong> ${escapeHtml(req.contact)}</div>
+                    ${req.description ? `<div><strong>📝 Description:</strong> ${escapeHtml(req.description)}</div>` : ''}
+                    <div style="font-size:0.7em; color:#888; margin-top:10px;">Soumis le ${new Date(req.submittedAt).toLocaleString()}</div>
+                </div>
+            `).join('');
+        }
+        
+        function getRequestStatusText(status) {
+            switch(status) {
+                case 'pending': return '⏳ En attente';
+                case 'approved': return '✅ Approuvé';
+                case 'rejected': return '❌ Rejeté';
+                default: return '❓ Inconnu';
+            }
+        }
+        
         // ========== FORUM ==========
         async function loadForum() {
             try {
@@ -1117,6 +1223,7 @@ JOY INFO PURGE 24 PRODUCTION
             event.target.classList.add('active');
             if(section === 'ranking') loadClans();
             if(section === 'submit') { loadClanSelect(); loadMySubmissions(); }
+            if(section === 'requestClan') { loadMyClanRequests(); }
             if(section === 'forum') loadForum();
         }
         
@@ -1132,16 +1239,19 @@ JOY INFO PURGE 24 PRODUCTION
         loadClans();
         loadForum();
         loadMySubmissions();
+        loadMyClanRequests();
         
         document.getElementById('publishForumBtn').onclick = publishForumMessage;
         document.getElementById('submitPurgeBtn').onclick = submitPurge;
+        document.getElementById('submitClanRequestBtn').onclick = submitClanRequest;
         
         setInterval(() => {
             if(document.getElementById('ranking').classList.contains('active')) loadClans();
             if(document.getElementById('submit').classList.contains('active')) { loadMySubmissions(); loadClanSelect(); }
+            if(document.getElementById('requestClan').classList.contains('active')) loadMyClanRequests();
             if(document.getElementById('forum').classList.contains('active')) loadForum();
         }, 20000);
     </script>
 </body>
 </html>
-WILLI NIGHT SHIRO DIANNY SHADOW JOY..✅
+DIANNY WILLI SHIRO NIGHT SHADOW JOY ...✅
