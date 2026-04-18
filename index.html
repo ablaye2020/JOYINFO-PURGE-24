@@ -19,7 +19,6 @@ JOY INFO PURGE 24 PRODUCTION
             position: relative;
         }
         
-        /* PARTICULES FLOTTANTES */
         .floating-particles {
             position: fixed;
             top: 0;
@@ -46,7 +45,6 @@ JOY INFO PURGE 24 PRODUCTION
             100% { transform: translateY(-20vh) translateX(calc(100px * var(--direction))) rotate(360deg); opacity: 0; }
         }
         
-        /* BANDEAU DÉFILANT */
         .marquee-cinema {
             position: fixed;
             top: 0;
@@ -115,7 +113,6 @@ JOY INFO PURGE 24 PRODUCTION
             z-index: 1;
         }
         
-        /* EMPEREUR */
         .emperor-section {
             background: linear-gradient(135deg, #1a0000, #2a0a0a, #1a0000);
             border: 2px solid #FFD700;
@@ -195,7 +192,6 @@ JOY INFO PURGE 24 PRODUCTION
         .emperor-points { font-size: 1em; color: #ff8888; margin-top: 8px; }
         .no-emperor { color: #ff8888; font-style: italic; position: relative; z-index: 1; }
         
-        /* DERNIERS MESSAGES */
         .latest-messages {
             background: linear-gradient(135deg, #121212, #1a0505);
             border: 1px solid #8B0000;
@@ -261,7 +257,6 @@ JOY INFO PURGE 24 PRODUCTION
             background: #8B0000;
         }
         
-        /* HEADER */
         .royal-header {
             background: linear-gradient(135deg, #0a0a0a, #1a0000, #0a0a0a);
             border-radius: 30px;
@@ -348,7 +343,6 @@ JOY INFO PURGE 24 PRODUCTION
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* TABS CLASSEMENT */
         .ranking-tabs {
             display: flex;
             gap: 20px;
@@ -452,7 +446,6 @@ JOY INFO PURGE 24 PRODUCTION
         .like-btn:hover { background: #8B0000; transform: scale(1.05); }
         .like-btn.liked { background: #FFD700; color: #000000; }
         
-        /* FORMULAIRES */
         .submit-form {
             background: #121212;
             border: 1px solid #8B0000;
@@ -490,14 +483,12 @@ JOY INFO PURGE 24 PRODUCTION
             font-size: 0.8em;
         }
         
-        /* BARRE DE PROGRESSION */
         .progress-container {
             display: none;
             margin: 15px 0;
             background: #2a2a2a;
             border-radius: 25px;
             overflow: hidden;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
         }
         
         .progress-bar {
@@ -549,7 +540,6 @@ JOY INFO PURGE 24 PRODUCTION
             cursor: pointer;
         }
         
-        /* FORUM */
         .forum-form {
             background: #121212;
             border: 1px solid #8B0000;
@@ -717,10 +707,8 @@ JOY INFO PURGE 24 PRODUCTION
     </style>
 </head>
 <body>
-    <!-- PARTICULES FLOTTANTES -->
     <div class="floating-particles" id="floatingParticles"></div>
     
-    <!-- MUSIQUE DE FOND -->
     <audio id="bgMusic" loop preload="auto">
         <source src="song.mp3.m4a" type="audio/mp4">
         <source src="song.mp3" type="audio/mpeg">
@@ -746,15 +734,13 @@ JOY INFO PURGE 24 PRODUCTION
     <div class="container">
         <a href="admin.html" class="admin-link">👑 JOYBOY ADMIN</a>
         <div class="music-control" onclick="toggleMusic()" id="musicBtn">🎵</div>
-        <div class="compression-badge">⚡ Upload accéléré</div>
+        <div class="compression-badge">⚡ Upload intelligent</div>
         
-        <!-- EMPEREUR -->
         <div class="emperor-section" id="emperorSection">
             <div class="emperor-title">🏆 EMPEREUR DE LA PURGE 🏆</div>
             <div id="emperorContent"><div class="loading">👑 Recherche...</div></div>
         </div>
 
-        <!-- DERNIERS MESSAGES DU FORUM -->
         <div class="latest-messages" id="latestMessages">
             <h3>💬 DERNIERS MESSAGES</h3>
             <div id="latestMessagesList">⏳ Chargement...</div>
@@ -773,7 +759,6 @@ JOY INFO PURGE 24 PRODUCTION
             </div>
         </div>
 
-        <!-- SECTION CLASSEMENT -->
         <div id="ranking" class="section active">
             <div class="ranking-tabs">
                 <button class="tab-btn active" onclick="showRankingPeriod('week', this)">📅 SEMAINE</button>
@@ -784,7 +769,6 @@ JOY INFO PURGE 24 PRODUCTION
             <div id="rankingList" class="clans-grid">⏳ Chargement...</div>
         </div>
 
-        <!-- SECTION SOUMETTRE UNE PURGE -->
         <div id="submit" class="section">
             <div class="submit-form">
                 <h3 style="color:#FFD700; margin-bottom:15px;">⚔️ SOUMETTRE UNE PURGE ⚔️</h3>
@@ -804,10 +788,9 @@ JOY INFO PURGE 24 PRODUCTION
                         <input type="file" id="photo3" accept="image/*">
                         <input type="file" id="photo4" accept="image/*">
                     </div>
-                    <p style="font-size:0.7em; color:#888; margin-top:5px;">⚡ Upload en parallèle - Compression automatique</p>
+                    <p style="font-size:0.7em; color:#888; margin-top:5px;">⚡ Les photos > 2MB sont automatiquement compressées</p>
                 </div>
                 
-                <!-- BARRE DE PROGRESSION -->
                 <div id="progressContainer" class="progress-container">
                     <div id="progressBar" class="progress-bar">0%</div>
                 </div>
@@ -820,7 +803,6 @@ JOY INFO PURGE 24 PRODUCTION
             <div id="mySubmissionsList">⏳ Chargement...</div>
         </div>
 
-        <!-- SECTION DEMANDE D'AJOUT DE CLAN -->
         <div id="requestClan" class="section">
             <div class="submit-form">
                 <h3 style="color:#FFD700; margin-bottom:15px;">📝 DEMANDE D'AJOUT DE CLAN</h3>
@@ -839,7 +821,6 @@ JOY INFO PURGE 24 PRODUCTION
             <div id="myClanRequestsList">⏳ Chargement...</div>
         </div>
 
-        <!-- SECTION FORUM -->
         <div id="forum" class="section">
             <div class="forum-form">
                 <input type="text" id="forumPseudo" placeholder="Votre pseudo" required>
@@ -850,16 +831,12 @@ JOY INFO PURGE 24 PRODUCTION
         </div>
     </div>
 
-    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
-
-    <!-- Bibliothèque de compression d'images -->
     <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
 
     <script>
-        // Configuration Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyB3yYAuiGqbtrbZ1aSYxAjduZ65adNIpag",
             authDomain: "purge-game-58718.firebaseapp.com",
@@ -874,17 +851,14 @@ JOY INFO PURGE 24 PRODUCTION
         const database = firebase.database();
         const storage = firebase.storage();
         
-        // Variables
         let currentClans = [];
         let currentPeriod = 'year';
         let bgMusic = null;
         let musicPlaying = false;
         
-        // Likes stockés localement
         let userLikedClans = JSON.parse(localStorage.getItem('userLikedClans') || '{}');
         let userLikedMessages = JSON.parse(localStorage.getItem('userLikedMessages') || '{}');
         
-        // Création des particules flottantes
         function createParticles() {
             const container = document.getElementById('floatingParticles');
             for(let i = 0; i < 60; i++) {
@@ -937,27 +911,29 @@ JOY INFO PURGE 24 PRODUCTION
             }
         }
         
-        // ========== COMPRESSION RAPIDE ==========
-        async function compressImageFast(file) {
-            // Si l'image est déjà petite (< 500KB), on ne compresse pas
-            if(file.size < 500 * 1024) return file;
+        // Compression intelligente : seulement si > 2MB
+        async function compressIfNeeded(file) {
+            if(file.size < 2 * 1024 * 1024) {
+                return { file: file, compressed: false, originalSize: file.size };
+            }
             
             const options = {
-                maxSizeMB: 0.5,        // 500KB max
-                maxWidthOrHeight: 1280, // 1280px max
+                maxSizeMB: 1.5,
+                maxWidthOrHeight: 1280,
                 useWebWorker: true,
-                initialQuality: 0.85
+                initialQuality: 0.8
             };
             
             try {
-                return await imageCompression(file, options);
+                const compressedFile = await imageCompression(file, options);
+                console.log(`📸 Compression: ${(file.size / 1024 / 1024).toFixed(1)}MB → ${(compressedFile.size / 1024 / 1024).toFixed(1)}MB`);
+                return { file: compressedFile, compressed: true, originalSize: file.size };
             } catch(e) {
                 console.log("Erreur compression, envoi original:", e);
-                return file;
+                return { file: file, compressed: false, originalSize: file.size };
             }
         }
         
-        // ========== MUSIQUE ==========
         function initMusic() {
             bgMusic = document.getElementById('bgMusic');
             if(bgMusic) {
@@ -987,7 +963,6 @@ JOY INFO PURGE 24 PRODUCTION
             }
         }, { once: true });
         
-        // ========== EMPEREUR ==========
         function updateEmperor() {
             const container = document.getElementById('emperorContent');
             const emperor = currentClans.find(clan => (clan.score_year || 0) >= 2500);
@@ -1009,7 +984,6 @@ JOY INFO PURGE 24 PRODUCTION
             }
         }
         
-        // ========== CHARGEMENT DES CLANS (SANS DOUBLONS) ==========
         async function loadClans() {
             try {
                 const snapshot = await database.ref('clans').once('value');
@@ -1103,7 +1077,6 @@ JOY INFO PURGE 24 PRODUCTION
             } catch(e) { showToast("❌ Erreur", true); }
         }
         
-        // ========== DERNIERS MESSAGES ==========
         async function loadLatestMessages() {
             try {
                 const snapshot = await database.ref('forum').once('value');
@@ -1133,12 +1106,13 @@ JOY INFO PURGE 24 PRODUCTION
             }
         }
         
-        // ========== SOUMISSION DE PURGE OPTIMISÉE ==========
+        // ========== SOUMISSION OPTIMISÉE ==========
         async function submitPurge() {
             const clanId = document.getElementById('clanSelect').value;
             const groupLink = document.getElementById('groupLink').value.trim();
             const messageDiv = document.getElementById('purgeMessage');
             const progressContainer = document.getElementById('progressContainer');
+            const submitBtn = document.getElementById('submitPurgeBtn');
             
             if(!clanId) {
                 messageDiv.innerHTML = '<span style="color:#ff8888;">❌ Choisissez votre clan</span>';
@@ -1149,14 +1123,12 @@ JOY INFO PURGE 24 PRODUCTION
                 return;
             }
             
-            // Vérifier si le lien a déjà été utilisé
             const existingSnapshot = await database.ref('submissions').orderByChild('link').equalTo(groupLink).once('value');
             if(existingSnapshot.exists()) {
                 messageDiv.innerHTML = '<span style="color:#ff8888;">❌ Ce lien a déjà été soumis !</span>';
                 return;
             }
             
-            // Récupérer les photos
             const photoFiles = [];
             for(let i = 1; i <= 4; i++) {
                 const input = document.getElementById(`photo${i}`);
@@ -1170,62 +1142,72 @@ JOY INFO PURGE 24 PRODUCTION
                 return;
             }
             
-            // Afficher la barre de progression
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.5';
             progressContainer.style.display = 'block';
-            updateProgress(0, 'Préparation...');
-            messageDiv.innerHTML = '<span style="color:#FFD700;">⚡ Compression et envoi en parallèle...</span>';
+            updateProgress(0, 'Analyse...');
+            messageDiv.innerHTML = '<span style="color:#FFD700;">⚡ Préparation des photos...</span>';
             
             try {
-                // Étape 1: Compression parallèle des photos
-                updateProgress(10, 'Compression...');
-                const compressPromises = photoFiles.map(file => compressImageFast(file));
-                const compressedFiles = await Promise.all(compressPromises);
+                // Compression si nécessaire (en parallèle)
+                updateProgress(5, 'Compression si nécessaire...');
+                const compressPromises = photoFiles.map(file => compressIfNeeded(file));
+                const compressedResults = await Promise.all(compressPromises);
+                const finalFiles = compressedResults.map(r => r.file);
                 
-                // Étape 2: Upload parallèle vers Firebase
-                updateProgress(30, 'Upload des photos...');
-                const uploadPromises = compressedFiles.map((file, index) => {
+                const compressedCount = compressedResults.filter(r => r.compressed).length;
+                if(compressedCount > 0) {
+                    messageDiv.innerHTML = `<span style="color:#FFD700;">⚡ ${compressedCount} photo(s) compressée(s)</span>`;
+                }
+                
+                // Upload parallèle
+                let completed = 0;
+                const total = finalFiles.length;
+                
+                const uploadPromises = finalFiles.map((file, index) => {
                     const storageRef = storage.ref(`purges/${Date.now()}_${index}_${file.name}`);
                     const uploadTask = storageRef.put(file);
                     
-                    // Suivi de progression individuel
                     uploadTask.on('state_changed', (snapshot) => {
                         const percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        const totalProgress = 30 + (percent * 0.5); // 30% à 80%
-                        updateProgress(totalProgress, `Upload ${index+1}/${compressedFiles.length}`);
+                        const totalProgress = 10 + (completed * 80 / total) + (percent / total);
+                        updateProgress(totalProgress, `📸 ${index+1}/${total} (${Math.floor(percent)}%)`);
                     });
                     
-                    return uploadTask.then(snapshot => snapshot.ref.getDownloadURL());
+                    return uploadTask.then(snapshot => {
+                        completed++;
+                        return snapshot.ref.getDownloadURL();
+                    });
                 });
                 
                 const photoUrls = await Promise.all(uploadPromises);
-                updateProgress(80, 'Finalisation...');
+                updateProgress(95, 'Finalisation...');
                 
-                // Étape 3: Sauvegarde
-                const submission = {
-                    clanId: clanId,
-                    clanName: currentClans.find(c => c.id === clanId)?.name || "Inconnu",
-                    link: groupLink,
-                    photos: photoUrls,
-                    status: 'pending',
-                    points: 0,
-                    submittedAt: Date.now()
-                };
-                
-                await database.ref('submissions').push(submission);
+                await database.ref('submissions').push({
+                    clanId, clanName: currentClans.find(c => c.id === clanId)?.name,
+                    link: groupLink, photos: photoUrls,
+                    status: 'pending', points: 0, submittedAt: Date.now()
+                });
                 
                 updateProgress(100, 'Terminé !');
                 messageDiv.innerHTML = '<span style="color:#2ecc71;">✅ Purge soumise avec succès !</span>';
                 
-                // Réinitialiser le formulaire
                 document.getElementById('groupLink').value = '';
-                for(let i = 1; i <= 4; i++) {
-                    document.getElementById(`photo${i}`).value = '';
-                }
+                for(let i = 1; i <= 4; i++) document.getElementById(`photo${i}`).value = '';
                 loadMySubmissions();
+                
+                setTimeout(() => {
+                    progressContainer.style.display = 'none';
+                    updateProgress(0, '');
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '1';
+                }, 1500);
                 
             } catch(e) {
                 progressContainer.style.display = 'none';
                 messageDiv.innerHTML = `<span style="color:#ff8888;">❌ Erreur: ${e.message}</span>`;
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
             }
         }
         
@@ -1267,7 +1249,6 @@ JOY INFO PURGE 24 PRODUCTION
             }
         }
         
-        // ========== DEMANDE D'AJOUT DE CLAN ==========
         async function submitClanRequest() {
             const clanName = document.getElementById('requestClanName').value.trim();
             const clanLeader = document.getElementById('requestClanLeader').value.trim();
@@ -1351,7 +1332,6 @@ JOY INFO PURGE 24 PRODUCTION
             }
         }
         
-        // ========== FORUM ==========
         async function loadForum() {
             try {
                 const snapshot = await database.ref('forum').once('value');
@@ -1422,7 +1402,6 @@ JOY INFO PURGE 24 PRODUCTION
             } catch(e) { showToast("❌ Erreur", true); }
         }
         
-        // ========== NAVIGATION ==========
         function showSection(section) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(section).classList.add('active');
@@ -1441,7 +1420,6 @@ JOY INFO PURGE 24 PRODUCTION
             updateRanking();
         }
         
-        // Initialisation
         initMusic();
         loadClans();
         loadForum();
