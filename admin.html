@@ -72,6 +72,8 @@ INFO PURGE ADMIN
         .btn-danger:hover { background: #a93226; }
         .btn-warning { background: #e67e22; }
         .btn-warning:hover { background: #d35400; }
+        .btn-success { background: #27ae60; }
+        .btn-success:hover { background: #229954; }
         
         .card {
             background: #1a1a1a;
@@ -342,7 +344,7 @@ INFO PURGE ADMIN
                             <input type="number" id="points_week_${clan.id}" placeholder="+ SEMAINE" style="width:100px;">
                             <input type="number" id="points_month_${clan.id}" placeholder="+ MOIS" style="width:100px;">
                             <input type="number" id="points_year_${clan.id}" placeholder="+ ANNÉE" style="width:100px;">
-                            <button onclick="addPointsToClan('${clan.id}')" style="background:#27ae60;">➕ AJOUTER</button>
+                            <button onclick="addPointsToClan('${clan.id}')" class="btn-success">➕ AJOUTER</button>
                         </div>
                         
                         <div class="admin-actions" style="margin-top:10px;">
@@ -434,20 +436,31 @@ INFO PURGE ADMIN
                     <div>📞 Contact: ${escapeHtml(req.contact)}</div>
                     ${req.description ? `<div>📝 ${escapeHtml(req.description)}</div>` : ''}
                     <div style="margin-top:15px;">
-                        <button onclick="approveClanRequest('${req.id}', '${escapeHtml(req.clanName)}', '${escapeHtml(req.clanLeader)}', '${escapeHtml(req.description)}')" style="background:#27ae60; margin-right:10px;">✅ Approuver</button>
-                        <button onclick="rejectClanRequest('${req.id}')" style="background:#c0392b;">❌ Rejeter</button>
+                        <button onclick="approveClanRequest('${req.id}')" class="btn-success" style="margin-right:10px;">✅ Approuver</button>
+                        <button onclick="rejectClanRequest('${req.id}')" class="btn-danger">❌ Rejeter</button>
                     </div>
                 </div>
             `).join('');
         }
         
-        window.approveClanRequest = async function(id, clanName, clanLeader, description) {
-            console.log("Approbation du clan:", clanName);
+        window.approveClanRequest = async function(id) {
+            console.log("Approbation de la demande:", id);
             try {
+                // Récupérer la demande
+                const requestRef = database.ref(`clan_requests/${id}`);
+                const snapshot = await requestRef.once('value');
+                const req = snapshot.val();
+                
+                if(!req) {
+                    showToast("❌ Demande introuvable", true);
+                    return;
+                }
+                
+                // Créer le clan
                 const newClan = {
-                    name: clanName,
-                    leader: clanLeader,
-                    description: description || "",
+                    name: req.clanName,
+                    leader: req.clanLeader,
+                    description: req.description || "",
                     score_week: 0,
                     score_month: 0,
                     score_year: 0,
@@ -456,13 +469,20 @@ INFO PURGE ADMIN
                 };
                 
                 await database.ref('clans').push(newClan);
-                await database.ref(`clan_requests/${id}`).update({ status: 'approved', approvedAt: Date.now() });
                 
-                showToast(`✅ Clan "${clanName}" ajouté avec succès !`);
+                // Marquer la demande comme approuvée
+                await requestRef.update({ 
+                    status: 'approved', 
+                    approvedAt: Date.now(),
+                    approvedBy: "Admin"
+                });
+                
+                showToast(`✅ Clan "${req.clanName}" ajouté avec succès !`);
                 loadClansAdmin();
                 loadClanRequests();
                 loadAllSubmissions();
             } catch(e) {
+                console.error("Erreur:", e);
                 showToast("❌ Erreur: " + e.message, true);
             }
         };
@@ -470,7 +490,12 @@ INFO PURGE ADMIN
         window.rejectClanRequest = async function(id) {
             const reason = prompt("Raison du rejet :");
             if(reason) {
-                await database.ref(`clan_requests/${id}`).update({ status: 'rejected', rejectReason: reason, rejectedAt: Date.now() });
+                await database.ref(`clan_requests/${id}`).update({ 
+                    status: 'rejected', 
+                    rejectReason: reason, 
+                    rejectedAt: Date.now(),
+                    rejectedBy: "Admin"
+                });
                 showToast("❌ Demande rejetée");
                 loadClanRequests();
             }
@@ -500,8 +525,8 @@ INFO PURGE ADMIN
                     <div style="font-size:0.7em; color:#888;">Soumis le ${new Date(sub.submittedAt).toLocaleString()}</div>
                     <div class="admin-actions">
                         <input type="number" id="points_${sub.id}" placeholder="Points" style="width:100px;">
-                        <button onclick="approveSubmission('${sub.id}')" style="background:#27ae60;">✅ Approuver</button>
-                        <button onclick="rejectSubmission('${sub.id}')" style="background:#c0392b;">❌ Rejeter</button>
+                        <button onclick="approveSubmission('${sub.id}')" class="btn-success">✅ Approuver</button>
+                        <button onclick="rejectSubmission('${sub.id}')" class="btn-danger">❌ Rejeter</button>
                     </div>
                 </div>
             `).join('');
@@ -536,6 +561,26 @@ INFO PURGE ADMIN
             `).join('');
         }
         
+        // Fonction pour supprimer les photos du Storage Firebase
+        async function deleteSubmissionPhotos(photos) {
+            if(!photos || photos.length === 0) return;
+            for(const photoUrl of photos) {
+                try {
+                    // Extraire le chemin du fichier depuis l'URL
+                    const decodedUrl = decodeURIComponent(photoUrl);
+                    const pathMatch = decodedUrl.match(/\/o\/(.+?)\?/);
+                    if(pathMatch && pathMatch[1]) {
+                        const filePath = pathMatch[1];
+                        const fileRef = storage.ref(filePath);
+                        await fileRef.delete();
+                        console.log("Photo supprimée:", filePath);
+                    }
+                } catch(e) {
+                    console.error("Erreur suppression photo:", e);
+                }
+            }
+        }
+        
         window.approveSubmission = async function(id) {
             const points = parseInt(document.getElementById(`points_${id}`).value);
             if(isNaN(points) || points <= 0) {
@@ -548,8 +593,21 @@ INFO PURGE ADMIN
                 const submission = (await submissionRef.once('value')).val();
                 
                 if(submission) {
-                    await submissionRef.update({ status: 'approved', points: points, approvedAt: Date.now() });
+                    // 1. Supprimer les photos du stockage Firebase
+                    if(submission.photos && submission.photos.length > 0) {
+                        await deleteSubmissionPhotos(submission.photos);
+                    }
                     
+                    // 2. Mettre à jour la soumission (supprimer les photos et le lien)
+                    await submissionRef.update({ 
+                        status: 'approved', 
+                        points: points, 
+                        approvedAt: Date.now(),
+                        photos: null,  // Supprimer les photos
+                        link: null     // Supprimer le lien
+                    });
+                    
+                    // 3. Ajouter les points au clan
                     const clanRef = database.ref(`clans/${submission.clanId}`);
                     const clan = (await clanRef.once('value')).val();
                     if(clan) {
@@ -560,12 +618,13 @@ INFO PURGE ADMIN
                         });
                     }
                     
-                    showToast(`✅ Purge approuvée ! +${points} points pour ${submission.clanName}`);
+                    showToast(`✅ Purge approuvée ! +${points} points pour ${submission.clanName} (photos supprimées)`);
                     loadPendingSubmissions();
                     loadAllSubmissions();
                     loadClansAdmin();
                 }
             } catch(e) {
+                console.error("Erreur:", e);
                 showToast("❌ Erreur: " + e.message, true);
             }
         };
@@ -573,10 +632,26 @@ INFO PURGE ADMIN
         window.rejectSubmission = async function(id) {
             const reason = prompt("Raison du rejet :");
             if(reason) {
-                await database.ref(`submissions/${id}`).update({ status: 'rejected', rejectReason: reason, rejectedAt: Date.now() });
-                showToast("❌ Purge rejetée");
-                loadPendingSubmissions();
-                loadAllSubmissions();
+                const submissionRef = database.ref(`submissions/${id}`);
+                const submission = (await submissionRef.once('value')).val();
+                
+                if(submission) {
+                    // Supprimer les photos du stockage
+                    if(submission.photos && submission.photos.length > 0) {
+                        await deleteSubmissionPhotos(submission.photos);
+                    }
+                    
+                    await submissionRef.update({ 
+                        status: 'rejected', 
+                        rejectReason: reason, 
+                        rejectedAt: Date.now(),
+                        photos: null,
+                        link: null
+                    });
+                    showToast("❌ Purge rejetée (photos supprimées)");
+                    loadPendingSubmissions();
+                    loadAllSubmissions();
+                }
             }
         };
         
