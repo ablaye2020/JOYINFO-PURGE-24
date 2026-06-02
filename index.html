@@ -49,7 +49,6 @@
             border-bottom: 2px solid #FFD700;
             z-index: 100;
             font-weight: bold;
-            letter-spacing: 2px;
         }
         .marquee span { display: inline-block; animation: defile 20s linear infinite; padding-left: 100%; }
         @keyframes defile { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
@@ -82,19 +81,17 @@
             margin-bottom: 25px;
             border: 1px solid rgba(255,215,0,0.3);
             transition: 0.3s;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .card:hover { border-color: #FFD700; box-shadow: 0 0 20px rgba(255,215,0,0.2); }
+        .card:hover { border-color: #FFD700; }
         
         h1 {
             font-family: 'Cinzel', serif;
-            font-size: 3em;
+            font-size: 2.8em;
             text-align: center;
             background: linear-gradient(135deg, #FFD700, #FFA500, #FFD700);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: 0 0 30px rgba(255,215,0,0.3);
             letter-spacing: 5px;
         }
         
@@ -111,12 +108,10 @@
             transition: all 0.3s;
             margin: 5px;
             font-size: 1em;
-            font-family: 'Montserrat', sans-serif;
         }
         .btn:hover { transform: scale(1.03); box-shadow: 0 0 20px rgba(255,215,0,0.5); }
         .btn-outline { background: transparent; border: 2px solid #FFD700; }
         .btn-success { background: linear-gradient(135deg, #006400, #008000); }
-        .btn-warning { background: linear-gradient(135deg, #8B4513, #D2691E); }
         
         .nav-buttons {
             display: flex;
@@ -139,12 +134,46 @@
         .nav-btn.active, .nav-btn:hover {
             background: linear-gradient(135deg, #8B0000, #cc0000);
             border-color: #FFD700;
-            transform: translateY(-2px);
         }
         
         .section { display: none; animation: fadeIn 0.5s ease; }
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Création salon */
+        .create-box {
+            background: rgba(0,0,0,0.5);
+            border-radius: 25px;
+            padding: 25px;
+            margin: 15px 0;
+            border: 1px solid #FFD700;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            color: #FFD700;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .form-group input {
+            width: 100%;
+            background: #0a0a0a;
+            border: 2px solid #FFD700;
+            padding: 14px;
+            border-radius: 15px;
+            color: white;
+            font-size: 1em;
+        }
+        .photo-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #FFD700;
+            margin-top: 10px;
+        }
         
         /* Classement équipes */
         .team-card {
@@ -157,44 +186,10 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            transition: 0.3s;
         }
-        .team-card:hover { transform: translateX(5px); background: rgba(139,0,0,0.3); }
-        .team-name { font-size: 1.4em; font-weight: bold; color: #FFD700; font-family: 'Cinzel', serif; }
+        .team-name { font-size: 1.3em; font-weight: bold; color: #FFD700; font-family: 'Cinzel', serif; }
         .team-players { font-size: 0.8em; color: #aaa; margin-top: 5px; }
-        .team-score { font-size: 1.5em; font-weight: bold; color: #FFA500; }
-        .team-badge { font-size: 2em; margin-right: 15px; }
-        
-        /* Création salon */
-        .setup-box {
-            background: rgba(0,0,0,0.5);
-            border-radius: 25px;
-            padding: 25px;
-            margin: 15px 0;
-        }
-        .setup-row {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            align-items: center;
-            margin: 15px 0;
-        }
-        .setup-row input, .setup-row select {
-            flex: 1;
-            background: #0a0a0a;
-            border: 2px solid #FFD700;
-            padding: 12px;
-            border-radius: 15px;
-            color: white;
-            font-size: 1em;
-        }
-        .photo-preview {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #FFD700;
-        }
+        .team-score { font-size: 1.4em; font-weight: bold; color: #FFA500; }
         
         /* Salle d'attente */
         .players-area {
@@ -211,7 +206,6 @@
             padding: 20px;
             min-width: 160px;
             text-align: center;
-            transition: 0.3s;
         }
         .player-card.filled { background: rgba(0,100,0,0.4); border-color: #00ff00; }
         .player-avatar { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; border: 2px solid #FFD700; }
@@ -219,12 +213,12 @@
         
         /* Quiz */
         .quiz-area {
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.95);
             border-radius: 30px;
             padding: 30px;
         }
-        .question-img { max-width: 100%; max-height: 250px; border-radius: 20px; margin: 20px 0; display: block; margin-left: auto; margin-right: auto; }
-        .question-text { font-size: 1.6em; text-align: center; margin: 25px 0; font-family: 'Cinzel', serif; }
+        .question-img { max-width: 100%; max-height: 250px; border-radius: 20px; margin: 20px auto; display: block; }
+        .question-text { font-size: 1.5em; text-align: center; margin: 25px 0; font-family: 'Cinzel', serif; }
         .answers { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 25px 0; }
         .answer {
             background: rgba(139,0,0,0.6);
@@ -239,28 +233,14 @@
         .answer:hover { background: #8B0000; transform: scale(1.02); }
         
         .score-big { font-size: 1.8em; color: #FFD700; text-align: center; margin: 15px 0; }
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 20px 0;
-        }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #FFD700, #FFA500);
-            width: 0%;
-            transition: width 0.3s;
-            border-radius: 10px;
-        }
+        .progress-bar { width: 100%; height: 20px; background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; margin: 20px 0; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #FFD700, #FFA500); width: 0%; transition: width 0.3s; }
         
         .forum-msg {
             background: rgba(0,0,0,0.6);
             border-radius: 20px;
             padding: 18px;
             margin-bottom: 15px;
-            transition: 0.2s;
         }
         .forum-msg:hover { background: rgba(139,0,0,0.3); transform: translateX(5px); }
         .forum-author { color: #FFD700; font-weight: bold; font-size: 1.1em; }
@@ -278,21 +258,24 @@
         }
         input:focus, textarea:focus { outline: none; border-color: #FFA500; }
         
+        /* BOUTON ADMIN VISIBLE */
         .admin-link {
             position: fixed;
             bottom: 20px;
             left: 20px;
-            background: rgba(0,0,0,0.8);
-            padding: 10px 20px;
+            background: linear-gradient(135deg, #8B0000, #cc0000);
+            padding: 12px 25px;
             border-radius: 50px;
             color: #FFD700;
             text-decoration: none;
-            font-size: 12px;
-            border: 1px solid #8B0000;
+            font-size: 14px;
+            font-weight: bold;
+            border: 1px solid #FFD700;
             transition: 0.3s;
             z-index: 200;
+            box-shadow: 0 0 10px rgba(255,215,0,0.3);
         }
-        .admin-link:hover { background: #8B0000; transform: scale(1.05); }
+        .admin-link:hover { background: #cc0000; transform: scale(1.05); box-shadow: 0 0 20px #FFD700; }
         
         .music-btn {
             position: fixed;
@@ -308,7 +291,7 @@
             cursor: pointer;
             font-size: 28px;
             color: #FFD700;
-            border: 1px solid #FFD700;
+            border: 2px solid #FFD700;
             transition: 0.3s;
             z-index: 200;
         }
@@ -334,9 +317,6 @@
             100% { opacity: 0; bottom: 120px; }
         }
         
-        .lock-icon { font-size: 1.2em; margin-left: 10px; }
-        .part2-locked { opacity: 0.5; filter: grayscale(0.3); }
-        
         @media (max-width: 700px) {
             .answers { grid-template-columns: 1fr; }
             h1 { font-size: 1.8em; }
@@ -350,7 +330,8 @@
 <div class="marquee-bottom"><span>⭐ PARTIE 1 : TEXTE ⭐ DÉBLOQUE LA PARTIE 2 À 120 POINTS ⭐ CRÉE TON ÉQUIPE ⭐</span></div>
 
 <div class="container">
-    <a href="admin.html" class="admin-link">👑 ADMIN</a>
+    <!-- BOUTON ADMIN BIEN VISIBLE -->
+    <a href="admin.html" class="admin-link">👑 ADMIN PANEL</a>
     <div class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</div>
     
     <div class="card" style="text-align: center;">
@@ -381,28 +362,50 @@
         <div class="card">
             <h2>⚔️ JOY PURGE GAME</h2>
             
-            <!-- Création de salon -->
+            <!-- CRÉER UN SALON -->
             <div id="createLobby">
-                <div class="setup-box">
-                    <h3>🎮 CRÉER UNE ÉQUIPE</h3>
-                    <div class="setup-row">
-                        <input type="text" id="teamName" placeholder="Nom de l'équipe (ex: CLAN KILLER)">
-                        <input type="text" id="playerName" placeholder="Ton pseudo">
+                <div class="create-box">
+                    <h3 style="text-align:center; margin-bottom:20px;">🎮 CRÉER UN NOUVEAU SALON</h3>
+                    
+                    <div class="form-group">
+                        <label>🏷️ NOM DU SALON / ÉQUIPE</label>
+                        <input type="text" id="teamName" placeholder="Ex: CLAN KILLER, MUGIWARA, ZOLDIQUE...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>👤 TON PSEUDO</label>
+                        <input type="text" id="playerName" placeholder="Ton nom dans le jeu">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>📸 TA PHOTO DE PROFIL</label>
                         <input type="file" id="playerPhoto" accept="image/*">
                         <div id="photoPreview"></div>
                     </div>
-                    <button class="btn btn-success" onclick="createTeam()">🚀 CRÉER L'ÉQUIPE</button>
+                    
+                    <button class="btn btn-success" onclick="createTeam()" style="width:100%; padding:15px;">🚀 CRÉER LE SALON</button>
                 </div>
                 
-                <div class="setup-box">
-                    <h3>🔑 REJOINDRE UNE ÉQUIPE</h3>
-                    <div class="setup-row">
-                        <input type="text" id="joinCode" maxlength="4" placeholder="CODE (4 chiffres)">
-                        <input type="text" id="joinPlayerName" placeholder="Ton pseudo">
+                <div class="create-box">
+                    <h3 style="text-align:center; margin-bottom:20px;">🔑 REJOINDRE UN SALON</h3>
+                    
+                    <div class="form-group">
+                        <label>🔢 CODE DU SALON (4 chiffres)</label>
+                        <input type="text" id="joinCode" maxlength="4" placeholder="Ex: 1234">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>👤 TON PSEUDO</label>
+                        <input type="text" id="joinPlayerName" placeholder="Ton nom dans le jeu">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>📸 TA PHOTO DE PROFIL</label>
                         <input type="file" id="joinPlayerPhoto" accept="image/*">
                         <div id="joinPhotoPreview"></div>
                     </div>
-                    <button class="btn" onclick="joinTeam()">🔐 REJOINDRE</button>
+                    
+                    <button class="btn" onclick="joinTeam()" style="width:100%; padding:15px;">🔐 REJOINDRE LE SALON</button>
                 </div>
             </div>
             
@@ -452,12 +455,9 @@
     let currentRoomCode = null;
     let currentPlayerId = localStorage.getItem('playerId') || Math.random().toString(36).substr(2, 8);
     localStorage.setItem('playerId', currentPlayerId);
-    let currentTeamData = null;
     let musicPlaying = false;
     let bgMusic = null;
     let currentQuestions = [];
-    let currentPart = 'partie1'; // partie1 ou partie2
-    let currentScore = 0;
     
     // ========== MUSIQUE ==========
     function initMusic() { bgMusic = document.getElementById('bgMusic'); if(bgMusic) bgMusic.volume = 0.2; }
@@ -494,20 +494,15 @@
         
         const container = document.getElementById('rankingList');
         if(teams.length === 0) {
-            container.innerHTML = '<div style="text-align:center;">🏆 Aucune équipe classée pour le moment. Crée une équipe et joue !</div>';
+            container.innerHTML = '<div style="text-align:center;">🏆 Aucune équipe classée. Crée une équipe et joue !</div>';
             return;
         }
         
         container.innerHTML = teams.map((t, i) => `
             <div class="team-card">
-                <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
-                    <div class="team-badge">${i === 0 ? '👑' : (i === 1 ? '🥈' : (i === 2 ? '🥉' : `#${i+1}`))}</div>
-                    <div>
-                        <div class="team-name">⚔️ ${escapeHtml(t.teamName)}</div>
-                        <div class="team-players">
-                            ${t.players ? Object.values(t.players).map(p => `👤 ${escapeHtml(p.name)}`).join(' · ') : ''}
-                        </div>
-                    </div>
+                <div>
+                    <div class="team-name">${i === 0 ? '👑 ' : ''}⚔️ ${escapeHtml(t.teamName)}</div>
+                    <div class="team-players">${t.players ? Object.values(t.players).map(p => `👤 ${escapeHtml(p.name)}`).join(' · ') : ''}</div>
                 </div>
                 <div class="team-score">⭐ ${t.score || 0} pts</div>
             </div>
@@ -566,13 +561,14 @@
         return await ref.getDownloadURL();
     }
     
-    // ========== CRÉER UNE ÉQUIPE ==========
+    // ========== CRÉER UN SALON ==========
     async function createTeam() {
         const teamName = document.getElementById('teamName').value.trim();
         const playerName = document.getElementById('playerName').value.trim();
         const photoFile = document.getElementById('playerPhoto').files[0];
         
-        if(!teamName || !playerName) { toast("❌ Nom d'équipe et pseudo requis", true); return; }
+        if(!teamName) { toast("❌ Entre un nom pour le salon/équipe", true); return; }
+        if(!playerName) { toast("❌ Entre ton pseudo", true); return; }
         
         const code = Math.floor(1000 + Math.random() * 9000).toString();
         const roomRef = db.ref(`game_rooms/${code}`);
@@ -601,26 +597,25 @@
             createdAt: Date.now()
         });
         
-        currentTeamData = { teamName, code };
-        toast(`✅ Équipe "${teamName}" créée ! Code: ${code}`);
+        toast(`✅ Salon "${teamName}" créé ! Code: ${code}`);
         enterRoom(code);
     }
     
-    // ========== REJOINDRE UNE ÉQUIPE ==========
+    // ========== REJOINDRE UN SALON ==========
     async function joinTeam() {
         const code = document.getElementById('joinCode').value.trim();
         const playerName = document.getElementById('joinPlayerName').value.trim();
         const photoFile = document.getElementById('joinPlayerPhoto').files[0];
         
-        if(!code || code.length !== 4) { toast("❌ Code invalide", true); return; }
+        if(!code || code.length !== 4) { toast("❌ Code invalide (4 chiffres)", true); return; }
         if(!playerName) { toast("❌ Entre ton pseudo", true); return; }
         
         const roomRef = db.ref(`game_rooms/${code}`);
         const snapshot = await roomRef.once('value');
         const room = snapshot.val();
         
-        if(!room) { toast("❌ Équipe introuvable", true); return; }
-        if(Object.keys(room.players).length >= 4) { toast("❌ Équipe complète (4/4)", true); return; }
+        if(!room) { toast("❌ Salon introuvable", true); return; }
+        if(Object.keys(room.players).length >= 4) { toast("❌ Salon complet (4/4)", true); return; }
         if(room.status !== 'waiting') { toast("❌ Partie déjà commencée", true); return; }
         
         let photoUrl = null;
@@ -636,12 +631,11 @@
         
         await roomRef.child(`players/${currentPlayerId}`).set(playerData);
         
-        currentTeamData = { teamName: room.teamName, code };
-        toast(`✅ Rejoint l'équipe "${room.teamName}" !`);
+        toast(`✅ Rejoint le salon "${room.teamName}" !`);
         enterRoom(code);
     }
     
-    // ========== SALLE D'ATTENTE ET JEU ==========
+    // ========== SALLE D'ATTENTE ==========
     function enterRoom(code) {
         currentRoomCode = code;
         document.getElementById('createLobby').style.display = 'none';
@@ -654,7 +648,7 @@
         roomRef.on('value', async (snapshot) => {
             const room = snapshot.val();
             if(!room) {
-                toast("❌ Équipe dissoute", true);
+                toast("❌ Salon fermé", true);
                 leaveRoom();
                 return;
             }
@@ -662,10 +656,9 @@
             const players = room.players;
             const playerCount = Object.keys(players).length;
             const isHost = players[currentPlayerId] ? true : false;
-            const currentPlayer = players[currentPlayerId];
             
             if(room.status === 'waiting') {
-                let html = `<div class="setup-box"><h2>🎮 ÉQUIPE : ${escapeHtml(room.teamName)}</h2>
+                let html = `<div class="create-box"><h2 style="text-align:center;">🎮 SALON : ${escapeHtml(room.teamName)}</h2>
                 <div class="players-area">`;
                 for(let i=1; i<=4; i++) {
                     const playerList = Object.values(players);
@@ -677,21 +670,20 @@
                 }
                 html += `</div>`;
                 if(isHost && playerCount >= 2) {
-                    html += `<button class="btn btn-success" onclick="startGame('${code}')">🎮 COMMENCER LA PARTIE 1 (${playerCount}/4)</button>`;
+                    html += `<button class="btn btn-success" onclick="startGame('${code}')" style="width:100%;">🎮 COMMENCER LA PARTIE 1 (${playerCount}/4)</button>`;
                 } else if(isHost) {
-                    html += `<p>⏳ En attente de joueurs... (${playerCount}/4 minimum 2)</p>`;
+                    html += `<p style="text-align:center;">⏳ En attente de joueurs... (${playerCount}/4 minimum 2)</p>`;
                 } else {
-                    html += `<p>⏳ En attente que l'hôte commence la partie...</p>`;
+                    html += `<p style="text-align:center;">⏳ En attente que l'hôte commence la partie...</p>`;
                 }
-                html += `<button class="btn" onclick="leaveRoom()">❌ QUITTER</button></div>`;
+                html += `<button class="btn" onclick="leaveRoom()" style="width:100%; margin-top:10px;">❌ QUITTER</button></div>`;
                 document.getElementById('gameRoom').innerHTML = html;
             }
             else if(room.status === 'playing') {
                 await showQuiz(room, code);
             }
             else if(room.status === 'part2_unlocked') {
-                // Proposer de passer à la partie 2
-                let html = `<div class="quiz-area"><h2>🏆 FÉLICITATIONS ! 🏆</h2>
+                let html = `<div class="quiz-area"><h2 style="text-align:center;">🏆 FÉLICITATIONS ! 🏆</h2>
                 <div class="score-big">Score Partie 1 : ${room.scorePart1} points</div>
                 <p style="text-align:center; margin:20px;">Vous avez débloqué la PARTIE 2 (Images) !</p>
                 <div style="text-align:center;">
@@ -728,7 +720,6 @@
     
     async function loadNextQuestion(code, qIndex) {
         if(qIndex >= currentQuestions.length) {
-            // Fin de la partie
             const roomRef = db.ref(`game_rooms/${code}`);
             const snapshot = await roomRef.once('value');
             const room = snapshot.val();
@@ -743,12 +734,10 @@
                     await roomRef.update({ status: 'finished' });
                 }
             } else {
-                // Fin partie 2
                 const totalScore = Object.values(room.players).reduce((s,p) => s + (p.score || 0), 0);
                 const scorePart1 = room.scorePart1 || 0;
                 await roomRef.update({ status: 'finished', scorePart2: totalScore });
                 
-                // Sauvegarder dans le classement
                 const teamData = {
                     teamName: room.teamName,
                     players: room.players,
@@ -837,14 +826,14 @@
         const scorePart2 = room.scorePart2 || 0;
         
         let html = `<div class="quiz-area">
-            <h2>🏆 RÉSULTATS FINAUX 🏆</h2>
+            <h2 style="text-align:center;">🏆 RÉSULTATS FINAUX 🏆</h2>
             <div class="score-big">ÉQUIPE: ${escapeHtml(room.teamName)}</div>
             <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin: 20px 0;">
                 <div>📝 Partie 1: ${scorePart1} pts</div>
                 <div>🖼️ Partie 2: ${scorePart2} pts</div>
                 <div>⭐ TOTAL: ${totalScore} pts</div>
             </div>
-            <div class="players-area" style="margin-top: 10px;">`;
+            <div class="players-area">`;
         
         players.forEach((p, i) => {
             html += `<div class="player-card filled">
@@ -854,7 +843,7 @@
             </div>`;
         });
         
-        html += `</div><button class="btn" onclick="leaveRoom()">🏠 QUITTER</button></div>`;
+        html += `</div><button class="btn" onclick="leaveRoom()" style="width:100%;">🏠 QUITTER</button></div>`;
         document.getElementById('gameRoom').innerHTML = html;
     }
     
@@ -878,7 +867,7 @@
         document.getElementById('joinPlayerPhoto').value = '';
         document.getElementById('photoPreview').innerHTML = '';
         document.getElementById('joinPhotoPreview').innerHTML = '';
-        toast("✅ Tu as quitté l'équipe");
+        toast("✅ Tu as quitté le salon");
     }
     
     // INIT
