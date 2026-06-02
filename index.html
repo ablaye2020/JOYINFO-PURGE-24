@@ -18,7 +18,7 @@
             position: relative;
         }
         
-        /* Fond Luffy (lien externe) */
+        /* Fond Luffy - PLEIN ECRAN SANS CADRE */
         body::before {
             content: "";
             position: fixed;
@@ -30,8 +30,14 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            opacity: 0.35;
+            opacity: 0.6;
             z-index: 0;
+        }
+        
+        /* Tout le contenu au-dessus du fond */
+        .container, .marquee-cinema, .marquee-cinema-bottom, .admin-link, .music-control {
+            position: relative;
+            z-index: 1;
         }
         
         .floating-particles {
@@ -49,14 +55,14 @@
             position: absolute;
             background: radial-gradient(circle, #FFD700, #8B0000);
             border-radius: 50%;
-            opacity: 0.4;
+            opacity: 0.3;
             animation: floatParticle linear infinite;
         }
         
         @keyframes floatParticle {
             0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.6; }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.4; }
             100% { transform: translateY(-20vh) translateX(calc(100px * var(--direction))) rotate(360deg); opacity: 0; }
         }
         
@@ -73,8 +79,8 @@
             padding: 12px 0;
             overflow: hidden;
             white-space: nowrap;
-            z-index: 1000;
             border-bottom: 2px solid #FFD700;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
         }
         
         .marquee-content {
@@ -102,7 +108,6 @@
             padding: 8px 0;
             overflow: hidden;
             white-space: nowrap;
-            z-index: 1000;
             border-top: 1px solid #FFD700;
         }
         
@@ -123,27 +128,18 @@
             padding: 20px;
             padding-top: 90px;
             padding-bottom: 60px;
-            position: relative;
-            z-index: 1;
         }
         
-        /* EMPEREUR SECTION */
+        /* EMPEREUR SECTION - Transparent pour voir Luffy */
         .emperor-section {
-            background: linear-gradient(135deg, #1a0000, #2a0a0a, #1a0000);
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
             border: 2px solid #FFD700;
             border-radius: 30px;
             padding: 25px 30px;
             margin-bottom: 35px;
             text-align: center;
-            position: relative;
-            overflow: hidden;
             box-shadow: 0 0 30px rgba(255,215,0,0.3);
-            animation: emperorGlow 2s infinite;
-        }
-        
-        @keyframes emperorGlow {
-            0%, 100% { box-shadow: 0 0 20px rgba(255,215,0,0.3); }
-            50% { box-shadow: 0 0 40px rgba(255,215,0,0.6); }
         }
         
         .emperor-title {
@@ -152,8 +148,6 @@
             color: #FFD700;
             letter-spacing: 5px;
             margin-bottom: 15px;
-            position: relative;
-            z-index: 1;
         }
         
         .emperor-card {
@@ -162,21 +156,17 @@
             justify-content: center;
             gap: 30px;
             flex-wrap: wrap;
-            position: relative;
-            z-index: 1;
         }
         
-        .emperor-crown { font-size: 3.5em; filter: drop-shadow(0 0 10px #FFD700); animation: crownFloat 2s ease-in-out infinite; }
-        @keyframes crownFloat { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-5px); } }
-        
+        .emperor-crown { font-size: 3.5em; filter: drop-shadow(0 0 10px #FFD700); }
         .emperor-leader { font-family: 'Cinzel', serif; font-size: 2em; font-weight: bold; color: #FFD700; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
         .emperor-clan { font-size: 1.2em; color: #ffffff; margin-top: 5px; }
         .emperor-points { font-size: 1em; color: #ff8888; margin-top: 8px; }
         .no-emperor { color: #ff8888; font-style: italic; }
         
-        /* DERNIERS MESSAGES */
         .latest-messages {
-            background: linear-gradient(135deg, #121212, #1a0505);
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
             border: 1px solid #8B0000;
             border-radius: 20px;
             padding: 20px;
@@ -186,7 +176,7 @@
         .latest-messages h3 { color: #FFD700; font-family: 'Cinzel', serif; margin-bottom: 15px; border-left: 3px solid #FFD700; padding-left: 12px; }
         
         .message-item {
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.5);
             border-radius: 12px;
             padding: 12px;
             margin-bottom: 10px;
@@ -201,16 +191,14 @@
         .view-all-btn { background: transparent; border: 1px solid #8B0000; padding: 8px 20px; border-radius: 30px; color: #FFD700; cursor: pointer; margin-top: 15px; width: 100%; font-size: 0.8em; }
         .view-all-btn:hover { background: #8B0000; }
         
-        /* HEADER */
         .royal-header {
-            background: linear-gradient(135deg, #0a0a0a, #1a0000, #0a0a0a);
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
             border-radius: 30px;
             padding: 40px 30px;
             text-align: center;
             margin-bottom: 30px;
             border: 1px solid #8B0000;
-            position: relative;
-            overflow: hidden;
         }
         
         .live-badge { display: inline-block; background: #cc0000; color: #FFD700; font-size: 11px; padding: 6px 18px; border-radius: 50px; margin-bottom: 20px; animation: pulse 1.5s infinite; }
@@ -222,7 +210,7 @@
         
         .royal-nav { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
         
-        .nav-btn { background: transparent; border: 2px solid #8B0000; padding: 10px 25px; font-family: 'Cinzel', serif; font-weight: 600; color: #FFD700; cursor: pointer; transition: all 0.4s; border-radius: 60px; font-size: 0.9em; }
+        .nav-btn { background: rgba(0,0,0,0.6); border: 2px solid #8B0000; padding: 10px 25px; font-family: 'Cinzel', serif; font-weight: 600; color: #FFD700; cursor: pointer; transition: all 0.4s; border-radius: 60px; font-size: 0.9em; }
         .nav-btn:hover, .nav-btn.active { background: linear-gradient(135deg, #8B0000, #cc0000); border-color: #FFD700; color: white; transform: translateY(-3px); }
         
         .section { display: none; animation: fadeInUp 0.6s ease; }
@@ -231,23 +219,21 @@
         
         /* CLASSEMENT */
         .ranking-tabs { display: flex; gap: 20px; justify-content: center; margin-bottom: 30px; flex-wrap: wrap; }
-        .tab-btn { background: rgba(139,0,0,0.3); border: 1px solid #8B0000; padding: 10px 30px; border-radius: 50px; cursor: pointer; color: #FFD700; transition: all 0.3s; font-family: 'Cinzel', serif; }
+        .tab-btn { background: rgba(0,0,0,0.6); border: 1px solid #8B0000; padding: 10px 30px; border-radius: 50px; cursor: pointer; color: #FFD700; transition: all 0.3s; font-family: 'Cinzel', serif; }
         .tab-btn:hover { background: #8B0000; }
         .tab-btn.active { background: linear-gradient(135deg, #8B0000, #cc0000); color: white; }
         
         .clans-grid { display: flex; flex-direction: column; gap: 15px; }
         
         .clan-card {
-            background: linear-gradient(95deg, #121212 0%, #1a0505 100%);
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
             border: 1px solid #8B0000;
             border-radius: 20px;
             padding: 18px 22px;
             transition: all 0.4s;
-            position: relative;
-            overflow: hidden;
         }
         
-        .clan-card::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 5px; background: linear-gradient(135deg, #8B0000, #FFD700); }
         .clan-card:hover { transform: translateX(8px); border-color: #FFD700; }
         
         .clan-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
@@ -257,17 +243,18 @@
         .clan-name { font-size: 1.3em; font-weight: 800; color: #FFD700; font-family: 'Cinzel', serif; }
         .clan-leader { font-size: 0.75em; color: #ff8888; margin-top: 3px; }
         .clan-stats { display: flex; gap: 10px; flex-wrap: wrap; }
-        .stat { background: rgba(139,0,0,0.3); padding: 4px 12px; border-radius: 30px; font-size: 0.75em; color: #FFD700; }
+        .stat { background: rgba(139,0,0,0.5); padding: 4px 12px; border-radius: 30px; font-size: 0.75em; color: #FFD700; }
         .clan-points { font-size: 1.2em; font-weight: bold; color: #FFD700; min-width: 110px; text-align: right; }
         .like-btn { background: rgba(139,0,0,0.5); border: 1px solid #FFD700; padding: 6px 18px; border-radius: 40px; cursor: pointer; color: #FFD700; transition: all 0.3s; }
         .like-btn:hover { background: #8B0000; transform: scale(1.05); }
         .like-btn.liked { background: #FFD700; color: #000000; }
         
-        .refresh-btn { background: rgba(139,0,0,0.3); border: 1px solid #8B0000; padding: 8px 25px; border-radius: 40px; color: #FFD700; cursor: pointer; margin-bottom: 25px; }
+        .refresh-btn { background: rgba(0,0,0,0.6); border: 1px solid #8B0000; padding: 8px 25px; border-radius: 40px; color: #FFD700; cursor: pointer; margin-bottom: 25px; }
         
         /* SECTION JEU */
         .game-panel {
-            background: linear-gradient(135deg, #121212, #1a0505);
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
             border: 2px solid #FFD700;
             border-radius: 30px;
             padding: 30px;
@@ -289,38 +276,19 @@
             text-align: center;
         }
         
-        .room-code-input { font-size: 1.5em; text-align: center; letter-spacing: 5px; font-family: monospace; }
+        .room-code-input { font-size: 1.5em; text-align: center; letter-spacing: 5px; font-family: monospace; background: #0a0a0a; border: 1px solid #FFD700; padding: 10px; border-radius: 10px; color: white; }
         .game-btn { background: linear-gradient(135deg, #8B0000, #cc0000); border: none; padding: 12px 30px; border-radius: 50px; color: #FFD700; font-weight: bold; cursor: pointer; margin: 10px; transition: all 0.3s; }
         .game-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(204,0,0,0.4); }
         
-        .waiting-room {
-            text-align: center;
-            padding: 30px;
-        }
-        
-        .players-list {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-            margin: 30px 0;
-        }
-        
-        .player-slot {
-            background: rgba(139,0,0,0.3);
-            border: 1px solid #FFD700;
-            border-radius: 20px;
-            padding: 20px;
-            min-width: 150px;
-            text-align: center;
-        }
-        
+        .waiting-room { text-align: center; padding: 30px; }
+        .players-list { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin: 30px 0; }
+        .player-slot { background: rgba(139,0,0,0.3); border: 1px solid #FFD700; border-radius: 20px; padding: 20px; min-width: 150px; text-align: center; }
         .player-slot.filled { background: rgba(0,0,0,0.6); border-color: #00ff00; }
         .player-avatar { font-size: 3em; }
         .player-name { margin-top: 10px; font-weight: bold; }
         
         .quiz-container {
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.8);
             border-radius: 20px;
             padding: 25px;
         }
@@ -330,43 +298,70 @@
         .answers { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px; }
         .answer-btn { background: rgba(139,0,0,0.5); border: 1px solid #FFD700; padding: 15px; border-radius: 15px; cursor: pointer; color: white; font-size: 1em; transition: all 0.3s; }
         .answer-btn:hover { background: #8B0000; transform: scale(1.02); }
-        .answer-btn.selected { background: #00aa00; border-color: #ffffff; }
         
         .score-display { text-align: center; font-size: 1.3em; margin-bottom: 20px; color: #FFD700; }
         .question-counter { text-align: center; margin-bottom: 15px; color: #888; }
         
-        .ranking-list {
-            max-height: 400px;
-            overflow-y: auto;
+        .forum-form {
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
+            border: 1px solid #8B0000;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
         }
         
-        .ranking-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px;
-            border-bottom: 1px solid #8B0000;
+        .forum-form input, .forum-form textarea {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border-radius: 12px;
+            border: 1px solid #8B0000;
+            background: #0a0a0a;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
         }
+        
+        .forum-message {
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
+            border: 1px solid #8B0000;
+            border-radius: 18px;
+            padding: 20px;
+            margin-bottom: 18px;
+        }
+        
+        .forum-message:hover { border-color: #FFD700; transform: translateX(5px); }
+        .forum-author { color: #FFD700; font-weight: bold; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+        .forum-date { font-size: 0.7em; color: #ff8888; }
+        .forum-content { margin: 12px 0; line-height: 1.6; }
+        .forum-like { background: transparent; border: 1px solid #8B0000; padding: 6px 18px; border-radius: 30px; cursor: pointer; color: #FFD700; margin-top: 10px; }
+        .forum-like:hover { background: #8B0000; }
+        .forum-like.liked { background: #FFD700; color: #000000; }
         
         .admin-link {
             position: fixed;
             bottom: 65px;
             left: 25px;
-            background: #121212;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
             border: 1px solid #8B0000;
             padding: 8px 18px;
             border-radius: 50px;
             color: #FFD700;
             text-decoration: none;
             font-size: 11px;
-            z-index: 100;
+            transition: all 0.3s;
         }
+        
+        .admin-link:hover { background: #8B0000; transform: scale(1.05); }
         
         .music-control {
             position: fixed;
             bottom: 65px;
             right: 25px;
-            background: #121212;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
             border: 1px solid #8B0000;
             border-radius: 50%;
             width: 48px;
@@ -376,7 +371,6 @@
             justify-content: center;
             cursor: pointer;
             font-size: 20px;
-            z-index: 100;
             color: #FFD700;
         }
         
@@ -516,9 +510,9 @@
 
         <!-- SECTION FORUM -->
         <div id="forum" class="section">
-            <div class="forum-form" style="background:#121212; border:1px solid #8B0000; border-radius:20px; padding:25px; margin-bottom:30px;">
-                <input type="text" id="forumPseudo" placeholder="Votre pseudo" style="width:100%; padding:14px; margin:10px 0; border-radius:12px; border:1px solid #8B0000; background:#0a0a0a; color:white;">
-                <textarea id="forumMessage" placeholder="Votre message" rows="3" style="width:100%; padding:14px; margin:10px 0; border-radius:12px; border:1px solid #8B0000; background:#0a0a0a; color:white;"></textarea>
+            <div class="forum-form">
+                <input type="text" id="forumPseudo" placeholder="Votre pseudo">
+                <textarea id="forumMessage" placeholder="Votre message" rows="3"></textarea>
                 <button class="game-btn" id="publishForumBtn">📢 PUBLIER</button>
             </div>
             <div id="forumMessages">⏳ Chargement...</div>
@@ -527,9 +521,9 @@
 
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 
     <script>
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyB3yYAuiGqbtrbZ1aSYxAjduZ65adNIpag",
             authDomain: "purge-game-58718.firebaseapp.com",
@@ -542,6 +536,7 @@
         
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
+        const storage = firebase.storage();
         
         let currentClans = [];
         let currentPeriod = 'year';
@@ -553,7 +548,6 @@
         let currentPlayerId = localStorage.getItem('playerId') || Math.random().toString(36).substr(2, 8);
         localStorage.setItem('playerId', currentPlayerId);
         
-        // PARTICULES
         function createParticles() {
             const container = document.getElementById('floatingParticles');
             for(let i = 0; i < 50; i++) {
@@ -585,7 +579,6 @@
             setTimeout(() => toast.remove(), 2000);
         }
         
-        // MUSIQUE
         function initMusic() { bgMusic = document.getElementById('bgMusic'); if(bgMusic) { bgMusic.volume = 0.2; bgMusic.loop = true; } }
         function toggleMusic() { if(!bgMusic) initMusic(); if(musicPlaying) { bgMusic.pause(); musicPlaying = false; document.getElementById('musicBtn').innerHTML = '🎵'; } else { bgMusic.play().catch(e => console.log("Auto-play bloqué")); musicPlaying = true; document.getElementById('musicBtn').innerHTML = '🎵🔊'; } }
         document.body.addEventListener('click', () => { if(!musicPlaying && bgMusic) { bgMusic.play().catch(e => {}); musicPlaying = true; document.getElementById('musicBtn').innerHTML = '🎵🔊'; } }, { once: true });
@@ -597,7 +590,13 @@
             try {
                 const snapshot = await database.ref('clans').once('value');
                 const clansMap = new Map();
-                snapshot.forEach(child => { const clan = child.val(); if(!clansMap.has(clan.name)) { clan.id = child.key; clansMap.set(clan.name, clan); } });
+                snapshot.forEach(child => {
+                    const clan = child.val();
+                    if(!clansMap.has(clan.name)) {
+                        clan.id = child.key;
+                        clansMap.set(clan.name, clan);
+                    }
+                });
                 currentClans = Array.from(clansMap.values());
                 updateEmperor();
                 updateRanking();
@@ -618,7 +617,7 @@
             else if(currentPeriod === 'month') clans.sort((a,b) => (b.score_month || 0) - (a.score_month || 0));
             else clans.sort((a,b) => (b.score_year || 0) - (a.score_year || 0));
             const container = document.getElementById('rankingList');
-            if(clans.length === 0) { container.innerHTML = '<div class="loading">🏆 Aucun clan enregistré</div>'; return; }
+            if(clans.length === 0) { container.innerHTML = '<div class="loading">🏆 Aucun clan enregistré. Allez dans l\'admin pour en ajouter !</div>'; return; }
             const icons = ['⚔️', '🛡️', '👑', '🏰', '🐉', '⚡', '🔥', '💀', '🦅', '🐺', '🦁', '🗡️'];
             container.innerHTML = clans.map((clan, idx) => {
                 let score = currentPeriod === 'week' ? (clan.score_week || 0) : (currentPeriod === 'month' ? (clan.score_month || 0) : (clan.score_year || 0));
@@ -640,7 +639,7 @@
                 messages.reverse();
                 const container = document.getElementById('forumMessages');
                 if(messages.length === 0) { container.innerHTML = '<div class="loading">💬 Aucun message, soyez le premier !</div>'; return; }
-                container.innerHTML = messages.map(msg => { const hasLiked = userLikedMessages[msg.id] === true; return `<div class="forum-message" style="background:#121212; border:1px solid #8B0000; border-radius:18px; padding:20px; margin-bottom:18px;"><div class="forum-author" style="color:#FFD700; font-weight:bold; display:flex; justify-content:space-between;"><strong>🔥 ${escapeHtml(msg.author)}</strong><span style="font-size:0.7em; color:#ff8888;">${msg.date || ''}</span></div><div class="forum-content" style="margin:12px 0;">${escapeHtml(msg.message)}</div><button class="forum-like" style="background:transparent; border:1px solid #8B0000; padding:6px 18px; border-radius:30px; cursor:pointer; color:#FFD700;" onclick="likeMessage('${msg.id}')">${hasLiked ? '❤️ LIKÉ' : `❤️ ${msg.likes || 0} likes`}</button></div>`; }).join('');
+                container.innerHTML = messages.map(msg => { const hasLiked = userLikedMessages[msg.id] === true; return `<div class="forum-message"><div class="forum-author"><strong>🔥 ${escapeHtml(msg.author)}</strong><span class="forum-date">${msg.date || ''}</span></div><div class="forum-content">${escapeHtml(msg.message)}</div><button class="forum-like ${hasLiked ? 'liked' : ''}" onclick="likeMessage('${msg.id}')">${hasLiked ? '❤️ LIKÉ' : `❤️ ${msg.likes || 0} likes`}</button></div>`; }).join('');
             } catch(e) { console.error(e); }
         }
         
@@ -707,6 +706,13 @@
             watchRoom(code, mode);
         }
         
+        async function loadQuestionsFromFirebase(mode) {
+            const snapshot = await database.ref(`questions/${mode}`).once('value');
+            const questions = [];
+            snapshot.forEach(child => questions.push({ id: child.key, ...child.val() }));
+            return questions;
+        }
+        
         function watchRoom(code, mode) {
             const roomRef = database.ref(`game_rooms/${code}`);
             roomRef.on('value', async (snapshot) => {
@@ -727,7 +733,7 @@
                     html += `</div>${isHost && playerCount >= 2 ? `<button class="game-btn" onclick="startGame('${code}')">🎮 COMMENCER LA PARTIE (${playerCount}/4)</button>` : `<p style="margin-top:20px;">⏳ En attente de joueurs... (${playerCount}/4)</p>`}<button class="game-btn" onclick="leaveRoom('${code}')">❌ QUITTER</button></div>`;
                     document.getElementById('gameContainer').innerHTML = html;
                 } else if(room.status === 'playing') {
-                    displayQuiz(code, room);
+                    await displayQuiz(code, room);
                 } else if(room.status === 'finished') {
                     displayResults(code, room);
                 }
@@ -746,17 +752,9 @@
             const room = snapshot.val();
             const mode = room.mode;
             
-            // CHARGER LES QUESTIONS (à remplacer par tes vraies questions)
-            const questions = mode === 'partie1' ? [
-                { text: "Qui est le capitaine du Clan Mugiwara ?", answers: ["Luffy", "Zoro", "Sanji", "Usopp"], correct: 0 },
-                { text: "Quel est le nom du fruit du démon de Barbe Blanche ?", answers: ["Gura Gura no Mi", "Mera Mera no Mi", "Gomu Gomu no Mi", "Yami Yami no Mi"], correct: 0 },
-                // Ajoute tes 20 questions ici
-            ] : [
-                { image: "https://example.com/image1.jpg", text: "Qui est ce purgeur ?", answers: ["Clan A", "Clan B", "Clan C", "Clan D"], correct: 0 },
-                // Ajoute tes 20 questions images ici
-            ];
-            
+            const questions = await loadQuestionsFromFirebase(mode);
             const question = questions[qIndex];
+            
             if(!question) {
                 await roomRef.update({ status: 'finished' });
                 return;
@@ -764,7 +762,7 @@
             
             await roomRef.update({ currentQuestion: qIndex });
             
-            let html = `<div class="quiz-container"><div class="score-display">🏆 SCORE ÉQUIPE: ${Object.values(room.players).reduce((sum, p) => sum + (p.score || 0), 0)} pts</div><div class="question-counter">Question ${qIndex+1}/20</div>`;
+            let html = `<div class="quiz-container"><div class="score-display">🏆 SCORE ÉQUIPE: ${Object.values(room.players).reduce((sum, p) => sum + (p.score || 0), 0)} pts</div><div class="question-counter">Question ${qIndex+1}/${questions.length}</div>`;
             if(question.image) html += `<img src="${question.image}" class="question-image">`;
             html += `<div class="question-text">${escapeHtml(question.text)}</div><div class="answers">`;
             question.answers.forEach((ans, i) => {
@@ -780,28 +778,24 @@
             const room = snapshot.val();
             const mode = room.mode;
             
-            // Vérifier si le joueur a déjà répondu
-            if(room.players[currentPlayerId].answers.includes(qIndex)) {
+            if(room.players[currentPlayerId] && room.players[currentPlayerId].answers && room.players[currentPlayerId].answers.includes(qIndex)) {
                 showToast("❌ Vous avez déjà répondu à cette question !", true);
                 return;
             }
             
-            // Enregistrer la réponse
-            await roomRef.child(`players/${currentPlayerId}/answers`).set([...room.players[currentPlayerId].answers, qIndex]);
+            await roomRef.child(`players/${currentPlayerId}/answers`).set([...(room.players[currentPlayerId].answers || []), qIndex]);
             await roomRef.child(`players/${currentPlayerId}/lastAnswer`).set(answerIndex);
             
-            // Vérifier si tous les joueurs ont répondu
+            const questions = await loadQuestionsFromFirebase(mode);
+            const question = questions[qIndex];
+            
             const allPlayers = Object.values(room.players);
             const allAnswered = allPlayers.every(p => p.answers && p.answers.includes(qIndex));
             
             if(allAnswered) {
-                // Vérifier si tous ont la bonne réponse
-                const questions = mode === 'partie1' ? [] : []; // Charger les mêmes questions
-                const correctIndex = 0; // À remplacer par la bonne réponse
-                const allCorrect = allPlayers.every(p => p.lastAnswer === correctIndex);
+                const allCorrect = allPlayers.every(p => p.lastAnswer === question.correct);
                 
                 if(allCorrect) {
-                    // +10 points pour tous
                     for(let playerId of Object.keys(room.players)) {
                         const newScore = (room.players[playerId].score || 0) + 10;
                         await roomRef.child(`players/${playerId}/score`).set(newScore);
@@ -811,7 +805,6 @@
                     showToast("❌ QUELQU'UN A FAUX ! 0 point pour cette question !");
                 }
                 
-                // Passer à la question suivante
                 await loadQuestion(code, qIndex + 1);
             } else {
                 showToast("✅ Réponse enregistrée ! En attente des autres joueurs...");
@@ -823,7 +816,7 @@
             players.sort((a,b) => (b.score || 0) - (a.score || 0));
             let html = `<div class="quiz-container"><h2>🏆 RÉSULTATS FINAUX 🏆</h2><div class="ranking-list">`;
             players.forEach((p, idx) => {
-                html += `<div class="ranking-item"><span>${idx+1}. ${escapeHtml(p.name)}</span><span style="color:#FFD700;">${p.score || 0} points</span></div>`;
+                html += `<div class="ranking-item" style="display:flex; justify-content:space-between; padding:12px; border-bottom:1px solid #8B0000;"><span>${idx+1}. ${escapeHtml(p.name)}</span><span style="color:#FFD700;">${p.score || 0} points</span></div>`;
             });
             html += `</div><button class="game-btn" onclick="leaveRoom('${code}')">🏠 QUITTER</button></div>`;
             document.getElementById('gameContainer').innerHTML = html;
