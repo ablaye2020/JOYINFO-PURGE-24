@@ -2,78 +2,17 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>JOY PURGE GAME - Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JOY PURGE GAME - ADMIN</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body {
             font-family: 'Montserrat', sans-serif;
             background: #0a0a0a;
-            color: #ffffff;
-            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
         }
-        
-        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
-        
-        .admin-header {
-            background: linear-gradient(135deg, #1a0000, #2a0a0a);
-            border-radius: 30px;
-            padding: 30px;
-            text-align: center;
-            margin-bottom: 30px;
-            border: 1px solid #FFD700;
-        }
-        
-        h1 { font-family: 'Cinzel', serif; color: #FFD700; font-size: 2em; }
-        
-        .stats-bar {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin: 20px 0;
-        }
-        
-        .stat-card {
-            background: rgba(139,0,0,0.3);
-            border-radius: 15px;
-            padding: 12px 25px;
-            text-align: center;
-            border: 1px solid #FFD700;
-        }
-        
-        .stat-card span { font-size: 28px; font-weight: bold; color: #FFD700; font-family: 'Cinzel', serif; }
-        
-        .btn-group {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin: 20px 0;
-        }
-        
-        button {
-            background: linear-gradient(135deg, #8B0000, #cc0000);
-            border: none;
-            padding: 10px 22px;
-            border-radius: 40px;
-            color: #FFD700;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(204,0,0,0.4); }
-        
-        .btn-danger { background: #c0392b; }
-        .btn-danger:hover { background: #a93226; }
-        .btn-warning { background: #e67e22; }
-        .btn-warning:hover { background: #d35400; }
-        .btn-success { background: #27ae60; }
-        .btn-success:hover { background: #229954; }
-        
+        h1, h2 { color: #FFD700; font-family: 'Cinzel', serif; margin-bottom: 20px; }
         .card {
             background: #1a1a1a;
             border: 1px solid #8B0000;
@@ -81,588 +20,310 @@
             padding: 25px;
             margin-bottom: 30px;
         }
-        
-        .card h2 {
-            font-family: 'Cinzel', serif;
-            color: #FFD700;
-            margin-bottom: 20px;
-            border-left: 4px solid #FFD700;
-            padding-left: 15px;
-        }
-        
-        .clan-card {
-            background: linear-gradient(95deg, #121212, #1a0505);
-            border: 1px solid #8B0000;
-            border-radius: 15px;
-            padding: 18px;
-            margin-bottom: 15px;
-        }
-        
-        .question-card {
-            background: linear-gradient(95deg, #121212, #1a0505);
-            border: 1px solid #8B0000;
-            border-radius: 15px;
-            padding: 18px;
-            margin-bottom: 15px;
-        }
-        
-        .clan-name { font-size: 1.3em; font-weight: bold; color: #FFD700; font-family: 'Cinzel', serif; }
-        
-        .clan-stats { display: flex; gap: 10px; flex-wrap: wrap; margin: 10px 0; }
-        
-        .stat {
-            background: rgba(139,0,0,0.3);
-            padding: 4px 12px;
-            border-radius: 30px;
-            font-size: 0.75em;
-            color: #FFD700;
-        }
-        
-        .status-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.7em;
-            font-weight: bold;
-        }
-        
-        .status-badge.pending { background: #f39c12; color: #000; }
-        .status-badge.approved { background: #27ae60; color: #fff; }
-        .status-badge.rejected { background: #c0392b; color: #fff; }
-        
-        .photos-preview { display: flex; gap: 10px; margin: 10px 0; flex-wrap: wrap; }
-        .photos-preview img { width: 80px; height: 80px; object-fit: cover; border-radius: 10px; cursor: pointer; }
-        
-        .admin-actions { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; align-items: center; }
-        .admin-actions input { background: #0a0a0a; border: 1px solid #FFD700; padding: 8px; border-radius: 8px; color: white; width: 100px; }
-        
-        .points-input-group {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            margin-top: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .points-input-group input {
+        input, select, textarea {
             background: #0a0a0a;
             border: 1px solid #FFD700;
-            padding: 8px;
-            border-radius: 8px;
+            padding: 10px;
+            border-radius: 10px;
             color: white;
-            width: 100px;
+            width: 100%;
+            margin: 8px 0;
         }
-        
-        .reset-buttons {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
+        button {
+            background: linear-gradient(135deg, #8B0000, #cc0000);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            color: #FFD700;
+            cursor: pointer;
+            margin: 5px;
         }
-        
-        .reset-buttons button { padding: 8px 20px; }
-        
-        .loading { text-align: center; padding: 40px; color: #FFD700; }
-        
+        .btn-danger { background: #c0392b; }
+        .btn-success { background: #27ae60; }
+        .clan-item, .question-item {
+            background: #0a0a0a;
+            border-left: 4px solid #FFD700;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+        }
         .login-box {
             max-width: 400px;
             margin: 100px auto;
-            background: #1a1a1a;
-            border: 2px solid #FFD700;
-            border-radius: 30px;
-            padding: 40px;
             text-align: center;
         }
-        
-        .pin-input {
-            font-size: 32px;
-            text-align: center;
-            letter-spacing: 10px;
-            width: 200px;
-            margin: 20px auto;
-            background: #0a0a0a;
-            border: 2px solid #8B0000;
-            color: #FFD700;
-            padding: 10px;
-            border-radius: 15px;
-        }
-        
-        .mode-tabs {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .mode-tab {
-            background: rgba(139,0,0,0.5);
-            border: 1px solid #FFD700;
-            padding: 8px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-        }
-        
-        .mode-tab.active {
-            background: linear-gradient(135deg, #8B0000, #cc0000);
-        }
-        
-        .answers-input {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin: 15px 0;
-        }
-        
-        .answers-input input {
-            background: #0a0a0a;
-            border: 1px solid #FFD700;
-            padding: 8px;
-            border-radius: 8px;
-            color: white;
-        }
-        
-        .question-image-preview {
-            max-width: 200px;
-            max-height: 150px;
-            margin: 10px 0;
-            border-radius: 10px;
-        }
-        
-        @media (max-width: 768px) {
-            .photos-preview img { width: 60px; height: 60px; }
-            .answers-input { grid-template-columns: 1fr; }
-        }
+        .pin { font-size: 2em; text-align: center; letter-spacing: 5px; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div id="loginScreen" class="login-box">
-            <div style="font-size:50px;">👑</div>
-            <h2 style="color:#FFD700;">JOY PURGE GAME - ADMIN</h2>
-            <input type="password" id="pinCode" class="pin-input" maxlength="4" placeholder="****">
-            <button onclick="checkPin()" style="width:100%; margin-top:20px;">🔐 SE CONNECTER</button>
-            <div id="loginError" style="color:#ff8888; margin-top:15px;"></div>
-            <a href="index.html" style="color:#FFD700; display:block; margin-top:20px;">← Retour au site</a>
-        </div>
 
-        <div id="adminPanel" style="display:none;">
-            <div class="admin-header">
-                <h1>⚜️ JOY PURGE GAME - PANEL ADMIN ⚜️</h1>
-                <div class="stats-bar">
-                    <div class="stat-card"><span id="statClans">0</span><br>Clans</div>
-                    <div class="stat-card"><span id="statQuestions1">0</span><br>Questions Partie 1</div>
-                    <div class="stat-card"><span id="statQuestions2">0</span><br>Questions Partie 2</div>
-                </div>
-                <div class="btn-group">
-                    <button onclick="logout()">🚪 DÉCONNEXION</button>
-                    <a href="index.html"><button>🏠 VOIR LE SITE</button></a>
-                </div>
-            </div>
+<div id="login" class="login-box card">
+    <h1>👑 ADMIN</h1>
+    <input type="password" id="pin" class="pin" maxlength="4" placeholder="CODE">
+    <button onclick="checkPin()">🔐 ENTRER</button>
+    <div id="loginError" style="color: red; margin-top: 10px;"></div>
+    <a href="index.html" style="color:#FFD700;">← Retour</a>
+</div>
 
-            <!-- GESTION DES QUESTIONS -->
-            <div class="card">
-                <h2>📝 GESTION DES QUESTIONS</h2>
-                <div class="mode-tabs">
-                    <div class="mode-tab active" onclick="showQuestionMode('partie1', this)">📝 PARTIE 1 - TEXTE</div>
-                    <div class="mode-tab" onclick="showQuestionMode('partie2', this)">🖼️ PARTIE 2 - IMAGES</div>
-                </div>
-                
-                <!-- Formulaire ajout question -->
-                <div style="background:rgba(0,0,0,0.3); border-radius:15px; padding:20px; margin-bottom:20px;">
-                    <h3 style="color:#FFD700; margin-bottom:15px;">➕ AJOUTER UNE QUESTION</h3>
-                    <input type="text" id="questionText" placeholder="Texte de la question" style="width:100%; background:#0a0a0a; border:1px solid #FFD700; padding:12px; border-radius:10px; color:white; margin-bottom:10px;">
-                    
-                    <div id="imageUploadArea" style="display:none; margin-bottom:15px;">
-                        <input type="file" id="questionImage" accept="image/*" style="background:#0a0a0a; border:1px solid #FFD700; padding:8px; border-radius:8px; color:white;">
-                        <div id="imagePreview"></div>
-                    </div>
-                    
-                    <div class="answers-input">
-                        <input type="text" id="answer0" placeholder="Réponse A" style="background:#0a0a0a; border:1px solid #FFD700; padding:10px; border-radius:8px; color:white;">
-                        <input type="text" id="answer1" placeholder="Réponse B" style="background:#0a0a0a; border:1px solid #FFD700; padding:10px; border-radius:8px; color:white;">
-                        <input type="text" id="answer2" placeholder="Réponse C" style="background:#0a0a0a; border:1px solid #FFD700; padding:10px; border-radius:8px; color:white;">
-                        <input type="text" id="answer3" placeholder="Réponse D" style="background:#0a0a0a; border:1px solid #FFD700; padding:10px; border-radius:8px; color:white;">
-                    </div>
-                    
-                    <div style="margin:10px 0;">
-                        <label style="color:#FFD700;">✅ Bonne réponse :</label>
-                        <select id="correctAnswer" style="background:#0a0a0a; border:1px solid #FFD700; padding:8px; border-radius:8px; color:white; margin-left:10px;">
-                            <option value="0">A</option>
-                            <option value="1">B</option>
-                            <option value="2">C</option>
-                            <option value="3">D</option>
-                        </select>
-                    </div>
-                    
-                    <button onclick="addQuestion()" class="btn-success">📤 AJOUTER LA QUESTION</button>
-                    <div id="questionMessage" style="margin-top:10px;"></div>
-                </div>
-                
-                <!-- Liste des questions -->
-                <h3 style="color:#FFD700; margin:20px 0 10px;">📋 LISTE DES QUESTIONS</h3>
-                <div id="questionsList"><div class="loading">⏳ Chargement...</div></div>
-            </div>
-
-            <!-- GESTION DES CLANS -->
-            <div class="card">
-                <h2>🔄 RÉINITIALISATION DES SCORES</h2>
-                <div class="reset-buttons">
-                    <button onclick="resetScores('week')" class="btn-warning">📅 RÉINITIALISER SEMAINE</button>
-                    <button onclick="resetScores('month')" class="btn-warning">📆 RÉINITIALISER MOIS</button>
-                    <button onclick="resetScores('year')" class="btn-warning">🗓️ RÉINITIALISER ANNÉE</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>📋 LISTE DES CLANS</h2>
-                <div id="clansListAdmin"><div class="loading">⏳ Chargement...</div></div>
-            </div>
-        </div>
+<div id="adminPanel" style="display: none;">
+    <div class="card">
+        <h1>⚜️ PANEL ADMIN JOY PURGE GAME ⚜️</h1>
+        <button onclick="logout()">🚪 DÉCONNEXION</button>
+        <button onclick="location.reload()">🔄 RAFRAÎCHIR</button>
     </div>
+    
+    <!-- GESTION DES CLANS -->
+    <div class="card">
+        <h2>🏆 GESTION DES CLANS</h2>
+        <input type="text" id="clanName" placeholder="Nom du clan">
+        <input type="text" id="clanLeader" placeholder="Chef du clan">
+        <button onclick="addClan()" class="btn-success">➕ AJOUTER LE CLAN</button>
+        <div id="clansList"></div>
+    </div>
+    
+    <!-- RÉINITIALISATION SCORES -->
+    <div class="card">
+        <h2>🔄 RÉINITIALISATION</h2>
+        <button onclick="resetScores('week')">📅 RESET SEMAINE</button>
+        <button onclick="resetScores('month')">📆 RESET MOIS</button>
+        <button onclick="resetScores('year')">🗓️ RESET ANNÉE</button>
+        <button onclick="resetAllScores()" class="btn-danger">⚠️ RESET TOUS LES SCORES</button>
+        <button onclick="deleteAllClans()" class="btn-danger">🗑️ SUPPRIMER TOUS LES CLANS</button>
+    </div>
+    
+    <!-- QUESTIONS PARTIE 1 (TEXTE) -->
+    <div class="card">
+        <h2>📝 QUESTIONS PARTIE 1 (TEXTE)</h2>
+        <input type="text" id="q1Text" placeholder="Question">
+        <input type="text" id="q1A" placeholder="Réponse A">
+        <input type="text" id="q1B" placeholder="Réponse B">
+        <input type="text" id="q1C" placeholder="Réponse C">
+        <input type="text" id="q1D" placeholder="Réponse D">
+        <select id="q1Correct">
+            <option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option>
+        </select>
+        <button onclick="addQuestion('partie1')" class="btn-success">➕ AJOUTER QUESTION TEXTE</button>
+        <div id="questions1List"></div>
+    </div>
+    
+    <!-- QUESTIONS PARTIE 2 (IMAGES) -->
+    <div class="card">
+        <h2>🖼️ QUESTIONS PARTIE 2 (IMAGES)</h2>
+        <input type="text" id="q2Text" placeholder="Question (ex: Qui est ce purgeur ?)">
+        <input type="file" id="q2Image" accept="image/*">
+        <input type="text" id="q2A" placeholder="Réponse A">
+        <input type="text" id="q2B" placeholder="Réponse B">
+        <input type="text" id="q2C" placeholder="Réponse C">
+        <input type="text" id="q2D" placeholder="Réponse D">
+        <select id="q2Correct">
+            <option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option>
+        </select>
+        <button onclick="addQuestion('partie2')" class="btn-success">➕ AJOUTER QUESTION IMAGE</button>
+        <div id="questions2List"></div>
+    </div>
+    
+    <!-- NETTOYAGE TOTAL -->
+    <div class="card">
+        <h2>⚠️ ZONE DANGEREUSE</h2>
+        <button onclick="deleteAllData()" class="btn-danger">🗑️ SUPPRIMER TOUTES LES DONNÉES (clans + questions + forum + salons)</button>
+    </div>
+</div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyB3yYAuiGqbtrbZ1aSYxAjduZ65adNIpag",
-            authDomain: "purge-game-58718.firebaseapp.com",
-            databaseURL: "https://purge-game-58718-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "purge-game-58718",
-            storageBucket: "purge-game-58718.firebasestorage.app",
-            messagingSenderId: "554574972856",
-            appId: "1:554574972856:web:9de17e7f77eb7b5be4b14d"
-        };
-        
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-        const storage = firebase.storage();
-        
-        const ADMIN_PIN = "2007";
-        let currentQuestionMode = 'partie1';
-        
-        function escapeHtml(str) {
-            if(!str) return '';
-            return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
-        }
-        
-        function showToast(msg, isError = false) {
-            const toast = document.createElement('div');
-            toast.style.cssText = `position:fixed; bottom:100px; left:50%; transform:translateX(-50%); background:${isError ? '#c0392b' : '#27ae60'}; color:white; padding:10px 20px; border-radius:50px; z-index:2000; animation:fadeOut 2s ease forwards; font-weight:bold;`;
-            toast.innerHTML = msg;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 2000);
-        }
-        
-        function checkPin() {
-            const pin = document.getElementById('pinCode').value;
-            if(pin === ADMIN_PIN) {
-                localStorage.setItem('adminLoggedIn', 'true');
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('adminPanel').style.display = 'block';
-                loadAllData();
-            } else {
-                document.getElementById('loginError').innerText = '❌ Code incorrect';
-            }
-        }
-        
-        if(localStorage.getItem('adminLoggedIn') === 'true') {
-            document.getElementById('loginScreen').style.display = 'none';
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyB3yYAuiGqbtrbZ1aSYxAjduZ65adNIpag",
+        authDomain: "purge-game-58718.firebaseapp.com",
+        databaseURL: "https://purge-game-58718-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "purge-game-58718",
+        storageBucket: "purge-game-58718.firebasestorage.app",
+        messagingSenderId: "554574972856",
+        appId: "1:554574972856:web:9de17e7f77eb7b5be4b14d"
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const storage = firebase.storage();
+    
+    const ADMIN_PIN = "2007";
+    
+    function checkPin() {
+        if(document.getElementById('pin').value === ADMIN_PIN) {
+            localStorage.setItem('adminLogged', 'true');
+            document.getElementById('login').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'block';
-            loadAllData();
+            loadAll();
+        } else {
+            document.getElementById('loginError').innerText = '❌ Code incorrect';
         }
-        
-        function logout() {
-            localStorage.removeItem('adminLoggedIn');
-            document.getElementById('loginScreen').style.display = 'block';
-            document.getElementById('adminPanel').style.display = 'none';
+    }
+    
+    if(localStorage.getItem('adminLogged') === 'true') {
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('adminPanel').style.display = 'block';
+        loadAll();
+    }
+    
+    function logout() { localStorage.removeItem('adminLogged'); location.reload(); }
+    function toast(msg) { alert(msg); }
+    
+    async function loadAll() {
+        await loadClans();
+        await loadQuestions('partie1', 'questions1List');
+        await loadQuestions('partie2', 'questions2List');
+    }
+    
+    async function loadClans() {
+        const snapshot = await db.ref('clans').once('value');
+        const clans = [];
+        snapshot.forEach(child => clans.push({ id: child.key, ...child.val() }));
+        const container = document.getElementById('clansList');
+        if(clans.length === 0) { container.innerHTML = '<p>Aucun clan</p>'; return; }
+        container.innerHTML = clans.map(c => `
+            <div class="clan-item">
+                <strong>⚔️ ${escapeHtml(c.name)}</strong> - 👑 ${escapeHtml(c.leader)}
+                <br>📅 Sem:${c.score_week||0} 📆 Mois:${c.score_month||0} 🗓️ Année:${c.score_year||0}
+                <button onclick="deleteClan('${c.id}')" class="btn-danger">🗑️</button>
+            </div>
+        `).join('');
+    }
+    
+    async function addClan() {
+        const name = document.getElementById('clanName').value.trim();
+        const leader = document.getElementById('clanLeader').value.trim();
+        if(!name || !leader) { toast("❌ Remplissez tous les champs"); return; }
+        await db.ref('clans').push({ name, leader, score_week:0, score_month:0, score_year:0, likes:0 });
+        toast("✅ Clan ajouté !");
+        document.getElementById('clanName').value = '';
+        document.getElementById('clanLeader').value = '';
+        loadClans();
+    }
+    
+    window.deleteClan = async (id) => { if(confirm("Supprimer ?")) { await db.ref(`clans/${id}`).remove(); loadClans(); } };
+    
+    async function resetScores(period) {
+        const snapshot = await db.ref('clans').once('value');
+        const updates = {};
+        snapshot.forEach(child => { updates[`${child.key}/score_${period}`] = 0; });
+        await db.ref('clans').update(updates);
+        toast(`✅ Scores ${period} reset`);
+        loadClans();
+    }
+    
+    async function resetAllScores() {
+        if(confirm("⚠️ RESET TOUS LES SCORES ?")) {
+            const snapshot = await db.ref('clans').once('value');
+            const updates = {};
+            snapshot.forEach(child => {
+                updates[`${child.key}/score_week`] = 0;
+                updates[`${child.key}/score_month`] = 0;
+                updates[`${child.key}/score_year`] = 0;
+            });
+            await db.ref('clans').update(updates);
+            toast("✅ Tous les scores sont à 0");
+            loadClans();
         }
-        
-        async function loadAllData() {
-            await loadClansAdmin();
-            await loadQuestions();
+    }
+    
+    async function deleteAllClans() {
+        if(confirm("⚠️ SUPPRIMER TOUS LES CLANS ?")) {
+            const snapshot = await db.ref('clans').once('value');
+            for(let child of snapshot.val()) { await db.ref(`clans/${child.key}`).remove(); }
+            toast("✅ Tous les clans supprimés");
+            loadClans();
         }
+    }
+    
+    async function addQuestion(mode) {
+        const text = document.getElementById(`${mode === 'partie1' ? 'q1' : 'q2'}Text`).value.trim();
+        const answers = [
+            document.getElementById(`${mode === 'partie1' ? 'q1' : 'q2'}A`).value.trim(),
+            document.getElementById(`${mode === 'partie1' ? 'q1' : 'q2'}B`).value.trim(),
+            document.getElementById(`${mode === 'partie1' ? 'q1' : 'q2'}C`).value.trim(),
+            document.getElementById(`${mode === 'partie1' ? 'q1' : 'q2'}D`).value.trim()
+        ];
+        const correct = parseInt(document.getElementById(`${mode === 'partie1' ? 'q1' : 'q2'}Correct`).value);
         
-        function showQuestionMode(mode, btn) {
-            currentQuestionMode = mode;
-            document.querySelectorAll('.mode-tab').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            const imageUploadArea = document.getElementById('imageUploadArea');
-            if(mode === 'partie2') {
-                imageUploadArea.style.display = 'block';
-            } else {
-                imageUploadArea.style.display = 'none';
-                document.getElementById('imagePreview').innerHTML = '';
-            }
-            
-            loadQuestions();
-        }
+        if(!text || answers.some(a => !a)) { toast("❌ Remplissez tous les champs"); return; }
         
-        // ========== GESTION DES QUESTIONS ==========
-        async function loadQuestions() {
-            const snapshot = await database.ref(`questions/${currentQuestionMode}`).once('value');
-            const questions = [];
-            snapshot.forEach(child => questions.push({ id: child.key, ...child.val() }));
-            
-            const container = document.getElementById('questionsList');
-            const count = questions.length;
-            
-            if(currentQuestionMode === 'partie1') {
-                document.getElementById('statQuestions1').innerText = count;
-            } else {
-                document.getElementById('statQuestions2').innerText = count;
-            }
-            
-            if(questions.length === 0) {
-                container.innerHTML = '<div class="loading">📭 Aucune question pour le moment</div>';
-                return;
-            }
-            
-            container.innerHTML = questions.map((q, idx) => `
-                <div class="question-card">
-                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
-                        <div class="clan-name">❓ Question ${idx+1}</div>
-                        <button onclick="deleteQuestion('${currentQuestionMode}', '${q.id}')" class="btn-danger" style="padding:5px 15px;">🗑️ SUPPRIMER</button>
-                    </div>
-                    ${q.image ? `<img src="${q.image}" class="question-image-preview" onclick="window.open('${q.image}')">` : ''}
-                    <div style="margin:10px 0;"><strong>📝 ${escapeHtml(q.text)}</strong></div>
-                    <div class="answers-list" style="margin-left:20px;">
-                        <div style="color:${q.correct === 0 ? '#2ecc71' : '#aaa'}">A. ${escapeHtml(q.answers[0])}</div>
-                        <div style="color:${q.correct === 1 ? '#2ecc71' : '#aaa'}">B. ${escapeHtml(q.answers[1])}</div>
-                        <div style="color:${q.correct === 2 ? '#2ecc71' : '#aaa'}">C. ${escapeHtml(q.answers[2])}</div>
-                        <div style="color:${q.correct === 3 ? '#2ecc71' : '#aaa'}">D. ${escapeHtml(q.answers[3])}</div>
-                    </div>
-                </div>
-            `).join('');
-        }
-        
-        async function addQuestion() {
-            const text = document.getElementById('questionText').value.trim();
-            const answers = [
-                document.getElementById('answer0').value.trim(),
-                document.getElementById('answer1').value.trim(),
-                document.getElementById('answer2').value.trim(),
-                document.getElementById('answer3').value.trim()
-            ];
-            const correct = parseInt(document.getElementById('correctAnswer').value);
-            const messageDiv = document.getElementById('questionMessage');
-            
-            if(!text) {
-                messageDiv.innerHTML = '<span style="color:#ff8888;">❌ Entrez le texte de la question</span>';
-                return;
-            }
-            
-            if(answers.some(a => !a)) {
-                messageDiv.innerHTML = '<span style="color:#ff8888;">❌ Remplissez toutes les réponses</span>';
-                return;
-            }
-            
-            messageDiv.innerHTML = '<span style="color:#FFD700;">⏳ Ajout en cours...</span>';
-            
-            try {
-                let imageUrl = null;
-                
-                // Upload de l'image si mode partie 2
-                if(currentQuestionMode === 'partie2') {
-                    const imageFile = document.getElementById('questionImage').files[0];
-                    if(imageFile) {
-                        const storageRef = storage.ref(`questions_images/${Date.now()}_${imageFile.name}`);
-                        await storageRef.put(imageFile);
-                        imageUrl = await storageRef.getDownloadURL();
-                    }
-                }
-                
-                const questionData = {
-                    text: text,
-                    answers: answers,
-                    correct: correct,
-                    createdAt: Date.now()
-                };
-                
-                if(imageUrl) questionData.image = imageUrl;
-                
-                await database.ref(`questions/${currentQuestionMode}`).push(questionData);
-                
-                messageDiv.innerHTML = '<span style="color:#2ecc71;">✅ Question ajoutée !</span>';
-                
-                // Réinitialiser le formulaire
-                document.getElementById('questionText').value = '';
-                document.getElementById('answer0').value = '';
-                document.getElementById('answer1').value = '';
-                document.getElementById('answer2').value = '';
-                document.getElementById('answer3').value = '';
-                document.getElementById('questionImage').value = '';
-                document.getElementById('imagePreview').innerHTML = '';
-                document.getElementById('correctAnswer').value = '0';
-                
-                loadQuestions();
-                
-                setTimeout(() => { messageDiv.innerHTML = ''; }, 3000);
-                
-            } catch(e) {
-                console.error("Erreur:", e);
-                messageDiv.innerHTML = `<span style="color:#ff8888;">❌ Erreur: ${e.message}</span>`;
+        let imageUrl = null;
+        if(mode === 'partie2') {
+            const file = document.getElementById('q2Image').files[0];
+            if(file) {
+                const ref = storage.ref(`questions/${Date.now()}_${file.name}`);
+                await ref.put(file);
+                imageUrl = await ref.getDownloadURL();
             }
         }
         
-        window.deleteQuestion = async function(mode, id) {
-            if(confirm("⚠️ Supprimer définitivement cette question ?")) {
-                // Récupérer la question pour supprimer l'image si elle existe
-                const snapshot = await database.ref(`questions/${mode}/${id}`).once('value');
-                const question = snapshot.val();
-                
-                if(question && question.image) {
-                    try {
-                        const decodedUrl = decodeURIComponent(question.image);
-                        const pathMatch = decodedUrl.match(/\/o\/(.+?)\?/);
-                        if(pathMatch && pathMatch[1]) {
-                            const filePath = pathMatch[1];
-                            const fileRef = storage.ref(filePath);
-                            await fileRef.delete();
-                        }
-                    } catch(e) { console.error("Erreur suppression image:", e); }
-                }
-                
-                await database.ref(`questions/${mode}/${id}`).remove();
-                showToast("✅ Question supprimée !");
-                loadQuestions();
-            }
-        };
+        const data = { text, answers, correct, createdAt: Date.now() };
+        if(imageUrl) data.image = imageUrl;
         
-        // Preview image
-        document.getElementById('questionImage')?.addEventListener('change', function(e) {
-            const preview = document.getElementById('imagePreview');
-            preview.innerHTML = '';
-            if(e.target.files[0]) {
-                const img = document.createElement('img');
-                img.src = URL.createObjectURL(e.target.files[0]);
-                img.style.maxWidth = '200px';
-                img.style.maxHeight = '150px';
-                img.style.borderRadius = '10px';
-                img.style.marginTop = '10px';
-                preview.appendChild(img);
-            }
-        });
+        await db.ref(`questions/${mode}`).push(data);
+        toast("✅ Question ajoutée !");
         
-        // ========== GESTION DES CLANS ==========
-        async function loadClansAdmin() {
-            try {
-                const snapshot = await database.ref('clans').once('value');
-                const clansMap = new Map();
-                snapshot.forEach(child => {
-                    const clan = child.val();
-                    if(!clansMap.has(clan.name)) {
-                        clan.id = child.key;
-                        clansMap.set(clan.name, clan);
-                    }
-                });
-                const clans = Array.from(clansMap.values());
-                
-                document.getElementById('statClans').innerText = clans.length;
-                
-                const container = document.getElementById('clansListAdmin');
-                if(clans.length === 0) {
-                    container.innerHTML = '<div class="loading">📭 Aucun clan enregistré</div>';
-                    return;
-                }
-                
-                container.innerHTML = clans.map(clan => `
-                    <div class="clan-card">
-                        <div class="clan-name">⚔️ ${escapeHtml(clan.name)}</div>
-                        <div>👑 ${escapeHtml(clan.leader)}</div>
-                        <div class="clan-stats">
-                            <span class="stat">📅 SEMAINE: ${clan.score_week || 0}</span>
-                            <span class="stat">📆 MOIS: ${clan.score_month || 0}</span>
-                            <span class="stat">🗓️ ANNÉE: ${clan.score_year || 0}</span>
-                            <span class="stat">❤️ LIKES: ${clan.likes || 0}</span>
-                        </div>
-                        ${clan.description ? `<div style="margin-top:8px; font-size:0.8em; color:#aaa;">📝 ${escapeHtml(clan.description)}</div>` : ''}
-                        
-                        <div class="points-input-group">
-                            <input type="number" id="points_week_${clan.id}" placeholder="+ SEMAINE" style="width:100px;">
-                            <input type="number" id="points_month_${clan.id}" placeholder="+ MOIS" style="width:100px;">
-                            <input type="number" id="points_year_${clan.id}" placeholder="+ ANNÉE" style="width:100px;">
-                            <button onclick="addPointsToClan('${clan.id}')" class="btn-success">➕ AJOUTER</button>
-                        </div>
-                        
-                        <div class="admin-actions" style="margin-top:10px;">
-                            <button onclick="deleteClan('${clan.id}')" class="btn-danger">🗑️ SUPPRIMER</button>
-                        </div>
-                    </div>
-                `).join('');
-            } catch(e) {
-                console.error(e);
-            }
+        document.getElementById(`${mode === 'partie1' ? 'q1' : 'q2'}Text`).value = '';
+        document.getElementById(`${mode === 'partie1' ? 'q1' : 'q2'}A`).value = '';
+        document.getElementById(`${mode === 'partie1' ? 'q1' : 'q2'}B`).value = '';
+        document.getElementById(`${mode === 'partie1' ? 'q1' : 'q2'}C`).value = '';
+        document.getElementById(`${mode === 'partie1' ? 'q1' : 'q2'}D`).value = '';
+        if(mode === 'partie2') document.getElementById('q2Image').value = '';
+        
+        loadQuestions(mode, mode === 'partie1' ? 'questions1List' : 'questions2List');
+    }
+    
+    async function loadQuestions(mode, containerId) {
+        const snapshot = await db.ref(`questions/${mode}`).once('value');
+        const questions = [];
+        snapshot.forEach(child => questions.push({ id: child.key, ...child.val() }));
+        const container = document.getElementById(containerId);
+        if(questions.length === 0) { container.innerHTML = '<p>Aucune question</p>'; return; }
+        container.innerHTML = questions.map((q, i) => `
+            <div class="question-item">
+                <strong>❓ ${i+1}. ${escapeHtml(q.text)}</strong><br>
+                A. ${escapeHtml(q.answers[0])}<br>
+                B. ${escapeHtml(q.answers[1])}<br>
+                C. ${escapeHtml(q.answers[2])}<br>
+                D. ${escapeHtml(q.answers[3])}<br>
+                ✅ Bonne réponse: ${String.fromCharCode(65+q.correct)}
+                <button onclick="deleteQuestion('${mode}', '${q.id}')" class="btn-danger">🗑️</button>
+            </div>
+        `).join('');
+    }
+    
+    window.deleteQuestion = async (mode, id) => {
+        if(confirm("Supprimer cette question ?")) {
+            await db.ref(`questions/${mode}/${id}`).remove();
+            loadQuestions(mode, mode === 'partie1' ? 'questions1List' : 'questions2List');
         }
-        
-        window.addPointsToClan = async function(id) {
-            const weekPoints = parseInt(document.getElementById(`points_week_${id}`).value) || 0;
-            const monthPoints = parseInt(document.getElementById(`points_month_${id}`).value) || 0;
-            const yearPoints = parseInt(document.getElementById(`points_year_${id}`).value) || 0;
+    };
+    
+    async function deleteAllData() {
+        if(confirm("⚠️ SUPPRIMER TOUTES LES DONNÉES (clans, questions, forum, salons) ? IRRÉVERSIBLE !")) {
+            // Supprimer clans
+            const clansSnap = await db.ref('clans').once('value');
+            for(let c of clansSnap.val()) { await db.ref(`clans/${c.key}`).remove(); }
+            // Supprimer questions
+            const q1Snap = await db.ref('questions/partie1').once('value');
+            if(q1Snap.val()) for(let q of q1Snap.val()) { await db.ref(`questions/partie1/${q.key}`).remove(); }
+            const q2Snap = await db.ref('questions/partie2').once('value');
+            if(q2Snap.val()) for(let q of q2Snap.val()) { await db.ref(`questions/partie2/${q.key}`).remove(); }
+            // Supprimer forum
+            const forumSnap = await db.ref('forum').once('value');
+            if(forumSnap.val()) for(let m of forumSnap.val()) { await db.ref(`forum/${m.key}`).remove(); }
+            // Supprimer salons
+            const roomsSnap = await db.ref('game_rooms').once('value');
+            if(roomsSnap.val()) for(let r of roomsSnap.val()) { await db.ref(`game_rooms/${r.key}`).remove(); }
             
-            if(weekPoints === 0 && monthPoints === 0 && yearPoints === 0) {
-                showToast("❌ Entrez au moins un nombre de points", true);
-                return;
-            }
-            
-            const clanRef = database.ref(`clans/${id}`);
-            const snapshot = await clanRef.once('value');
-            const clan = snapshot.val();
-            
-            if(clan) {
-                const updates = {};
-                if(weekPoints > 0) updates.score_week = (clan.score_week || 0) + weekPoints;
-                if(monthPoints > 0) updates.score_month = (clan.score_month || 0) + monthPoints;
-                if(yearPoints > 0) updates.score_year = (clan.score_year || 0) + yearPoints;
-                
-                await clanRef.update(updates);
-                showToast(`✅ +${weekPoints} S, +${monthPoints} M, +${yearPoints} A pour ${clan.name}`);
-                
-                document.getElementById(`points_week_${id}`).value = '';
-                document.getElementById(`points_month_${id}`).value = '';
-                document.getElementById(`points_year_${id}`).value = '';
-                
-                loadClansAdmin();
-            }
-        };
-        
-        window.deleteClan = async function(id) {
-            if(confirm("⚠️ Supprimer définitivement ce clan ?")) {
-                await database.ref(`clans/${id}`).remove();
-                showToast("✅ Clan supprimé !");
-                loadClansAdmin();
-            }
-        };
-        
-        window.resetScores = async function(period) {
-            let periodName = period === 'week' ? 'SEMAINE' : (period === 'month' ? 'MOIS' : 'ANNÉE');
-            if(confirm(`⚠️ Réinitialiser tous les scores de ${periodName} ?`)) {
-                const snapshot = await database.ref('clans').once('value');
-                const updates = {};
-                snapshot.forEach(child => {
-                    const key = child.key;
-                    if(period === 'week') updates[`${key}/score_week`] = 0;
-                    else if(period === 'month') updates[`${key}/score_month`] = 0;
-                    else updates[`${key}/score_year`] = 0;
-                });
-                await database.ref('clans').update(updates);
-                showToast(`✅ Scores de ${periodName} réinitialisés !`);
-                loadClansAdmin();
-            }
-        };
-        
-        const style = document.createElement('style');
-        style.textContent = `@keyframes fadeOut { 0% { opacity: 1; transform: translateX(-50%) translateY(0); } 100% { opacity: 0; transform: translateX(-50%) translateY(-20px); } }`;
-        document.head.appendChild(style);
-        
-        setInterval(() => {
-            if(document.getElementById('adminPanel').style.display !== 'none') {
-                loadClansAdmin();
-                loadQuestions();
-            }
-        }, 10000);
-    </script>
+            toast("✅ TOUTES LES DONNÉES ONT ÉTÉ SUPPRIMÉES !");
+            loadAll();
+        }
+    }
+    
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+</script>
 </body>
 </html>
