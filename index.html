@@ -3,22 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>JOY PURGE GAME - Le Jeu Officiel des Clans</title>
+    <title>JOY PURGE GAME</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;900&family=Montserrat:wght@300;400;500;600;700&display=swap');
-        
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Montserrat', sans-serif;
             background: #0a0a0a;
-            color: #ffffff;
+            color: #fff;
             min-height: 100vh;
-            overflow-x: hidden;
             position: relative;
         }
         
-        /* Fond Luffy - PLEIN ECRAN SANS CADRE */
+        /* Fond Luffy visible */
         body::before {
             content: "";
             position: fixed;
@@ -29,832 +26,695 @@
             background-image: url('https://i.imgur.com/7QYKq4M.jpeg');
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
-            opacity: 0.6;
+            opacity: 0.35;
             z-index: 0;
         }
         
-        /* Tout le contenu au-dessus du fond */
-        .container, .marquee-cinema, .marquee-cinema-bottom, .admin-link, .music-control {
+        .container, .marquee, .admin-link, .music-btn {
             position: relative;
             z-index: 1;
         }
         
-        .floating-particles {
+        /* Bandes défilantes */
+        .marquee {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-        
-        .particle {
-            position: absolute;
-            background: radial-gradient(circle, #FFD700, #8B0000);
-            border-radius: 50%;
-            opacity: 0.3;
-            animation: floatParticle linear infinite;
-        }
-        
-        @keyframes floatParticle {
-            0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.4; }
-            90% { opacity: 0.4; }
-            100% { transform: translateY(-20vh) translateX(calc(100px * var(--direction))) rotate(360deg); opacity: 0; }
-        }
-        
-        .marquee-cinema {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: linear-gradient(135deg, #000000, #8B0000, #000000);
+            background: linear-gradient(90deg, #000, #8B0000, #000);
             color: #FFD700;
             font-family: 'Cinzel', serif;
-            font-size: 0.9em;
-            font-weight: 500;
-            padding: 12px 0;
-            overflow: hidden;
+            padding: 10px 0;
             white-space: nowrap;
-            border-bottom: 2px solid #FFD700;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            overflow: hidden;
+            border-bottom: 1px solid #FFD700;
+            z-index: 100;
         }
         
-        .marquee-content {
-            display: inline-block;
-            animation: marqueeScroll 25s linear infinite;
-            letter-spacing: 3px;
+        .marquee span { display: inline-block; animation: defile 20s linear infinite; padding-left: 100%; }
+        
+        @keyframes defile {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
         }
         
-        .marquee-content span { margin: 0 40px; }
-        
-        @keyframes marqueeScroll {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-50%); }
-        }
-        
-        .marquee-cinema-bottom {
+        .marquee-bottom {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            background: linear-gradient(135deg, #000000, #8B0000, #000000);
+            background: linear-gradient(90deg, #000, #8B0000, #000);
             color: #FFD700;
             font-family: 'Cinzel', serif;
-            font-size: 0.8em;
             padding: 8px 0;
-            overflow: hidden;
             white-space: nowrap;
+            overflow: hidden;
             border-top: 1px solid #FFD700;
+            z-index: 100;
         }
         
-        .marquee-content-reverse {
-            display: inline-block;
-            animation: marqueeScrollReverse 30s linear infinite;
-            letter-spacing: 3px;
-        }
+        .marquee-bottom span { display: inline-block; animation: defileReverse 25s linear infinite; padding-left: 100%; }
         
-        @keyframes marqueeScrollReverse {
-            0% { transform: translateX(-50%); }
-            100% { transform: translateX(0%); }
+        @keyframes defileReverse {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
         }
         
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
-            padding-top: 90px;
-            padding-bottom: 60px;
+            padding: 80px 20px 60px;
         }
         
-        /* EMPEREUR SECTION - Transparent pour voir Luffy */
-        .emperor-section {
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(5px);
-            border: 2px solid #FFD700;
-            border-radius: 30px;
-            padding: 25px 30px;
-            margin-bottom: 35px;
-            text-align: center;
-            box-shadow: 0 0 30px rgba(255,215,0,0.3);
+        /* Cartes transparentes pour voir Luffy */
+        .card {
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(8px);
+            border-radius: 25px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid #8B0000;
+            transition: 0.3s;
         }
         
-        .emperor-title {
+        .card:hover { border-color: #FFD700; }
+        
+        h1, h2, h3 {
             font-family: 'Cinzel', serif;
-            font-size: 1.2em;
             color: #FFD700;
-            letter-spacing: 5px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         
-        .emperor-card {
+        h1 { font-size: 2.5em; text-align: center; letter-spacing: 5px; }
+        
+        .btn {
+            background: linear-gradient(135deg, #8B0000, #cc0000);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            color: #FFD700;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 5px;
+        }
+        
+        .btn:hover { transform: scale(1.02); box-shadow: 0 0 15px rgba(255,215,0,0.5); }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #FFD700;
+        }
+        
+        .nav-buttons {
             display: flex;
-            align-items: center;
             justify-content: center;
-            gap: 30px;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        .nav-btn {
+            background: rgba(0,0,0,0.7);
+            border: 2px solid #8B0000;
+            padding: 10px 25px;
+            border-radius: 40px;
+            color: #FFD700;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+        }
+        
+        .nav-btn.active, .nav-btn:hover {
+            background: linear-gradient(135deg, #8B0000, #cc0000);
+            border-color: #FFD700;
+        }
+        
+        .section { display: none; }
+        .section.active { display: block; animation: fade 0.5s; }
+        
+        @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+        
+        /* Classement */
+        .clan-card {
+            background: rgba(0,0,0,0.6);
+            border-left: 5px solid #FFD700;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             flex-wrap: wrap;
         }
         
-        .emperor-crown { font-size: 3.5em; filter: drop-shadow(0 0 10px #FFD700); }
-        .emperor-leader { font-family: 'Cinzel', serif; font-size: 2em; font-weight: bold; color: #FFD700; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
-        .emperor-clan { font-size: 1.2em; color: #ffffff; margin-top: 5px; }
-        .emperor-points { font-size: 1em; color: #ff8888; margin-top: 8px; }
-        .no-emperor { color: #ff8888; font-style: italic; }
+        .clan-name { font-size: 1.3em; font-weight: bold; color: #FFD700; }
+        .clan-score { font-size: 1.2em; color: #FFA500; }
         
-        .latest-messages {
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(5px);
-            border: 1px solid #8B0000;
+        /* Jeu */
+        .room-box {
+            background: rgba(0,0,0,0.5);
             border-radius: 20px;
             padding: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .latest-messages h3 { color: #FFD700; font-family: 'Cinzel', serif; margin-bottom: 15px; border-left: 3px solid #FFD700; padding-left: 12px; }
-        
-        .message-item {
-            background: rgba(0,0,0,0.5);
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 10px;
-            transition: all 0.3s;
-        }
-        
-        .message-item:hover { background: rgba(139,0,0,0.3); transform: translateX(5px); }
-        .message-author { color: #FFD700; font-weight: bold; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 5px; }
-        .message-time { font-size: 0.7em; color: #888; }
-        .message-text { font-size: 0.9em; color: #ccc; }
-        
-        .view-all-btn { background: transparent; border: 1px solid #8B0000; padding: 8px 20px; border-radius: 30px; color: #FFD700; cursor: pointer; margin-top: 15px; width: 100%; font-size: 0.8em; }
-        .view-all-btn:hover { background: #8B0000; }
-        
-        .royal-header {
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(5px);
-            border-radius: 30px;
-            padding: 40px 30px;
             text-align: center;
-            margin-bottom: 30px;
-            border: 1px solid #8B0000;
-        }
-        
-        .live-badge { display: inline-block; background: #cc0000; color: #FFD700; font-size: 11px; padding: 6px 18px; border-radius: 50px; margin-bottom: 20px; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(204,0,0,0.7); } 50% { opacity: 0.8; box-shadow: 0 0 0 15px rgba(204,0,0,0); } }
-        
-        h1 { font-family: 'Cinzel', serif; font-size: 3.5em; font-weight: 900; letter-spacing: 8px; background: linear-gradient(135deg, #FFD700, #FFA500, #FFD700); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        
-        .citation { font-family: 'Cinzel', serif; font-style: italic; font-size: 0.9em; color: #FFD700; margin-top: 20px; padding: 10px 25px; border-top: 1px solid #8B0000; border-bottom: 1px solid #8B0000; display: inline-block; }
-        
-        .royal-nav { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
-        
-        .nav-btn { background: rgba(0,0,0,0.6); border: 2px solid #8B0000; padding: 10px 25px; font-family: 'Cinzel', serif; font-weight: 600; color: #FFD700; cursor: pointer; transition: all 0.4s; border-radius: 60px; font-size: 0.9em; }
-        .nav-btn:hover, .nav-btn.active { background: linear-gradient(135deg, #8B0000, #cc0000); border-color: #FFD700; color: white; transform: translateY(-3px); }
-        
-        .section { display: none; animation: fadeInUp 0.6s ease; }
-        .section.active { display: block; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* CLASSEMENT */
-        .ranking-tabs { display: flex; gap: 20px; justify-content: center; margin-bottom: 30px; flex-wrap: wrap; }
-        .tab-btn { background: rgba(0,0,0,0.6); border: 1px solid #8B0000; padding: 10px 30px; border-radius: 50px; cursor: pointer; color: #FFD700; transition: all 0.3s; font-family: 'Cinzel', serif; }
-        .tab-btn:hover { background: #8B0000; }
-        .tab-btn.active { background: linear-gradient(135deg, #8B0000, #cc0000); color: white; }
-        
-        .clans-grid { display: flex; flex-direction: column; gap: 15px; }
-        
-        .clan-card {
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(5px);
-            border: 1px solid #8B0000;
-            border-radius: 20px;
-            padding: 18px 22px;
-            transition: all 0.4s;
-        }
-        
-        .clan-card:hover { transform: translateX(8px); border-color: #FFD700; }
-        
-        .clan-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-        .clan-info { display: flex; align-items: center; gap: 15px; flex: 2; }
-        .clan-rank { font-family: 'Cinzel', serif; font-size: 1.8em; font-weight: bold; color: #FFD700; min-width: 55px; }
-        .clan-icon { font-size: 2em; }
-        .clan-name { font-size: 1.3em; font-weight: 800; color: #FFD700; font-family: 'Cinzel', serif; }
-        .clan-leader { font-size: 0.75em; color: #ff8888; margin-top: 3px; }
-        .clan-stats { display: flex; gap: 10px; flex-wrap: wrap; }
-        .stat { background: rgba(139,0,0,0.5); padding: 4px 12px; border-radius: 30px; font-size: 0.75em; color: #FFD700; }
-        .clan-points { font-size: 1.2em; font-weight: bold; color: #FFD700; min-width: 110px; text-align: right; }
-        .like-btn { background: rgba(139,0,0,0.5); border: 1px solid #FFD700; padding: 6px 18px; border-radius: 40px; cursor: pointer; color: #FFD700; transition: all 0.3s; }
-        .like-btn:hover { background: #8B0000; transform: scale(1.05); }
-        .like-btn.liked { background: #FFD700; color: #000000; }
-        
-        .refresh-btn { background: rgba(0,0,0,0.6); border: 1px solid #8B0000; padding: 8px 25px; border-radius: 40px; color: #FFD700; cursor: pointer; margin-bottom: 25px; }
-        
-        /* SECTION JEU */
-        .game-panel {
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(5px);
-            border: 2px solid #FFD700;
-            border-radius: 30px;
-            padding: 30px;
-            margin-bottom: 30px;
-        }
-        
-        .game-mode-selector { display: flex; gap: 20px; justify-content: center; margin-bottom: 30px; flex-wrap: wrap; }
-        .game-mode-btn { background: rgba(139,0,0,0.5); border: 1px solid #FFD700; padding: 12px 30px; border-radius: 50px; cursor: pointer; color: #FFD700; font-family: 'Cinzel', serif; font-size: 1.1em; transition: all 0.3s; }
-        .game-mode-btn:hover, .game-mode-btn.active { background: linear-gradient(135deg, #8B0000, #cc0000); transform: scale(1.02); }
-        
-        .room-section { display: none; }
-        .room-section.active { display: block; }
-        
-        .create-room, .join-room {
-            background: rgba(0,0,0,0.5);
-            border-radius: 20px;
-            padding: 20px;
             margin: 15px 0;
+        }
+        
+        .code-input {
+            background: #0a0a0a;
+            border: 2px solid #FFD700;
+            font-size: 2em;
+            text-align: center;
+            letter-spacing: 8px;
+            padding: 10px;
+            border-radius: 15px;
+            color: #FFD700;
+            width: 200px;
+        }
+        
+        .players-area {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+        
+        .player-card {
+            background: rgba(139,0,0,0.4);
+            border: 1px solid #FFD700;
+            border-radius: 20px;
+            padding: 20px;
+            min-width: 130px;
             text-align: center;
         }
         
-        .room-code-input { font-size: 1.5em; text-align: center; letter-spacing: 5px; font-family: monospace; background: #0a0a0a; border: 1px solid #FFD700; padding: 10px; border-radius: 10px; color: white; }
-        .game-btn { background: linear-gradient(135deg, #8B0000, #cc0000); border: none; padding: 12px 30px; border-radius: 50px; color: #FFD700; font-weight: bold; cursor: pointer; margin: 10px; transition: all 0.3s; }
-        .game-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(204,0,0,0.4); }
-        
-        .waiting-room { text-align: center; padding: 30px; }
-        .players-list { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin: 30px 0; }
-        .player-slot { background: rgba(139,0,0,0.3); border: 1px solid #FFD700; border-radius: 20px; padding: 20px; min-width: 150px; text-align: center; }
-        .player-slot.filled { background: rgba(0,0,0,0.6); border-color: #00ff00; }
+        .player-card.filled { background: rgba(0,100,0,0.4); border-color: #00ff00; }
         .player-avatar { font-size: 3em; }
-        .player-name { margin-top: 10px; font-weight: bold; }
         
-        .quiz-container {
-            background: rgba(0,0,0,0.8);
-            border-radius: 20px;
+        .quiz-area {
+            background: rgba(0,0,0,0.85);
+            border-radius: 25px;
             padding: 25px;
         }
         
-        .question-image { max-width: 100%; border-radius: 15px; margin-bottom: 20px; }
-        .question-text { font-size: 1.5em; text-align: center; margin: 20px 0; font-family: 'Cinzel', serif; }
-        .answers { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px; }
-        .answer-btn { background: rgba(139,0,0,0.5); border: 1px solid #FFD700; padding: 15px; border-radius: 15px; cursor: pointer; color: white; font-size: 1em; transition: all 0.3s; }
-        .answer-btn:hover { background: #8B0000; transform: scale(1.02); }
-        
-        .score-display { text-align: center; font-size: 1.3em; margin-bottom: 20px; color: #FFD700; }
-        .question-counter { text-align: center; margin-bottom: 15px; color: #888; }
-        
-        .forum-form {
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(5px);
-            border: 1px solid #8B0000;
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 30px;
+        .question-img {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 15px;
+            margin: 15px 0;
         }
         
-        .forum-form input, .forum-form textarea {
-            width: 100%;
-            padding: 14px;
-            margin: 10px 0;
-            border-radius: 12px;
-            border: 1px solid #8B0000;
+        .answers {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .answer {
+            background: rgba(139,0,0,0.5);
+            border: 1px solid #FFD700;
+            padding: 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .answer:hover { background: #8B0000; transform: scale(1.01); }
+        
+        /* Forum */
+        .forum-msg {
+            background: rgba(0,0,0,0.6);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 12px;
+        }
+        
+        .forum-author { color: #FFD700; font-weight: bold; }
+        .forum-date { font-size: 0.7em; color: #aaa; margin-left: 15px; }
+        
+        input, textarea {
             background: #0a0a0a;
+            border: 1px solid #FFD700;
+            padding: 12px;
+            border-radius: 12px;
             color: white;
-            font-family: 'Montserrat', sans-serif;
+            width: 100%;
+            margin: 8px 0;
         }
-        
-        .forum-message {
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(5px);
-            border: 1px solid #8B0000;
-            border-radius: 18px;
-            padding: 20px;
-            margin-bottom: 18px;
-        }
-        
-        .forum-message:hover { border-color: #FFD700; transform: translateX(5px); }
-        .forum-author { color: #FFD700; font-weight: bold; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
-        .forum-date { font-size: 0.7em; color: #ff8888; }
-        .forum-content { margin: 12px 0; line-height: 1.6; }
-        .forum-like { background: transparent; border: 1px solid #8B0000; padding: 6px 18px; border-radius: 30px; cursor: pointer; color: #FFD700; margin-top: 10px; }
-        .forum-like:hover { background: #8B0000; }
-        .forum-like.liked { background: #FFD700; color: #000000; }
         
         .admin-link {
             position: fixed;
-            bottom: 65px;
-            left: 25px;
+            bottom: 20px;
+            left: 20px;
             background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(5px);
-            border: 1px solid #8B0000;
             padding: 8px 18px;
-            border-radius: 50px;
+            border-radius: 40px;
             color: #FFD700;
             text-decoration: none;
-            font-size: 11px;
-            transition: all 0.3s;
+            font-size: 12px;
         }
         
-        .admin-link:hover { background: #8B0000; transform: scale(1.05); }
-        
-        .music-control {
+        .music-btn {
             position: fixed;
-            bottom: 65px;
-            right: 25px;
+            bottom: 20px;
+            right: 20px;
             background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(5px);
-            border: 1px solid #8B0000;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            width: 48px;
-            height: 48px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 20px;
+            font-size: 24px;
             color: #FFD700;
         }
         
-        .music-control:hover { background: #8B0000; transform: scale(1.05); }
-        
-        .toast-message {
+        .toast {
             position: fixed;
-            bottom: 130px;
+            bottom: 100px;
             left: 50%;
             transform: translateX(-50%);
             background: #FFD700;
             color: #000;
             padding: 10px 20px;
             border-radius: 50px;
-            z-index: 2000;
-            font-weight: bold;
-            animation: toastFade 2s ease forwards;
+            animation: fadeOut 2s ease;
+            z-index: 1000;
         }
         
-        @keyframes toastFade {
-            0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
-            10% { opacity: 1; transform: translateX(-50%) translateY(0); }
-            90% { opacity: 1; }
-            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+        @keyframes fadeOut {
+            0% { opacity: 0; bottom: 80px; }
+            15% { opacity: 1; bottom: 100px; }
+            85% { opacity: 1; }
+            100% { opacity: 0; bottom: 120px; }
         }
         
-        @media (max-width: 768px) {
-            h1 { font-size: 2em; letter-spacing: 3px; }
+        @media (max-width: 700px) {
             .answers { grid-template-columns: 1fr; }
-            .question-text { font-size: 1.2em; }
+            h1 { font-size: 1.6em; }
         }
-        
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #121212; }
-        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #8B0000, #FFD700); border-radius: 10px; }
-        
-        .loading { text-align: center; padding: 50px; color: #FFD700; }
     </style>
 </head>
 <body>
-    <div class="floating-particles" id="floatingParticles"></div>
+
+<div class="marquee"><span>⚜️ JOY PURGE GAME ⚜️ SI UN JOUEUR FAUX = TOUS 0 POINT ⚜️ 4 JOUEURS PAR SALON ⚜️ 20 QUESTIONS ⚜️</span></div>
+<div class="marquee-bottom"><span>⭐ PARTIE 1 : TEXTE ⭐ PARTIE 2 : IMAGES ⭐ REJOIGNEZ LA COMMUNAUTÉ ⭐</span></div>
+
+<div class="container">
+    <a href="admin.html" class="admin-link">👑 ADMIN</a>
+    <div class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</div>
     
-    <audio id="bgMusic" loop preload="auto">
-        <source src="song.mp3.m4a" type="audio/mp4">
-        <source src="song.mp3" type="audio/mpeg">
-    </audio>
+    <div class="card" style="text-align: center;">
+        <h1>⚜️ JOY PURGE GAME ⚜️</h1>
+        <p style="color:#FFD700; font-style: italic;">"Si un joueur fait une faute, toute l'équipe marque 0"</p>
+    </div>
     
-    <div class="marquee-cinema">
-        <div class="marquee-content">
-            <span>⚜️ JOY PURGE GAME ⚜️</span>
-            <span>🏆 SI UN JOUEUR FAUX = TOUS 0 POINT 🏆</span>
-            <span>👑 4 JOUEURS PAR SALON 👑</span>
-            <span>🔥 20 QUESTIONS PAR PARTIE 🔥</span>
+    <div class="nav-buttons">
+        <button class="nav-btn active" onclick="showSection('classement')">🏆 CLASSEMENT</button>
+        <button class="nav-btn" onclick="showSection('jeu')">⚔️ JOUER</button>
+        <button class="nav-btn" onclick="showSection('forum')">💬 FORUM</button>
+    </div>
+    
+    <!-- SECTION CLASSEMENT -->
+    <div id="classement" class="section active">
+        <div class="card">
+            <h2>🏆 CLASSEMENT DES CLANS</h2>
+            <div style="display: flex; gap: 15px; justify-content: center; margin-bottom: 20px;">
+                <button class="btn btn-outline" onclick="loadClans('week')">📅 SEMAINE</button>
+                <button class="btn btn-outline" onclick="loadClans('month')">📆 MOIS</button>
+                <button class="btn btn-outline" onclick="loadClans('year')">🗓️ ANNÉE</button>
+            </div>
+            <div id="classementList">⏳ Chargement...</div>
         </div>
     </div>
     
-    <div class="marquee-cinema-bottom">
-        <div class="marquee-content-reverse">
-            <span>⭐ JOY PURGE GAME - PARTIE 1 (TEXTE) ⭐</span>
-            <span>🏆 JOY PURGE GAME - PARTIE 2 (IMAGES) 🏆</span>
-        </div>
-    </div>
-    
-    <div class="container">
-        <a href="admin.html" class="admin-link">👑 ADMIN</a>
-        <div class="music-control" onclick="toggleMusic()" id="musicBtn">🎵</div>
-        
-        <div class="emperor-section" id="emperorSection">
-            <div class="emperor-title">🏆 EMPEREUR DE LA PURGE 🏆</div>
-            <div id="emperorContent"><div class="loading">👑 Chargement...</div></div>
-        </div>
-
-        <div class="latest-messages" id="latestMessages">
-            <h3>💬 DERNIERS MESSAGES</h3>
-            <div id="latestMessagesList">⏳ Chargement...</div>
-            <button class="view-all-btn" onclick="showSection('forum')">📢 VOIR TOUS LES MESSAGES</button>
-        </div>
-        
-        <div class="royal-header">
-            <div class="live-badge">🔴 JOY PURGE GAME</div>
-            <h1>⚜️ JOY PURGE GAME ⚜️</h1>
-            <div class="citation">"Si un joueur fait une faute, toute l'équipe marque 0"</div>
-            <div class="royal-nav">
-                <button class="nav-btn active" onclick="showSection('ranking')">🏆 CLASSEMENT</button>
-                <button class="nav-btn" onclick="showSection('game')">⚔️ JOY PURGE GAME</button>
-                <button class="nav-btn" onclick="showSection('forum')">💬 FORUM</button>
+    <!-- SECTION JEU -->
+    <div id="jeu" class="section">
+        <div class="card">
+            <h2>⚔️ JOY PURGE GAME</h2>
+            <div style="display: flex; gap: 15px; justify-content: center; margin-bottom: 25px;">
+                <button class="btn" id="modeTexteBtn" onclick="setGameMode('partie1')">📝 PARTIE 1 - TEXTE</button>
+                <button class="btn" id="modeImageBtn" onclick="setGameMode('partie2')">🖼️ PARTIE 2 - IMAGES</button>
             </div>
-        </div>
-
-        <!-- SECTION CLASSEMENT -->
-        <div id="ranking" class="section active">
-            <div class="ranking-tabs">
-                <button class="tab-btn active" onclick="showRankingPeriod('week', this)">📅 SEMAINE</button>
-                <button class="tab-btn" onclick="showRankingPeriod('month', this)">📆 MOIS</button>
-                <button class="tab-btn" onclick="showRankingPeriod('year', this)">🗓️ ANNÉE</button>
-            </div>
-            <button class="refresh-btn" onclick="loadClans()">🔄 RAFRAÎCHIR</button>
-            <div id="rankingList" class="clans-grid">⏳ Chargement...</div>
-        </div>
-
-        <!-- SECTION JEU -->
-        <div id="game" class="section">
-            <div class="game-panel">
-                <div class="game-mode-selector">
-                    <button class="game-mode-btn active" onclick="selectGameMode('partie1', this)">📝 PARTIE 1 - TEXTE</button>
-                    <button class="game-mode-btn" onclick="selectGameMode('partie2', this)">🖼️ PARTIE 2 - IMAGES</button>
+            
+            <div id="gameLobby">
+                <div class="room-box">
+                    <h3>🎮 CRÉER UN SALON</h3>
+                    <button class="btn" onclick="createRoom()">+ NOUVEAU SALON</button>
                 </div>
-                
-                <div id="partie1" class="room-section active">
-                    <div class="create-room">
-                        <h3>🎮 CRÉER UN SALON</h3>
-                        <button class="game-btn" onclick="createRoom('partie1')">+ CRÉER UN SALON PARTIE 1</button>
-                    </div>
-                    <div class="join-room">
-                        <h3>🔑 REJOINDRE UN SALON</h3>
-                        <input type="text" id="joinCode1" placeholder="CODE À 4 CHIFFRES" class="room-code-input" maxlength="4">
-                        <button class="game-btn" onclick="joinRoom('partie1')">REJOINDRE</button>
-                    </div>
-                </div>
-                
-                <div id="partie2" class="room-section">
-                    <div class="create-room">
-                        <h3>🎮 CRÉER UN SALON</h3>
-                        <button class="game-btn" onclick="createRoom('partie2')">+ CRÉER UN SALON PARTIE 2</button>
-                    </div>
-                    <div class="join-room">
-                        <h3>🔑 REJOINDRE UN SALON</h3>
-                        <input type="text" id="joinCode2" placeholder="CODE À 4 CHIFFRES" class="room-code-input" maxlength="4">
-                        <button class="game-btn" onclick="joinRoom('partie2')">REJOINDRE</button>
-                    </div>
+                <div class="room-box">
+                    <h3>🔑 REJOINDRE UN SALON</h3>
+                    <input type="text" id="joinCodeInput" class="code-input" maxlength="4" placeholder="CODE">
+                    <br><br>
+                    <button class="btn" onclick="joinRoom()">REJOINDRE</button>
                 </div>
             </div>
             
-            <div id="gameStatus" style="display:none;"></div>
-            <div id="gameContainer"></div>
-        </div>
-
-        <!-- SECTION FORUM -->
-        <div id="forum" class="section">
-            <div class="forum-form">
-                <input type="text" id="forumPseudo" placeholder="Votre pseudo">
-                <textarea id="forumMessage" placeholder="Votre message" rows="3"></textarea>
-                <button class="game-btn" id="publishForumBtn">📢 PUBLIER</button>
-            </div>
-            <div id="forumMessages">⏳ Chargement...</div>
+            <div id="gameRoom" style="display: none;"></div>
         </div>
     </div>
+    
+    <!-- SECTION FORUM -->
+    <div id="forum" class="section">
+        <div class="card">
+            <h2>💬 FORUM DE LA PURGE</h2>
+            <input type="text" id="forumPseudo" placeholder="Votre pseudo">
+            <textarea id="forumMessage" rows="3" placeholder="Votre message..."></textarea>
+            <button class="btn" onclick="postMessage()">📢 PUBLIER</button>
+        </div>
+        <div class="card">
+            <div id="forumList">⏳ Chargement...</div>
+        </div>
+    </div>
+</div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+<audio id="bgMusic" loop>
+    <source src="song.mp3.m4a" type="audio/mp4">
+    <source src="song.mp3" type="audio/mpeg">
+</audio>
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyB3yYAuiGqbtrbZ1aSYxAjduZ65adNIpag",
-            authDomain: "purge-game-58718.firebaseapp.com",
-            databaseURL: "https://purge-game-58718-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "purge-game-58718",
-            storageBucket: "purge-game-58718.firebasestorage.app",
-            messagingSenderId: "554574972856",
-            appId: "1:554574972856:web:9de17e7f77eb7b5be4b14d"
-        };
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+<script>
+    // FIREBASE - Configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyB3yYAuiGqbtrbZ1aSYxAjduZ65adNIpag",
+        authDomain: "purge-game-58718.firebaseapp.com",
+        databaseURL: "https://purge-game-58718-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "purge-game-58718",
+        storageBucket: "purge-game-58718.firebasestorage.app",
+        messagingSenderId: "554574972856",
+        appId: "1:554574972856:web:9de17e7f77eb7b5be4b14d"
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const storage = firebase.storage();
+    
+    // VARIABLES
+    let currentGameMode = 'partie1';
+    let currentRoomCode = null;
+    let currentPlayerId = localStorage.getItem('playerId') || Math.random().toString(36).substr(2, 8);
+    localStorage.setItem('playerId', currentPlayerId);
+    let musicPlaying = false;
+    let bgMusic = null;
+    let currentQuestions = [];
+    
+    // MUSIQUE
+    function initMusic() { bgMusic = document.getElementById('bgMusic'); if(bgMusic) bgMusic.volume = 0.2; }
+    function toggleMusic() { if(!bgMusic) initMusic(); if(musicPlaying) { bgMusic.pause(); musicPlaying = false; document.getElementById('musicBtn').innerHTML = '🎵'; } else { bgMusic.play().catch(e=>{}); musicPlaying = true; document.getElementById('musicBtn').innerHTML = '🎵🔊'; } }
+    document.body.addEventListener('click', () => { if(!musicPlaying && bgMusic) { bgMusic.play().catch(e=>{}); musicPlaying = true; document.getElementById('musicBtn').innerHTML = '🎵🔊'; } }, { once: true });
+    
+    function toast(msg, isError = false) {
+        const t = document.createElement('div');
+        t.className = 'toast';
+        t.style.background = isError ? '#8B0000' : '#FFD700';
+        t.style.color = isError ? '#fff' : '#000';
+        t.innerText = msg;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 2000);
+    }
+    
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+    
+    function showSection(section) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById(section).classList.add('active');
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        if(section === 'classement') loadClans('year');
+        if(section === 'forum') loadForum();
+    }
+    
+    function setGameMode(mode) {
+        currentGameMode = mode;
+        document.getElementById('modeTexteBtn').style.background = mode === 'partie1' ? 'linear-gradient(135deg,#8B0000,#cc0000)' : 'linear-gradient(135deg,#333,#555)';
+        document.getElementById('modeImageBtn').style.background = mode === 'partie2' ? 'linear-gradient(135deg,#8B0000,#cc0000)' : 'linear-gradient(135deg,#333,#555)';
+        toast(`Mode ${mode === 'partie1' ? 'TEXTE' : 'IMAGES'} sélectionné`);
+    }
+    
+    // ========== CLASSEMENT ==========
+    async function loadClans(period = 'year') {
+        const snapshot = await db.ref('clans').once('value');
+        const clans = [];
+        snapshot.forEach(child => clans.push({ id: child.key, ...child.val() }));
+        clans.sort((a,b) => (b[`score_${period}`] || 0) - (a[`score_${period}`] || 0));
         
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-        const storage = firebase.storage();
-        
-        let currentClans = [];
-        let currentPeriod = 'year';
-        let bgMusic = null;
-        let musicPlaying = false;
-        let userLikedClans = JSON.parse(localStorage.getItem('userLikedClans') || '{}');
-        let userLikedMessages = JSON.parse(localStorage.getItem('userLikedMessages') || '{}');
-        let currentGameMode = 'partie1';
-        let currentPlayerId = localStorage.getItem('playerId') || Math.random().toString(36).substr(2, 8);
-        localStorage.setItem('playerId', currentPlayerId);
-        
-        function createParticles() {
-            const container = document.getElementById('floatingParticles');
-            for(let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                const size = Math.random() * 5 + 2;
-                const duration = Math.random() * 12 + 6;
-                const delay = Math.random() * 15;
-                const startX = Math.random() * 100;
-                const direction = Math.random() > 0.5 ? 1 : -1;
-                particle.style.width = size + 'px';
-                particle.style.height = size + 'px';
-                particle.style.left = startX + '%';
-                particle.style.animationDuration = duration + 's';
-                particle.style.animationDelay = delay + 's';
-                particle.style.setProperty('--direction', direction);
-                container.appendChild(particle);
-            }
-        }
-        createParticles();
-        
-        function showToast(msg, isError = false) {
-            const toast = document.createElement('div');
-            toast.className = 'toast-message';
-            toast.style.background = isError ? '#8B0000' : '#FFD700';
-            toast.style.color = isError ? '#fff' : '#000';
-            toast.innerHTML = msg;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 2000);
-        }
-        
-        function initMusic() { bgMusic = document.getElementById('bgMusic'); if(bgMusic) { bgMusic.volume = 0.2; bgMusic.loop = true; } }
-        function toggleMusic() { if(!bgMusic) initMusic(); if(musicPlaying) { bgMusic.pause(); musicPlaying = false; document.getElementById('musicBtn').innerHTML = '🎵'; } else { bgMusic.play().catch(e => console.log("Auto-play bloqué")); musicPlaying = true; document.getElementById('musicBtn').innerHTML = '🎵🔊'; } }
-        document.body.addEventListener('click', () => { if(!musicPlaying && bgMusic) { bgMusic.play().catch(e => {}); musicPlaying = true; document.getElementById('musicBtn').innerHTML = '🎵🔊'; } }, { once: true });
-        
-        function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
-        
-        // CLASSEMENT
-        async function loadClans() {
-            try {
-                const snapshot = await database.ref('clans').once('value');
-                const clansMap = new Map();
-                snapshot.forEach(child => {
-                    const clan = child.val();
-                    if(!clansMap.has(clan.name)) {
-                        clan.id = child.key;
-                        clansMap.set(clan.name, clan);
-                    }
-                });
-                currentClans = Array.from(clansMap.values());
-                updateEmperor();
-                updateRanking();
-            } catch(e) { console.error(e); document.getElementById('rankingList').innerHTML = '<div class="loading">❌ Erreur de chargement</div>'; }
+        const container = document.getElementById('classementList');
+        if(clans.length === 0) {
+            container.innerHTML = '<div style="text-align:center;">🏆 Aucun clan pour le moment. Allez dans l\'admin pour en créer !</div>';
+            return;
         }
         
-        function updateEmperor() {
-            const container = document.getElementById('emperorContent');
-            const emperor = currentClans.find(clan => (clan.score_year || 0) >= 2500);
-            if (emperor) {
-                container.innerHTML = `<div class="emperor-card"><div class="emperor-crown">👑</div><div class="emperor-info"><div class="emperor-leader">${escapeHtml(emperor.leader)}</div><div class="emperor-clan">⚔️ ${escapeHtml(emperor.name)} ⚔️</div><div class="emperor-points">🏆 ${emperor.score_year || 0} points à l'année 🏆</div></div><div class="emperor-crown">👑</div></div>`;
-            } else { container.innerHTML = `<div class="no-emperor">⚔️ Aucun clan n'a encore atteint 2500 points ⚔️<br><span style="font-size:0.8em;">Le prochain empereur sera affiché ici !</span></div>`; }
-        }
+        container.innerHTML = clans.map((c, i) => `
+            <div class="clan-card">
+                <div>
+                    <span style="font-size:1.5em; color:#FFD700;">#${i+1}</span>
+                    <span class="clan-name">⚔️ ${escapeHtml(c.name)}</span>
+                    <div style="font-size:0.8em; color:#ff8888;">👑 ${escapeHtml(c.leader)}</div>
+                </div>
+                <div class="clan-score">⭐ ${c[`score_${period}`] || 0} pts</div>
+            </div>
+        `).join('');
+    }
+    
+    // ========== FORUM ==========
+    async function loadForum() {
+        const snapshot = await db.ref('forum').once('value');
+        const msgs = [];
+        snapshot.forEach(child => msgs.push({ id: child.key, ...child.val() }));
+        msgs.reverse();
         
-        function updateRanking() {
-            let clans = [...currentClans];
-            if(currentPeriod === 'week') clans.sort((a,b) => (b.score_week || 0) - (a.score_week || 0));
-            else if(currentPeriod === 'month') clans.sort((a,b) => (b.score_month || 0) - (a.score_month || 0));
-            else clans.sort((a,b) => (b.score_year || 0) - (a.score_year || 0));
-            const container = document.getElementById('rankingList');
-            if(clans.length === 0) { container.innerHTML = '<div class="loading">🏆 Aucun clan enregistré. Allez dans l\'admin pour en ajouter !</div>'; return; }
-            const icons = ['⚔️', '🛡️', '👑', '🏰', '🐉', '⚡', '🔥', '💀', '🦅', '🐺', '🦁', '🗡️'];
-            container.innerHTML = clans.map((clan, idx) => {
-                let score = currentPeriod === 'week' ? (clan.score_week || 0) : (currentPeriod === 'month' ? (clan.score_month || 0) : (clan.score_year || 0));
-                const hasLiked = userLikedClans[clan.id] === true;
-                return `<div class="clan-card"><div class="clan-row"><div class="clan-info"><div class="clan-rank">#${idx+1}</div><div class="clan-icon">${icons[idx % icons.length]}</div><div class="clan-details"><div class="clan-name">${escapeHtml(clan.name)}</div><div class="clan-leader">👑 ${escapeHtml(clan.leader)}</div></div></div><div class="clan-stats"><span class="stat">📅 S: ${clan.score_week || 0}</span><span class="stat">📆 M: ${clan.score_month || 0}</span><span class="stat">🗓️ A: ${clan.score_year || 0}</span><span class="stat">❤️ ${clan.likes || 0}</span></div><div class="clan-points">⭐ ${score} pts</div><button class="like-btn ${hasLiked ? 'liked' : ''}" onclick="likeClan('${clan.id}')">${hasLiked ? '❤️ LIKÉ' : '❤️ LIKER'}</button></div>${clan.description ? `<div style="margin-top:12px; font-size:0.75em; color:#aaa;">📝 ${escapeHtml(clan.description)}</div>` : ''}</div>`;
-            }).join('');
-        }
+        const container = document.getElementById('forumList');
+        if(msgs.length === 0) { container.innerHTML = '<div style="text-align:center;">💬 Aucun message, soyez le premier !</div>'; return; }
         
-        async function likeClan(id) { if(userLikedClans[id]) { showToast("❌ Vous avez déjà liké ce clan !", true); return; } try { const clanRef = database.ref(`clans/${id}`); const snapshot = await clanRef.once('value'); const clan = snapshot.val(); if(clan) { await clanRef.update({ likes: (clan.likes || 0) + 1 }); userLikedClans[id] = true; localStorage.setItem('userLikedClans', JSON.stringify(userLikedClans)); showToast("❤️ Like enregistré !"); loadClans(); } } catch(e) { showToast("❌ Erreur", true); } }
+        container.innerHTML = msgs.map(m => `
+            <div class="forum-msg">
+                <div><span class="forum-author">🔥 ${escapeHtml(m.author)}</span><span class="forum-date">${m.date || ''}</span></div>
+                <div style="margin-top: 10px;">${escapeHtml(m.message)}</div>
+            </div>
+        `).join('');
+    }
+    
+    async function postMessage() {
+        const author = document.getElementById('forumPseudo').value.trim();
+        const message = document.getElementById('forumMessage').value.trim();
+        if(!author || !message) { toast("❌ Pseudo et message requis", true); return; }
+        await db.ref('forum').push({ author, message, date: new Date().toLocaleString(), likes: 0 });
+        toast("✅ Message publié !");
+        document.getElementById('forumPseudo').value = '';
+        document.getElementById('forumMessage').value = '';
+        loadForum();
+    }
+    
+    // ========== JEU ==========
+    async function loadQuestions() {
+        const snapshot = await db.ref(`questions/${currentGameMode}`).once('value');
+        const questions = [];
+        snapshot.forEach(child => questions.push({ id: child.key, ...child.val() }));
+        return questions;
+    }
+    
+    async function createRoom() {
+        const code = Math.floor(1000 + Math.random() * 9000).toString();
+        const roomRef = db.ref(`game_rooms/${code}`);
+        const exists = (await roomRef.once('value')).exists();
+        if(exists) { createRoom(); return; }
         
-        function showRankingPeriod(period, btn) { currentPeriod = period; document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); updateRanking(); }
+        await roomRef.set({
+            mode: currentGameMode,
+            players: { [currentPlayerId]: { name: `Guerrier_${currentPlayerId.substr(0,4)}`, score: 0, answers: [] } },
+            currentQuestion: 0,
+            status: 'waiting',
+            createdAt: Date.now()
+        });
         
-        // FORUM
-        async function loadForum() {
-            try {
-                const snapshot = await database.ref('forum').once('value');
-                const messages = [];
-                snapshot.forEach(child => messages.push({ id: child.key, ...child.val() }));
-                messages.reverse();
-                const container = document.getElementById('forumMessages');
-                if(messages.length === 0) { container.innerHTML = '<div class="loading">💬 Aucun message, soyez le premier !</div>'; return; }
-                container.innerHTML = messages.map(msg => { const hasLiked = userLikedMessages[msg.id] === true; return `<div class="forum-message"><div class="forum-author"><strong>🔥 ${escapeHtml(msg.author)}</strong><span class="forum-date">${msg.date || ''}</span></div><div class="forum-content">${escapeHtml(msg.message)}</div><button class="forum-like ${hasLiked ? 'liked' : ''}" onclick="likeMessage('${msg.id}')">${hasLiked ? '❤️ LIKÉ' : `❤️ ${msg.likes || 0} likes`}</button></div>`; }).join('');
-            } catch(e) { console.error(e); }
-        }
+        toast(`✅ Salon créé ! Code: ${code}`);
+        joinRoomWithCode(code);
+    }
+    
+    async function joinRoom() {
+        const code = document.getElementById('joinCodeInput').value.trim();
+        if(!code || code.length !== 4) { toast("❌ Code invalide", true); return; }
+        await joinRoomWithCode(code);
+    }
+    
+    async function joinRoomWithCode(code) {
+        const roomRef = db.ref(`game_rooms/${code}`);
+        const snapshot = await roomRef.once('value');
+        const room = snapshot.val();
         
-        async function likeMessage(id) { if(userLikedMessages[id]) { showToast("❌ Vous avez déjà liké ce message !", true); return; } try { const msgRef = database.ref(`forum/${id}`); const snapshot = await msgRef.once('value'); const msg = snapshot.val(); if(msg) { await msgRef.update({ likes: (msg.likes || 0) + 1 }); userLikedMessages[id] = true; localStorage.setItem('userLikedMessages', JSON.stringify(userLikedMessages)); showToast("💬 Like enregistré !"); loadForum(); loadLatestMessages(); } } catch(e) { showToast("❌ Erreur", true); } }
+        if(!room) { toast("❌ Salon introuvable", true); return; }
+        if(room.mode !== currentGameMode) { toast("❌ Mode de jeu différent", true); return; }
+        if(Object.keys(room.players).length >= 4) { toast("❌ Salon complet", true); return; }
+        if(room.status !== 'waiting') { toast("❌ Partie déjà commencée", true); return; }
         
-        async function publishForumMessage() { const author = document.getElementById('forumPseudo').value.trim(); const message = document.getElementById('forumMessage').value.trim(); if(!author || !message) { showToast("❌ Pseudo et message requis", true); return; } try { await database.ref('forum').push({ author: author, message: message, likes: 0, date: new Date().toLocaleString() }); showToast("✅ Message publié !"); document.getElementById('forumPseudo').value = ''; document.getElementById('forumMessage').value = ''; loadForum(); loadLatestMessages(); } catch(e) { showToast("❌ Erreur", true); } }
+        await roomRef.child(`players/${currentPlayerId}`).set({ name: `Guerrier_${currentPlayerId.substr(0,4)}`, score: 0, answers: [] });
         
-        async function loadLatestMessages() {
-            try {
-                const snapshot = await database.ref('forum').once('value');
-                const messages = [];
-                snapshot.forEach(child => messages.push({ id: child.key, ...child.val() }));
-                messages.reverse();
-                const latestMessages = messages.slice(0, 5);
-                const container = document.getElementById('latestMessagesList');
-                if(latestMessages.length === 0) { container.innerHTML = '<div class="loading" style="padding:20px;">💬 Aucun message pour le moment</div>'; return; }
-                container.innerHTML = latestMessages.map(msg => `<div class="message-item"><div class="message-author">🔥 <strong>${escapeHtml(msg.author)}</strong><span class="message-time">${msg.date || ''}</span></div><div class="message-text">${escapeHtml(msg.message.length > 100 ? msg.message.substring(0, 100) + '...' : msg.message)}</div></div>`).join('');
-            } catch(e) { console.error(e); }
-        }
-        
-        // JEU - SYSTÈME DE SALON
-        function selectGameMode(mode, btn) {
-            currentGameMode = mode;
-            document.querySelectorAll('.game-mode-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            document.querySelectorAll('.room-section').forEach(s => s.classList.remove('active'));
-            document.getElementById(mode).classList.add('active');
-        }
-        
-        async function createRoom(mode) {
-            const code = Math.floor(1000 + Math.random() * 9000).toString();
-            const roomRef = database.ref(`game_rooms/${code}`);
-            const snapshot = await roomRef.once('value');
-            if(snapshot.exists()) { createRoom(mode); return; }
-            await roomRef.set({
-                mode: mode,
-                players: { [currentPlayerId]: { name: `Joueur_${currentPlayerId.substr(0,4)}`, score: 0, answers: [] } },
-                currentQuestion: 0,
-                status: 'waiting',
-                createdAt: Date.now()
-            });
-            showToast(`✅ Salon créé ! Code: ${code}`);
-            enterRoom(code, mode);
-        }
-        
-        async function joinRoom(mode) {
-            const code = document.getElementById(`joinCode${mode === 'partie1' ? '1' : '2'}`).value.trim();
-            if(!code || code.length !== 4) { showToast("❌ Code invalide (4 chiffres)", true); return; }
-            const roomRef = database.ref(`game_rooms/${code}`);
-            const snapshot = await roomRef.once('value');
-            if(!snapshot.exists()) { showToast("❌ Salon introuvable", true); return; }
+        currentRoomCode = code;
+        document.getElementById('gameLobby').style.display = 'none';
+        document.getElementById('gameRoom').style.display = 'block';
+        watchRoom(code);
+    }
+    
+    function watchRoom(code) {
+        const roomRef = db.ref(`game_rooms/${code}`);
+        roomRef.on('value', async (snapshot) => {
             const room = snapshot.val();
-            if(room.mode !== mode) { showToast("❌ Mode de jeu incorrect", true); return; }
-            if(Object.keys(room.players).length >= 4) { showToast("❌ Salon complet (4/4)", true); return; }
-            if(room.status !== 'waiting') { showToast("❌ Partie déjà commencée", true); return; }
-            await roomRef.child(`players/${currentPlayerId}`).set({ name: `Joueur_${currentPlayerId.substr(0,4)}`, score: 0, answers: [] });
-            showToast(`✅ Rejoint le salon ${code}`);
-            enterRoom(code, mode);
-        }
-        
-        function enterRoom(code, mode) {
-            document.getElementById('gameStatus').style.display = 'block';
-            document.querySelector('.game-panel').style.display = 'none';
-            watchRoom(code, mode);
-        }
-        
-        async function loadQuestionsFromFirebase(mode) {
-            const snapshot = await database.ref(`questions/${mode}`).once('value');
-            const questions = [];
-            snapshot.forEach(child => questions.push({ id: child.key, ...child.val() }));
-            return questions;
-        }
-        
-        function watchRoom(code, mode) {
-            const roomRef = database.ref(`game_rooms/${code}`);
-            roomRef.on('value', async (snapshot) => {
-                const room = snapshot.val();
-                if(!room) { showToast("❌ Salon fermé", true); document.getElementById('gameStatus').style.display = 'none'; document.querySelector('.game-panel').style.display = 'block'; return; }
-                
-                const players = room.players;
-                const playerCount = Object.keys(players).length;
-                const isHost = players[currentPlayerId] ? true : false;
-                
-                if(room.status === 'waiting') {
-                    let html = `<div class="waiting-room"><h2>🎮 SALON ${code}</h2><div class="players-list">`;
-                    for(let i=1; i<=4; i++) {
-                        const playerList = Object.values(players);
-                        const player = playerList[i-1];
-                        html += `<div class="player-slot ${player ? 'filled' : ''}"><div class="player-avatar">${player ? '👤' : '❓'}</div><div class="player-name">${player ? escapeHtml(player.name) : 'En attente...'}</div></div>`;
-                    }
-                    html += `</div>${isHost && playerCount >= 2 ? `<button class="game-btn" onclick="startGame('${code}')">🎮 COMMENCER LA PARTIE (${playerCount}/4)</button>` : `<p style="margin-top:20px;">⏳ En attente de joueurs... (${playerCount}/4)</p>`}<button class="game-btn" onclick="leaveRoom('${code}')">❌ QUITTER</button></div>`;
-                    document.getElementById('gameContainer').innerHTML = html;
-                } else if(room.status === 'playing') {
-                    await displayQuiz(code, room);
-                } else if(room.status === 'finished') {
-                    displayResults(code, room);
+            if(!room) {
+                toast("❌ Salon fermé", true);
+                leaveRoom();
+                return;
+            }
+            
+            const players = room.players;
+            const playerCount = Object.keys(players).length;
+            const isHost = players[currentPlayerId] ? true : false;
+            
+            if(room.status === 'waiting') {
+                let html = `<div class="room-box"><h2>🎮 SALON ${code}</h2><div class="players-area">`;
+                for(let i=1; i<=4; i++) {
+                    const playerList = Object.values(players);
+                    const p = playerList[i-1];
+                    html += `<div class="player-card ${p ? 'filled' : ''}"><div class="player-avatar">${p ? '⚔️' : '❓'}</div><div class="player-name">${p ? escapeHtml(p.name) : 'En attente...'}</div></div>`;
                 }
-            });
-        }
-        
-        async function startGame(code) {
-            const roomRef = database.ref(`game_rooms/${code}`);
-            await roomRef.update({ status: 'playing', currentQuestion: 0 });
-            await loadQuestion(code, 0);
-        }
-        
-        async function loadQuestion(code, qIndex) {
-            const roomRef = database.ref(`game_rooms/${code}`);
-            const snapshot = await roomRef.once('value');
-            const room = snapshot.val();
-            const mode = room.mode;
-            
-            const questions = await loadQuestionsFromFirebase(mode);
-            const question = questions[qIndex];
-            
-            if(!question) {
-                await roomRef.update({ status: 'finished' });
-                return;
-            }
-            
-            await roomRef.update({ currentQuestion: qIndex });
-            
-            let html = `<div class="quiz-container"><div class="score-display">🏆 SCORE ÉQUIPE: ${Object.values(room.players).reduce((sum, p) => sum + (p.score || 0), 0)} pts</div><div class="question-counter">Question ${qIndex+1}/${questions.length}</div>`;
-            if(question.image) html += `<img src="${question.image}" class="question-image">`;
-            html += `<div class="question-text">${escapeHtml(question.text)}</div><div class="answers">`;
-            question.answers.forEach((ans, i) => {
-                html += `<button class="answer-btn" onclick="submitAnswer('${code}', ${qIndex}, ${i})">${String.fromCharCode(65+i)}. ${escapeHtml(ans)}</button>`;
-            });
-            html += `</div></div>`;
-            document.getElementById('gameContainer').innerHTML = html;
-        }
-        
-        async function submitAnswer(code, qIndex, answerIndex) {
-            const roomRef = database.ref(`game_rooms/${code}`);
-            const snapshot = await roomRef.once('value');
-            const room = snapshot.val();
-            const mode = room.mode;
-            
-            if(room.players[currentPlayerId] && room.players[currentPlayerId].answers && room.players[currentPlayerId].answers.includes(qIndex)) {
-                showToast("❌ Vous avez déjà répondu à cette question !", true);
-                return;
-            }
-            
-            await roomRef.child(`players/${currentPlayerId}/answers`).set([...(room.players[currentPlayerId].answers || []), qIndex]);
-            await roomRef.child(`players/${currentPlayerId}/lastAnswer`).set(answerIndex);
-            
-            const questions = await loadQuestionsFromFirebase(mode);
-            const question = questions[qIndex];
-            
-            const allPlayers = Object.values(room.players);
-            const allAnswered = allPlayers.every(p => p.answers && p.answers.includes(qIndex));
-            
-            if(allAnswered) {
-                const allCorrect = allPlayers.every(p => p.lastAnswer === question.correct);
-                
-                if(allCorrect) {
-                    for(let playerId of Object.keys(room.players)) {
-                        const newScore = (room.players[playerId].score || 0) + 10;
-                        await roomRef.child(`players/${playerId}/score`).set(newScore);
-                    }
-                    showToast("✅ TOUS JUSTES ! +10 points pour l'équipe !");
+                html += `</div>`;
+                if(isHost && playerCount >= 2) {
+                    html += `<button class="btn" onclick="startGame('${code}')">🎮 COMMENCER (${playerCount}/4)</button>`;
                 } else {
-                    showToast("❌ QUELQU'UN A FAUX ! 0 point pour cette question !");
+                    html += `<p>⏳ En attente de joueurs... (${playerCount}/4)</p>`;
                 }
-                
-                await loadQuestion(code, qIndex + 1);
-            } else {
-                showToast("✅ Réponse enregistrée ! En attente des autres joueurs...");
+                html += `<button class="btn" onclick="leaveRoom()">❌ QUITTER</button></div>`;
+                document.getElementById('gameRoom').innerHTML = html;
             }
+            else if(room.status === 'playing') {
+                await showQuiz(room, code);
+            }
+            else if(room.status === 'finished') {
+                showResults(room, code);
+            }
+        });
+    }
+    
+    async function startGame(code) {
+        const roomRef = db.ref(`game_rooms/${code}`);
+        await roomRef.update({ status: 'playing', currentQuestion: 0 });
+        await loadNextQuestion(code, 0);
+    }
+    
+    async function loadNextQuestion(code, qIndex) {
+        const roomRef = db.ref(`game_rooms/${code}`);
+        const snapshot = await roomRef.once('value');
+        const room = snapshot.val();
+        
+        const questions = await loadQuestions();
+        if(qIndex >= questions.length) {
+            await roomRef.update({ status: 'finished' });
+            return;
         }
         
-        function displayResults(code, room) {
-            const players = Object.values(room.players);
-            players.sort((a,b) => (b.score || 0) - (a.score || 0));
-            let html = `<div class="quiz-container"><h2>🏆 RÉSULTATS FINAUX 🏆</h2><div class="ranking-list">`;
-            players.forEach((p, idx) => {
-                html += `<div class="ranking-item" style="display:flex; justify-content:space-between; padding:12px; border-bottom:1px solid #8B0000;"><span>${idx+1}. ${escapeHtml(p.name)}</span><span style="color:#FFD700;">${p.score || 0} points</span></div>`;
-            });
-            html += `</div><button class="game-btn" onclick="leaveRoom('${code}')">🏠 QUITTER</button></div>`;
-            document.getElementById('gameContainer').innerHTML = html;
+        await roomRef.update({ currentQuestion: qIndex });
+        await showQuiz(room, code);
+    }
+    
+    async function showQuiz(room, code) {
+        const questions = await loadQuestions();
+        const q = questions[room.currentQuestion];
+        if(!q) return;
+        
+        const totalScore = Object.values(room.players).reduce((s,p) => s + (p.score || 0), 0);
+        
+        let html = `<div class="quiz-area"><div class="players-area" style="justify-content: space-between;">
+            <div>🏆 SCORE ÉQUIPE: ${totalScore} pts</div>
+            <div>📋 Question ${room.currentQuestion+1}/${questions.length}</div>
+        </div>`;
+        
+        if(q.image) html += `<img src="${q.image}" class="question-img">`;
+        html += `<div style="font-size:1.4em; text-align:center; margin:20px 0;">${escapeHtml(q.text)}</div>
+        <div class="answers">`;
+        
+        q.answers.forEach((ans, i) => {
+            html += `<div class="answer" onclick="submitAnswer('${code}', ${room.currentQuestion}, ${i})">${String.fromCharCode(65+i)}. ${escapeHtml(ans)}</div>`;
+        });
+        
+        html += `</div></div>`;
+        document.getElementById('gameRoom').innerHTML = html;
+    }
+    
+    async function submitAnswer(code, qIndex, answerIndex) {
+        const roomRef = db.ref(`game_rooms/${code}`);
+        const snapshot = await roomRef.once('value');
+        const room = snapshot.val();
+        const questions = await loadQuestions();
+        const question = questions[qIndex];
+        
+        const player = room.players[currentPlayerId];
+        if(player.answers && player.answers.includes(qIndex)) {
+            toast("❌ Vous avez déjà répondu !", true);
+            return;
         }
         
-        async function leaveRoom(code) {
-            const roomRef = database.ref(`game_rooms/${code}`);
+        await roomRef.child(`players/${currentPlayerId}/answers`).set([...(player.answers || []), qIndex]);
+        await roomRef.child(`players/${currentPlayerId}/lastAnswer`).set(answerIndex);
+        
+        const allPlayers = Object.values(room.players);
+        const allAnswered = allPlayers.every(p => p.answers && p.answers.includes(qIndex));
+        
+        if(allAnswered) {
+            const allCorrect = allPlayers.every(p => p.lastAnswer === question.correct);
+            if(allCorrect) {
+                for(let pid of Object.keys(room.players)) {
+                    const newScore = (room.players[pid].score || 0) + 10;
+                    await roomRef.child(`players/${pid}/score`).set(newScore);
+                }
+                toast("✅ TOUS JUSTES ! +10 points pour l'équipe !");
+            } else {
+                toast("❌ QUELQU'UN A FAUX ! 0 point !");
+            }
+            await loadNextQuestion(code, qIndex + 1);
+        } else {
+            toast("✅ Réponse enregistrée ! En attente des autres...");
+        }
+    }
+    
+    function showResults(room, code) {
+        const players = Object.values(room.players);
+        players.sort((a,b) => (b.score || 0) - (a.score || 0));
+        let html = `<div class="quiz-area"><h2>🏆 RÉSULTATS FINAUX 🏆</h2>`;
+        players.forEach((p, i) => {
+            html += `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #8B0000;">
+                <span>${i+1}. ${escapeHtml(p.name)}</span><span style="color:#FFD700;">${p.score || 0} points</span>
+            </div>`;
+        });
+        html += `<button class="btn" onclick="leaveRoom()" style="margin-top:20px;">🏠 QUITTER</button></div>`;
+        document.getElementById('gameRoom').innerHTML = html;
+    }
+    
+    async function leaveRoom() {
+        if(currentRoomCode) {
+            const roomRef = db.ref(`game_rooms/${currentRoomCode}`);
             await roomRef.child(`players/${currentPlayerId}`).remove();
             const snapshot = await roomRef.once('value');
             if(snapshot.exists() && Object.keys(snapshot.val().players).length === 0) {
                 await roomRef.remove();
             }
-            document.getElementById('gameStatus').style.display = 'none';
-            document.querySelector('.game-panel').style.display = 'block';
-            document.getElementById('gameContainer').innerHTML = '';
-            showToast("✅ Vous avez quitté le salon");
         }
-        
-        function showSection(section) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById(section).classList.add('active');
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
-            if(section === 'ranking') loadClans();
-            if(section === 'forum') loadForum();
-        }
-        
-        initMusic();
-        loadClans();
-        loadForum();
-        loadLatestMessages();
-        document.getElementById('publishForumBtn').onclick = publishForumMessage;
-        
-        setInterval(() => {
-            if(document.getElementById('ranking').classList.contains('active')) loadClans();
-            if(document.getElementById('forum').classList.contains('active')) loadForum();
-            loadLatestMessages();
-        }, 20000);
-    </script>
+        currentRoomCode = null;
+        document.getElementById('gameLobby').style.display = 'block';
+        document.getElementById('gameRoom').style.display = 'none';
+        document.getElementById('joinCodeInput').value = '';
+        toast("✅ Vous avez quitté le salon");
+    }
+    
+    // INIT
+    initMusic();
+    loadClans('year');
+    loadForum();
+    setGameMode('partie1');
+</script>
 </body>
 </html>
