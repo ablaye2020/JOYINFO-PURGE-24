@@ -40,7 +40,7 @@
         }
         .btn-danger { background: #c0392b; }
         .btn-success { background: #27ae60; }
-        .clan-item, .question-item {
+        .item {
             background: #0a0a0a;
             border-left: 4px solid #FFD700;
             padding: 15px;
@@ -62,36 +62,24 @@
     <input type="password" id="pin" class="pin" maxlength="4" placeholder="CODE">
     <button onclick="checkPin()">🔐 ENTRER</button>
     <div id="loginError" style="color: red; margin-top: 10px;"></div>
-    <a href="index.html" style="color:#FFD700;">← Retour</a>
+    <a href="index.html" style="color:#FFD700;">← Retour au jeu</a>
 </div>
 
 <div id="adminPanel" style="display: none;">
     <div class="card">
-        <h1>⚜️ PANEL ADMIN JOY PURGE GAME ⚜️</h1>
+        <h1>⚜️ PANEL ADMIN ⚜️</h1>
         <button onclick="logout()">🚪 DÉCONNEXION</button>
         <button onclick="location.reload()">🔄 RAFRAÎCHIR</button>
     </div>
     
-    <!-- GESTION DES CLANS -->
     <div class="card">
-        <h2>🏆 GESTION DES CLANS</h2>
+        <h2>🏆 GESTION DES CLANS (Classement)</h2>
         <input type="text" id="clanName" placeholder="Nom du clan">
-        <input type="text" id="clanLeader" placeholder="Chef du clan">
-        <button onclick="addClan()" class="btn-success">➕ AJOUTER LE CLAN</button>
+        <input type="text" id="clanLeader" placeholder="Chef">
+        <button onclick="addClan()" class="btn-success">➕ AJOUTER</button>
         <div id="clansList"></div>
     </div>
     
-    <!-- RÉINITIALISATION SCORES -->
-    <div class="card">
-        <h2>🔄 RÉINITIALISATION</h2>
-        <button onclick="resetScores('week')">📅 RESET SEMAINE</button>
-        <button onclick="resetScores('month')">📆 RESET MOIS</button>
-        <button onclick="resetScores('year')">🗓️ RESET ANNÉE</button>
-        <button onclick="resetAllScores()" class="btn-danger">⚠️ RESET TOUS LES SCORES</button>
-        <button onclick="deleteAllClans()" class="btn-danger">🗑️ SUPPRIMER TOUS LES CLANS</button>
-    </div>
-    
-    <!-- QUESTIONS PARTIE 1 (TEXTE) -->
     <div class="card">
         <h2>📝 QUESTIONS PARTIE 1 (TEXTE)</h2>
         <input type="text" id="q1Text" placeholder="Question">
@@ -99,33 +87,27 @@
         <input type="text" id="q1B" placeholder="Réponse B">
         <input type="text" id="q1C" placeholder="Réponse C">
         <input type="text" id="q1D" placeholder="Réponse D">
-        <select id="q1Correct">
-            <option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option>
-        </select>
-        <button onclick="addQuestion('partie1')" class="btn-success">➕ AJOUTER QUESTION TEXTE</button>
+        <select id="q1Correct"><option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option></select>
+        <button onclick="addQuestion('partie1')" class="btn-success">➕ AJOUTER</button>
         <div id="questions1List"></div>
     </div>
     
-    <!-- QUESTIONS PARTIE 2 (IMAGES) -->
     <div class="card">
         <h2>🖼️ QUESTIONS PARTIE 2 (IMAGES)</h2>
-        <input type="text" id="q2Text" placeholder="Question (ex: Qui est ce purgeur ?)">
+        <input type="text" id="q2Text" placeholder="Question">
         <input type="file" id="q2Image" accept="image/*">
         <input type="text" id="q2A" placeholder="Réponse A">
         <input type="text" id="q2B" placeholder="Réponse B">
         <input type="text" id="q2C" placeholder="Réponse C">
         <input type="text" id="q2D" placeholder="Réponse D">
-        <select id="q2Correct">
-            <option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option>
-        </select>
-        <button onclick="addQuestion('partie2')" class="btn-success">➕ AJOUTER QUESTION IMAGE</button>
+        <select id="q2Correct"><option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option></select>
+        <button onclick="addQuestion('partie2')" class="btn-success">➕ AJOUTER</button>
         <div id="questions2List"></div>
     </div>
     
-    <!-- NETTOYAGE TOTAL -->
     <div class="card">
         <h2>⚠️ ZONE DANGEREUSE</h2>
-        <button onclick="deleteAllData()" class="btn-danger">🗑️ SUPPRIMER TOUTES LES DONNÉES (clans + questions + forum + salons)</button>
+        <button onclick="deleteAllData()" class="btn-danger">🗑️ SUPPRIMER TOUTES LES DONNÉES</button>
     </div>
 </div>
 
@@ -143,7 +125,6 @@
         messagingSenderId: "554574972856",
         appId: "1:554574972856:web:9de17e7f77eb7b5be4b14d"
     };
-    
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
     const storage = firebase.storage();
@@ -169,6 +150,7 @@
     
     function logout() { localStorage.removeItem('adminLogged'); location.reload(); }
     function toast(msg) { alert(msg); }
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
     
     async function loadAll() {
         await loadClans();
@@ -182,20 +164,14 @@
         snapshot.forEach(child => clans.push({ id: child.key, ...child.val() }));
         const container = document.getElementById('clansList');
         if(clans.length === 0) { container.innerHTML = '<p>Aucun clan</p>'; return; }
-        container.innerHTML = clans.map(c => `
-            <div class="clan-item">
-                <strong>⚔️ ${escapeHtml(c.name)}</strong> - 👑 ${escapeHtml(c.leader)}
-                <br>📅 Sem:${c.score_week||0} 📆 Mois:${c.score_month||0} 🗓️ Année:${c.score_year||0}
-                <button onclick="deleteClan('${c.id}')" class="btn-danger">🗑️</button>
-            </div>
-        `).join('');
+        container.innerHTML = clans.map(c => `<div class="item"><strong>⚔️ ${escapeHtml(c.name)}</strong> - 👑 ${escapeHtml(c.leader)}<br>📅 Sem:${c.score_week||0} 📆 Mois:${c.score_month||0} 🗓️ Année:${c.score_year||0}<button onclick="deleteClan('${c.id}')" class="btn-danger" style="margin-left:10px;">🗑️</button></div>`).join('');
     }
     
     async function addClan() {
         const name = document.getElementById('clanName').value.trim();
         const leader = document.getElementById('clanLeader').value.trim();
         if(!name || !leader) { toast("❌ Remplissez tous les champs"); return; }
-        await db.ref('clans').push({ name, leader, score_week:0, score_month:0, score_year:0, likes:0 });
+        await db.ref('clans').push({ name, leader, score_week:0, score_month:0, score_year:0 });
         toast("✅ Clan ajouté !");
         document.getElementById('clanName').value = '';
         document.getElementById('clanLeader').value = '';
@@ -203,39 +179,6 @@
     }
     
     window.deleteClan = async (id) => { if(confirm("Supprimer ?")) { await db.ref(`clans/${id}`).remove(); loadClans(); } };
-    
-    async function resetScores(period) {
-        const snapshot = await db.ref('clans').once('value');
-        const updates = {};
-        snapshot.forEach(child => { updates[`${child.key}/score_${period}`] = 0; });
-        await db.ref('clans').update(updates);
-        toast(`✅ Scores ${period} reset`);
-        loadClans();
-    }
-    
-    async function resetAllScores() {
-        if(confirm("⚠️ RESET TOUS LES SCORES ?")) {
-            const snapshot = await db.ref('clans').once('value');
-            const updates = {};
-            snapshot.forEach(child => {
-                updates[`${child.key}/score_week`] = 0;
-                updates[`${child.key}/score_month`] = 0;
-                updates[`${child.key}/score_year`] = 0;
-            });
-            await db.ref('clans').update(updates);
-            toast("✅ Tous les scores sont à 0");
-            loadClans();
-        }
-    }
-    
-    async function deleteAllClans() {
-        if(confirm("⚠️ SUPPRIMER TOUS LES CLANS ?")) {
-            const snapshot = await db.ref('clans').once('value');
-            for(let child of snapshot.val()) { await db.ref(`clans/${child.key}`).remove(); }
-            toast("✅ Tous les clans supprimés");
-            loadClans();
-        }
-    }
     
     async function addQuestion(mode) {
         const text = document.getElementById(`${mode === 'partie1' ? 'q1' : 'q2'}Text`).value.trim();
@@ -246,7 +189,6 @@
             document.getElementById(`${mode === 'partie1' ? 'q1' : 'q2'}D`).value.trim()
         ];
         const correct = parseInt(document.getElementById(`${mode === 'partie1' ? 'q1' : 'q2'}Correct`).value);
-        
         if(!text || answers.some(a => !a)) { toast("❌ Remplissez tous les champs"); return; }
         
         let imageUrl = null;
@@ -281,17 +223,7 @@
         snapshot.forEach(child => questions.push({ id: child.key, ...child.val() }));
         const container = document.getElementById(containerId);
         if(questions.length === 0) { container.innerHTML = '<p>Aucune question</p>'; return; }
-        container.innerHTML = questions.map((q, i) => `
-            <div class="question-item">
-                <strong>❓ ${i+1}. ${escapeHtml(q.text)}</strong><br>
-                A. ${escapeHtml(q.answers[0])}<br>
-                B. ${escapeHtml(q.answers[1])}<br>
-                C. ${escapeHtml(q.answers[2])}<br>
-                D. ${escapeHtml(q.answers[3])}<br>
-                ✅ Bonne réponse: ${String.fromCharCode(65+q.correct)}
-                <button onclick="deleteQuestion('${mode}', '${q.id}')" class="btn-danger">🗑️</button>
-            </div>
-        `).join('');
+        container.innerHTML = questions.map((q, i) => `<div class="item"><strong>❓ ${i+1}. ${escapeHtml(q.text)}</strong><br>A. ${escapeHtml(q.answers[0])}<br>B. ${escapeHtml(q.answers[1])}<br>C. ${escapeHtml(q.answers[2])}<br>D. ${escapeHtml(q.answers[3])}<br>✅ Bonne réponse: ${String.fromCharCode(65+q.correct)}<button onclick="deleteQuestion('${mode}', '${q.id}')" class="btn-danger" style="margin-left:10px;">🗑️</button></div>`).join('');
     }
     
     window.deleteQuestion = async (mode, id) => {
@@ -302,28 +234,25 @@
     };
     
     async function deleteAllData() {
-        if(confirm("⚠️ SUPPRIMER TOUTES LES DONNÉES (clans, questions, forum, salons) ? IRRÉVERSIBLE !")) {
-            // Supprimer clans
+        if(confirm("⚠️ SUPPRIMER TOUTES LES DONNÉES ? IRRÉVERSIBLE !")) {
             const clansSnap = await db.ref('clans').once('value');
-            for(let c of clansSnap.val()) { await db.ref(`clans/${c.key}`).remove(); }
-            // Supprimer questions
+            if(clansSnap.val()) for(let c of Object.values(clansSnap.val())) { await db.ref(`clans/${c.key}`).remove(); }
             const q1Snap = await db.ref('questions/partie1').once('value');
-            if(q1Snap.val()) for(let q of q1Snap.val()) { await db.ref(`questions/partie1/${q.key}`).remove(); }
+            if(q1Snap.val()) for(let q of Object.values(q1Snap.val())) { await db.ref(`questions/partie1/${q.key}`).remove(); }
             const q2Snap = await db.ref('questions/partie2').once('value');
-            if(q2Snap.val()) for(let q of q2Snap.val()) { await db.ref(`questions/partie2/${q.key}`).remove(); }
-            // Supprimer forum
+            if(q2Snap.val()) for(let q of Object.values(q2Snap.val())) { await db.ref(`questions/partie2/${q.key}`).remove(); }
             const forumSnap = await db.ref('forum').once('value');
-            if(forumSnap.val()) for(let m of forumSnap.val()) { await db.ref(`forum/${m.key}`).remove(); }
-            // Supprimer salons
+            if(forumSnap.val()) for(let m of Object.values(forumSnap.val())) { await db.ref(`forum/${m.key}`).remove(); }
             const roomsSnap = await db.ref('game_rooms').once('value');
-            if(roomsSnap.val()) for(let r of roomsSnap.val()) { await db.ref(`game_rooms/${r.key}`).remove(); }
-            
-            toast("✅ TOUTES LES DONNÉES ONT ÉTÉ SUPPRIMÉES !");
+            if(roomsSnap.val()) for(let r of Object.values(roomsSnap.val())) { await db.ref(`game_rooms/${r.key}`).remove(); }
+            const teams1Snap = await db.ref('teams/partie1').once('value');
+            if(teams1Snap.val()) for(let t of Object.values(teams1Snap.val())) { await db.ref(`teams/partie1/${t.key}`).remove(); }
+            const teams2Snap = await db.ref('teams/partie2').once('value');
+            if(teams2Snap.val()) for(let t of Object.values(teams2Snap.val())) { await db.ref(`teams/partie2/${t.key}`).remove(); }
+            toast("✅ TOUTES LES DONNÉES SUPPRIMÉES !");
             loadAll();
         }
     }
-    
-    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
 </script>
 </body>
 </html>
