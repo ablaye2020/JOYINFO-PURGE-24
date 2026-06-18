@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envoyer un message anonyme</title>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; }
+        .container { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-width: 500px; width: 100%; }
+        h2 { text-align: center; color: #333; margin-bottom: 20px; }
+        .info { text-align: center; color: #888; font-size: 14px; margin-bottom: 25px; }
+        textarea { width: 100%; height: 120px; padding: 15px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; resize: vertical; transition: 0.3s; }
+        textarea:focus { border-color: #f5576c; outline: none; }
+        .btn { width: 100%; padding: 15px; background: #f5576c; color: white; border: none; border-radius: 10px; font-size: 18px; cursor: pointer; margin-top: 15px; transition: 0.3s; }
+        .btn:hover { transform: scale(1.02); background: #e53e3e; }
+        #status { margin-top: 15px; text-align: center; color: #666; font-size: 14px; }
+        .share { margin-top: 20px; text-align: center; background: #f7f7f7; padding: 15px; border-radius: 10px; }
+        .share input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; margin: 5px 0; }
+        .copy-btn { background: #48bb78; color: white; border: none; padding: 8px 20px; border-radius: 5px; cursor: pointer; margin-top: 5px; }
+        .copy-btn:hover { background: #38a169; }
+        .emoji-big { font-size: 40px; display: block; text-align: center; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="emoji-big">✉️</span>
+        <h2>Envoyer un message anonyme</h2>
+        <div class="info">📌 Ton message sera totalement anonyme</div>
+        
+        <textarea id="messageInput" placeholder="Écris ton message ici..."></textarea>
+        
+        <button class="btn" onclick="envoyerMessage()">📨 Envoyer anonymement</button>
+        
+        <div id="status"></div>
+        
+        <div class="share">
+            <p>🔗 Partage ce lien pour recevoir des messages :</p>
+            <input type="text" id="lienPartage" readonly>
+            <button class="copy-btn" onclick="copierLien()">📋 Copier le lien</button>
+        </div>
+    </div>
+
+    <script>
+        // Configuration Firebase (ta config)
+        const firebaseConfig = {
+            apiKey: "AIzaSyB3yYAuiGqbtrbZ1aSYxAjduZ65adNIpag",
+            authDomain: "purge-game-58718.firebaseapp.com",
+            databaseURL: "https://purge-game-58718-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "purge-game-58718",
+            storageBucket: "purge-game-58718.firebasestorage.app",
+            messagingSenderId: "554574972856",
+            appId: "1:554574972856:web:9de17e7f77eb7b5be4b14d"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Récupérer l'ID de la boîte dans l'URL
+        const params = new URLSearchParams(window.location.search);
+        const boiteId = params.get('id');
+        
+        if (boiteId) {
+            document.getElementById('lienPartage').value = window.location.origin + '/boite.html?id=' + boiteId;
+        } else {
+            document.getElementById('status').textContent = '❌ Erreur : boîte introuvable.';
+        }
+
+        function envoyerMessage() {
+            const contenu = document.getElementById('messageInput').value.trim();
+            
+            if (!contenu) {
+                alert('📝 Écris un message avant d\'envoyer !');
+                return;
+            }
+            
+            if (contenu.length < 2) {
+                alert('📝 Le message est trop court (minimum 2 caractères)');
+                return;
+            }
+            
+            if (!boiteId) {
+                alert('❌ Erreur : boîte introuvable.');
+                return;
+            }
+            
+            document.getElementById('status').textContent = '⏳ Envoi en cours...';
+            document.querySelector('.btn').disabled = true;
+            
+            // Ajouter le message dans Realtime Database
+            const messagesRef = database.ref('boites/' + boiteId + '/messages');
+            const newMessageRef = messagesRef.push();
+            
+            newMessageRef.set({
+                contenu: contenu,
+                date: Date.now()
+            }).then(() => {
+                // Incrémenter le compteur
+                database.ref('boites/' + boiteId + '/nbMessages').transaction((current) => {
+                    return (current || 0) + 1;
+                });
+                
+                document.getElementById('status').textContent = '✅ Message envoyé avec succès ! Il est totalement anonyme.';
+                document.getElementById('messageInput').value = '';
+                document.querySelector('.btn').disabled = false;
+            }).catch((error) => {
+                document.getElementById('status').textContent = '❌ Erreur : ' + error.message;
+                document.querySelector('.btn').disabled = false;
+            });
+        }
+
+        function copierLien() {
+            const input = document.getElementById('lienPartage');
+            input.select();
+            document.execCommand('copy');
+            alert('✅ Lien copié dans le presse-papiers !');
+        }
+    </script>
+</body>
+</html>
