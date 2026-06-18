@@ -16,55 +16,15 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-        body::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 30% 40%, rgba(255, 107, 107, 0.12), transparent 50%);
-            animation: rotateBg 20s linear infinite;
-            z-index: 0;
-        }
-        @keyframes rotateBg {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
         .container {
-            position: relative;
-            z-index: 1;
-            background: rgba(30, 30, 30, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 40px;
-            padding: 40px 30px 35px;
+            background: #141414;
+            border-radius: 30px;
+            padding: 40px 30px;
             max-width: 400px;
             width: 100%;
-            border: 1px solid rgba(255,255,255,0.06);
-            box-shadow: 0 30px 80px rgba(0,0,0,0.8);
-        }
-        .back {
-            color: #555;
-            font-size: 14px;
-            margin-bottom: 20px;
-            display: block;
-            text-decoration: none;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-        .back:hover { color: #aaa; }
-        .logo {
+            border: 1px solid #2a2a2a;
             text-align: center;
-            margin-bottom: 30px;
-        }
-        .logo .icon {
-            font-size: 50px;
-            display: block;
-            margin-bottom: 6px;
         }
         .logo h2 {
             color: #fff;
@@ -74,94 +34,96 @@
         .logo p {
             color: #555;
             font-size: 14px;
+            margin-top: 4px;
         }
-        .input-area {
-            background: rgba(0,0,0,0.4);
-            border-radius: 18px;
-            padding: 16px;
-            border: 1px solid rgba(255,255,255,0.06);
-            margin-bottom: 18px;
-            transition: border-color 0.3s;
-        }
-        .input-area:focus-within {
-            border-color: rgba(255,107,107,0.3);
+        .pseudo-display {
+            background: #1a1a1a;
+            border-radius: 14px;
+            padding: 12px;
+            margin: 20px 0;
+            border: 1px solid #2a2a2a;
+            color: #ff6b6b;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
         textarea {
             width: 100%;
             height: 140px;
-            background: transparent;
-            border: none;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 16px;
+            padding: 16px;
             color: #eee;
             font-size: 16px;
             resize: none;
             outline: none;
             font-family: inherit;
-            line-height: 1.6;
+            transition: 0.3s;
+        }
+        textarea:focus {
+            border-color: #ff6b6b;
         }
         textarea::placeholder {
             color: #444;
         }
         .btn-send {
             width: 100%;
-            padding: 17px;
+            padding: 16px;
             background: linear-gradient(135deg, #ff6b6b, #ee5a24);
             border: none;
-            border-radius: 18px;
+            border-radius: 16px;
             color: white;
             font-size: 17px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 10px 30px rgba(238, 90, 36, 0.2);
+            margin-top: 15px;
+            transition: 0.3s;
         }
         .btn-send:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(238, 90, 36, 0.35);
+            transform: scale(1.02);
         }
         .btn-send:disabled {
             opacity: 0.5;
             cursor: not-allowed;
-            transform: none;
         }
         #status {
-            text-align: center;
             color: #444;
             font-size: 13px;
-            margin-top: 18px;
+            margin-top: 15px;
         }
-        #status.success {
-            color: #4ade80;
+        .back {
+            color: #555;
+            font-size: 14px;
+            display: block;
+            margin-top: 20px;
+            cursor: pointer;
+            text-decoration: none;
         }
+        .back:hover { color: #aaa; }
         .footer {
-            text-align: center;
-            color: #333;
+            color: #222;
             font-size: 12px;
-            margin-top: 22px;
-            letter-spacing: 0.3px;
-        }
-        .footer span {
-            color: #ff6b6b;
+            margin-top: 15px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <a class="back" onclick="history.back()">← Retour</a>
-
         <div class="logo">
-            <span class="icon">✉️</span>
-            <h2>Message anonyme</h2>
+            <h2>✉️ Message anonyme</h2>
             <p>Pose ta question en toute liberté</p>
         </div>
 
-        <div class="input-area">
-            <textarea id="messageInput" placeholder="Écris ton message ici..."></textarea>
-        </div>
+        <div class="pseudo-display" id="pseudoDisplay">@PSEUDO</div>
+
+        <textarea id="messageInput" placeholder="Écris ton message ici..."></textarea>
 
         <button class="btn-send" onclick="envoyerMessage()">📨 Envoyer anonymement</button>
 
         <div id="status"></div>
-        <div class="footer">🔒 100% anonyme • Personne ne saura qui tu es <span>♥</span></div>
+        <a class="back" onclick="history.back()">← Retour</a>
+        <div class="footer">🔒 100% anonyme</div>
     </div>
 
     <script>
@@ -179,9 +141,11 @@
         const database = firebase.database();
 
         const params = new URLSearchParams(window.location.search);
-        const boiteId = params.get('id');
+        const pseudo = params.get('pseudo');
 
-        if (!boiteId) {
+        if (pseudo) {
+            document.getElementById('pseudoDisplay').textContent = '@' + pseudo;
+        } else {
             document.getElementById('status').textContent = '❌ Lien invalide';
         }
 
@@ -193,38 +157,35 @@
                 return;
             }
             if (contenu.length < 2) {
-                alert('📝 Message trop court (min. 2 caractères)');
+                alert('📝 Message trop court');
                 return;
             }
-            if (!boiteId) {
+            if (!pseudo) {
                 alert('❌ Erreur');
                 return;
             }
 
-            const statusEl = document.getElementById('status');
-            statusEl.textContent = '⏳ Envoi...';
-            statusEl.className = '';
+            document.getElementById('status').textContent = '⏳ Envoi...';
             document.querySelector('.btn-send').disabled = true;
 
-            const messagesRef = database.ref('boites/' + boiteId + '/messages');
+            const messagesRef = database.ref('boites/' + pseudo + '/messages');
             const newMessageRef = messagesRef.push();
 
             newMessageRef.set({
                 contenu: contenu,
                 date: Date.now()
             }).then(() => {
-                database.ref('boites/' + boiteId + '/nbMessages').transaction((current) => {
+                database.ref('boites/' + pseudo + '/nbMessages').transaction((current) => {
                     return (current || 0) + 1;
                 });
-                statusEl.textContent = '✅ Message envoyé avec succès !';
-                statusEl.className = 'success';
+                document.getElementById('status').textContent = '✅ Message envoyé !';
                 document.getElementById('messageInput').value = '';
                 document.querySelector('.btn-send').disabled = false;
                 setTimeout(() => {
-                    statusEl.textContent = '';
+                    document.getElementById('status').textContent = '';
                 }, 3000);
             }).catch((error) => {
-                statusEl.textContent = '❌ ' + error.message;
+                document.getElementById('status').textContent = '❌ ' + error.message;
                 document.querySelector('.btn-send').disabled = false;
             });
         }
