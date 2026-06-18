@@ -43,15 +43,15 @@
     </div>
 
     <script>
-        // Configuration Firebase (ta config)
+        // Configuration Firebase
         const firebaseConfig = {
-            apiKey: "AIzaSyB3yYAuiGqbtrbZ1aSYxAjduZ65adNIpag",
-            authDomain: "purge-game-58718.firebaseapp.com",
-            databaseURL: "https://purge-game-58718-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "purge-game-58718",
-            storageBucket: "purge-game-58718.firebasestorage.app",
-            messagingSenderId: "554574972856",
-            appId: "1:554574972856:web:9de17e7f77eb7b5be4b14d"
+            apiKey: "AIzaSyCmrwHuZhxJRSOAIEB04Bc2xfMiCdIzMIc",
+            authDomain: "mon-jeu-anonymous.firebaseapp.com",
+            databaseURL: "https://mon-jeu-anonymous-default-rtdb.firebaseio.com",
+            projectId: "mon-jeu-anonymous",
+            storageBucket: "mon-jeu-anonymous.firebasestorage.app",
+            messagingSenderId: "24673956799",
+            appId: "1:24673956799:web:b690ad1d9b84606a75e70a"
         };
 
         firebase.initializeApp(firebaseConfig);
@@ -61,7 +61,6 @@
         const boiteId = params.get('id');
         let currentUser = null;
 
-        // Vérifier l'authentification
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 currentUser = user;
@@ -97,7 +96,6 @@
         function chargerMessages(boiteId) {
             document.getElementById('status').textContent = '⏳ Chargement des messages...';
             
-            // Écouter les messages en temps réel
             const messagesRef = database.ref('boites/' + boiteId + '/messages');
             messagesRef.on('value', (snapshot) => {
                 const container = document.getElementById('messagesContainer');
@@ -118,7 +116,6 @@
                     return;
                 }
                 
-                // Convertir en tableau et trier par date
                 const messages = Object.keys(data).map(key => ({
                     id: key,
                     ...data[key]
