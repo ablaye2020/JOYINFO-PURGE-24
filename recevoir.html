@@ -14,40 +14,21 @@
             background: #0a0a0a;
             min-height: 100vh;
             padding: 20px;
-            position: relative;
         }
-        body::before {
-            content: '';
-            position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 70% 20%, rgba(255, 107, 107, 0.08), transparent 50%),
-                        radial-gradient(circle at 30% 80%, rgba(238, 90, 36, 0.05), transparent 50%);
-            z-index: 0;
-            pointer-events: none;
-        }
-        .container {
-            position: relative;
-            z-index: 1;
-            max-width: 420px;
-            margin: 0 auto;
-        }
+        .container { max-width: 420px; margin: 0 auto; }
 
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 0 25px 0;
+            padding: 10px 0 20px 0;
         }
         .header h1 {
             color: #fff;
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 800;
-            letter-spacing: -0.5px;
         }
-        .header h1 .gradient {
+        .header h1 span {
             background: linear-gradient(135deg, #ff6b6b, #ffd93d);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -57,321 +38,238 @@
             gap: 8px;
         }
         .header-actions button {
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.06);
-            color: #888;
-            padding: 10px 14px;
-            border-radius: 14px;
-            font-size: 16px;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            color: #666;
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-size: 14px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            transition: 0.3s;
         }
         .header-actions button:hover {
-            background: rgba(255,255,255,0.12);
+            background: #222;
             color: #fff;
-            transform: translateY(-1px);
         }
 
-        .share-box {
-            background: rgba(255,255,255,0.04);
+        /* === STYLE AQA PUR === */
+        .aqa-box {
+            background: #141414;
             border-radius: 20px;
-            padding: 20px;
-            border: 1px solid rgba(255,255,255,0.06);
+            padding: 30px 20px;
+            border: 1px solid #2a2a2a;
+            text-align: center;
             margin-bottom: 25px;
-            backdrop-filter: blur(10px);
         }
-        .share-box .label {
+        .aqa-box .emoji-big {
+            font-size: 60px;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .aqa-box h2 {
+            color: #fff;
+            font-size: 22px;
+            font-weight: 700;
+        }
+        .aqa-box p {
             color: #666;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .step {
+            background: #141414;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #2a2a2a;
+            margin-bottom: 15px;
+        }
+        .step .step-label {
+            color: #ff6b6b;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        .share-box .link-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-            background: rgba(0,0,0,0.4);
-            border-radius: 14px;
-            padding: 6px 8px 6px 16px;
-            border: 1px solid rgba(255,255,255,0.05);
+        .step .step-text {
+            color: #ccc;
+            font-size: 15px;
+            margin-top: 4px;
         }
-        .share-box .link-row input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: #aaa;
-            font-size: 14px;
-            outline: none;
-            padding: 10px 0;
-            font-family: inherit;
-        }
-        .share-box .link-row button {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-            border: none;
-            color: white;
-            padding: 10px 18px;
+        .step .link-display {
+            background: #0a0a0a;
             border-radius: 12px;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .share-box .link-row button:hover {
-            transform: scale(1.05);
-        }
-
-        .share-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 12px;
-        }
-        .share-buttons button {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 14px;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .share-buttons button:hover {
-            transform: translateY(-2px);
-        }
-        .btn-wa {
-            background: #25D366;
-            color: white;
-        }
-        .btn-wa:hover {
-            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
-        }
-        .btn-ig {
-            background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-            color: white;
-        }
-        .btn-ig:hover {
-            box-shadow: 0 10px 30px rgba(220, 39, 67, 0.3);
-        }
-        .btn-copy {
-            background: rgba(255,255,255,0.08);
-            color: #aaa;
-            border: 1px solid rgba(255,255,255,0.06);
-        }
-        .btn-copy:hover {
-            background: rgba(255,255,255,0.15);
-            color: #fff;
-        }
-
-        .stats {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 25px;
-        }
-        .stats .stat {
-            flex: 1;
-            background: rgba(255,255,255,0.03);
-            border-radius: 16px;
-            padding: 16px;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
-        }
-        .stats .stat .number {
-            color: #fff;
-            font-size: 30px;
-            font-weight: 800;
-        }
-        .stats .stat .number .gradient {
-            background: linear-gradient(135deg, #ff6b6b, #ffd93d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .stats .stat .label {
-            color: #555;
-            font-size: 11px;
-            margin-top: 3px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .message-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding-bottom: 20px;
-        }
-        .message-card {
-            background: rgba(255,255,255,0.03);
-            border-radius: 18px;
-            padding: 18px 20px;
-            border: 1px solid rgba(255,255,255,0.05);
-            animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-        .message-card:hover {
-            border-color: rgba(255,107,107,0.15);
-            transform: translateX(4px);
-        }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .message-card .msg {
-            color: #eee;
-            font-size: 16px;
-            line-height: 1.6;
-        }
-        .message-card .meta {
+            padding: 14px 16px;
+            margin-top: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 10px;
+            border: 1px solid #2a2a2a;
         }
-        .message-card .date {
-            color: #444;
-            font-size: 11px;
+        .step .link-display .link {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            word-break: break-all;
         }
-        .message-card .badge {
-            background: rgba(255,107,107,0.15);
-            color: #ff6b6b;
-            font-size: 10px;
-            padding: 3px 12px;
-            border-radius: 20px;
-            font-weight: 600;
+        .step .link-display .copy-btn {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.3s;
+        }
+        .step .link-display .copy-btn:hover {
+            transform: scale(1.05);
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-        }
-        .empty-state .emoji {
-            font-size: 72px;
-            display: block;
-            margin-bottom: 15px;
-            animation: float 3s ease-in-out infinite;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        .empty-state h3 {
-            color: #fff;
-            font-size: 20px;
+        .btn-share {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-size: 17px;
             font-weight: 700;
-        }
-        .empty-state p {
-            color: #555;
-            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
             margin-top: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn-share:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(238, 90, 36, 0.25);
+        }
+
+        .btn-new {
+            width: 100%;
+            padding: 14px;
+            background: transparent;
+            border: 1px solid #2a2a2a;
+            border-radius: 16px;
+            color: #666;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+        .btn-new:hover {
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        /* Messages reçus (petit affichage en bas) */
+        .messages-section {
+            margin-top: 25px;
+            border-top: 1px solid #1a1a1a;
+            padding-top: 20px;
+        }
+        .messages-section .title {
+            color: #444;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+        .msg-card {
+            background: #141414;
+            border-radius: 14px;
+            padding: 14px 18px;
+            border: 1px solid #2a2a2a;
+            margin-bottom: 10px;
+            animation: fadeIn 0.3s ease;
+        }
+        .msg-card .msg {
+            color: #eee;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+        .msg-card .date {
+            color: #444;
+            font-size: 11px;
+            margin-top: 6px;
+            display: block;
+        }
+        .empty-msg {
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         #status {
             text-align: center;
             color: #444;
             font-size: 13px;
-            margin: 10px 0 20px;
+            margin: 10px 0;
         }
-        #status.loaded {
-            color: #4ade80;
-        }
-
-        .pulse-dot {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background: #4ade80;
-            border-radius: 50%;
-            margin-right: 8px;
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(0.8); }
-        }
-
-        .btn-new {
-            width: 100%;
-            padding: 16px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 18px;
-            color: #666;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-            backdrop-filter: blur(10px);
-        }
-        .btn-new:hover {
-            background: rgba(255,255,255,0.08);
-            color: #fff;
-        }
-
-        /* Indicateur de notification sonore */
-        .sound-indicator {
-            display: inline-block;
-            background: rgba(255,107,107,0.15);
-            color: #ff6b6b;
-            font-size: 10px;
-            padding: 2px 10px;
-            border-radius: 20px;
-            margin-left: 8px;
-            animation: blink 0.8s ease-in-out infinite alternate;
-        }
-        @keyframes blink {
-            from { opacity: 0.4; }
-            to { opacity: 1; }
+        .footer {
+            text-align: center;
+            color: #222;
+            font-size: 12px;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Ask<span class="gradient">Me</span></h1>
+            <h1>Ask<span>Me</span></h1>
             <div class="header-actions">
                 <button onclick="rafraichir()">🔄</button>
                 <button onclick="supprimerMessages()">🗑️</button>
             </div>
         </div>
 
-        <div class="share-box">
-            <div class="label">📤 Partager ton lien</div>
-            <div class="link-row">
-                <input type="text" id="lienPartage" readonly>
-                <button onclick="copierLien()">Copier</button>
-            </div>
-            <div class="share-buttons">
-                <button class="btn-wa" onclick="partagerWhatsApp()">💬 WhatsApp</button>
-                <button class="btn-ig" onclick="partagerInstagram()">📸 Instagram</button>
-                <button class="btn-copy" onclick="copierLien()">📋 Copier</button>
+        <!-- ÉTAPE 1 -->
+        <div class="step">
+            <div class="step-label">📌 Étape 1</div>
+            <div class="step-text">Copie ton lien</div>
+            <div class="link-display">
+                <span class="link" id="lienAffichage">Chargement...</span>
+                <button class="copy-btn" onclick="copierLien()">Copier</button>
             </div>
         </div>
 
-        <div class="stats">
-            <div class="stat">
-                <div class="number"><span class="gradient" id="msgCount">0</span></div>
-                <div class="label">Reçus</div>
-            </div>
-            <div class="stat">
-                <div class="number"><span class="gradient" id="unreadCount">0</span></div>
-                <div class="label">Non lus</div>
+        <!-- ÉTAPE 2 -->
+        <div class="step">
+            <div class="step-label">📌 Étape 2</div>
+            <div class="step-text">Partage le lien sur ta Story Instagram</div>
+            <button class="btn-share" onclick="partagerInstagram()">
+                📸 Partager sur Instagram
+            </button>
+            <button class="btn-share" style="background:#25D366; margin-top:10px;" onclick="partagerWhatsApp()">
+                💬 Partager sur WhatsApp
+            </button>
+        </div>
+
+        <div id="status">⏳ Chargement...</div>
+
+        <!-- Messages reçus -->
+        <div class="messages-section">
+            <div class="title">📬 Messages reçus (<span id="msgCount">0</span>)</div>
+            <div id="messagesContainer">
+                <div class="empty-msg">Aucun message reçu pour l'instant</div>
             </div>
         </div>
 
-        <div id="status">⏳ Connexion...</div>
-
-        <div class="message-list" id="messagesContainer"></div>
-
-        <button class="btn-new" onclick="creerNouvelleBoite()">🔄 Créer une nouvelle boîte</button>
+        <button class="btn-new" onclick="creerNouvelleBoite()">🔄 Changer de pseudo</button>
+        <div class="footer">🔒 100% anonyme</div>
     </div>
 
     <script>
@@ -389,35 +287,29 @@
         const database = firebase.database();
 
         const params = new URLSearchParams(window.location.search);
-        const boiteId = params.get('id');
+        const pseudo = params.get('pseudo');
         let currentUser = null;
-        let messagesData = [];
         let ancienNombreMessages = 0;
 
-        const lienComplet = window.location.origin + '/boite.html?id=' + boiteId;
-
-        if (boiteId) {
-            document.getElementById('lienPartage').value = lienComplet;
+        if (pseudo) {
+            const lien = window.location.origin + '/boite.html?pseudo=' + pseudo;
+            document.getElementById('lienAffichage').textContent = lien;
         }
 
-        // 🔔 FONCTION SON DE NOTIFICATION
+        // 🔔 SON
         function jouerSonNotification() {
             try {
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                
-                // Pop 1
                 const osc1 = audioCtx.createOscillator();
                 const gain1 = audioCtx.createGain();
                 osc1.connect(gain1);
                 gain1.connect(audioCtx.destination);
                 osc1.frequency.value = 880;
                 osc1.type = 'sine';
-                gain1.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain1.gain.setValueAtTime(0.25, audioCtx.currentTime);
                 gain1.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
                 osc1.start(audioCtx.currentTime);
                 osc1.stop(audioCtx.currentTime + 0.15);
-
-                // Ding 2
                 setTimeout(() => {
                     const osc2 = audioCtx.createOscillator();
                     const gain2 = audioCtx.createGain();
@@ -430,30 +322,24 @@
                     osc2.start(audioCtx.currentTime);
                     osc2.stop(audioCtx.currentTime + 0.1);
                 }, 100);
-
-            } catch (e) {
-                console.log('🔇 Son non supporté');
-            }
+            } catch (e) {}
         }
 
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 currentUser = user;
-                const el = document.getElementById('status');
-                el.innerHTML = '<span class="pulse-dot"></span>Connecté';
-                el.className = 'loaded';
-                if (boiteId) {
-                    verifierProprietaire(boiteId);
+                if (pseudo) {
+                    verifierProprietaire(pseudo);
                 } else {
-                    document.getElementById('status').textContent = '❌ Aucune boîte';
+                    document.getElementById('status').textContent = '❌ Aucun pseudo';
                 }
             } else {
                 firebase.auth().signInAnonymously();
             }
         });
 
-        function verifierProprietaire(boiteId) {
-            database.ref('boites/' + boiteId).once('value').then((snapshot) => {
+        function verifierProprietaire(pseudo) {
+            database.ref('boites/' + pseudo).once('value').then((snapshot) => {
                 const data = snapshot.val();
                 if (!data) {
                     document.getElementById('status').textContent = '❌ Boîte introuvable';
@@ -463,74 +349,55 @@
                     document.getElementById('status').textContent = '🔒 Accès refusé';
                     return;
                 }
-                chargerMessages(boiteId);
+                chargerMessages(pseudo);
             }).catch((error) => {
                 document.getElementById('status').textContent = '❌ ' + error.message;
             });
         }
 
-        function chargerMessages(boiteId) {
-            const messagesRef = database.ref('boites/' + boiteId + '/messages');
+        function chargerMessages(pseudo) {
+            const messagesRef = database.ref('boites/' + pseudo + '/messages');
             messagesRef.on('value', (snapshot) => {
                 const container = document.getElementById('messagesContainer');
                 const data = snapshot.val();
                 const countEl = document.getElementById('msgCount');
 
                 if (!data) {
-                    container.innerHTML = `
-                        <div class="empty-state">
-                            <span class="emoji">🕊️</span>
-                            <h3>Aucun message reçu</h3>
-                            <p>Partage ton lien pour recevoir des messages anonymes !</p>
-                        </div>
-                    `;
+                    container.innerHTML = '<div class="empty-msg">🕊️ Aucun message reçu</div>';
                     countEl.textContent = '0';
-                    document.getElementById('unreadCount').textContent = '0';
-                    document.getElementById('status').textContent = '✅ Prêt';
                     ancienNombreMessages = 0;
+                    document.getElementById('status').textContent = '✅ Prêt';
                     return;
                 }
 
-                messagesData = Object.keys(data).map(key => ({
+                const messages = Object.keys(data).map(key => ({
                     id: key,
                     ...data[key]
                 })).sort((a, b) => b.date - a.date);
 
-                const nouveauNombre = messagesData.length;
-
-                // 🎵 JOUER LE SON SI NOUVEAU MESSAGE
+                const nouveauNombre = messages.length;
                 if (nouveauNombre > ancienNombreMessages && ancienNombreMessages > 0) {
                     jouerSonNotification();
-                    // Afficher un petit indicateur visuel
-                    document.getElementById('status').innerHTML = '🔔 <span style="color:#ff6b6b;">Nouveau message reçu !</span>';
+                    document.getElementById('status').textContent = '🔔 Nouveau message !';
                     setTimeout(() => {
-                        document.getElementById('status').innerHTML = '<span class="pulse-dot"></span>Connecté';
+                        document.getElementById('status').textContent = '✅ ' + nouveauNombre + ' message(s)';
                     }, 2000);
                 }
-
                 ancienNombreMessages = nouveauNombre;
-
                 countEl.textContent = nouveauNombre;
-                document.getElementById('unreadCount').textContent = nouveauNombre;
 
                 let html = '';
-                const emojis = ['❤️', '😍', '🔥', '👀', '💯', '✨', '🌟', '🎯'];
-                messagesData.forEach((msg, index) => {
+                messages.forEach((msg) => {
                     const date = msg.date ? new Date(msg.date).toLocaleString('fr-FR') : 'Date inconnue';
-                    const emoji = emojis[index % emojis.length];
                     html += `
-                        <div class="message-card">
+                        <div class="msg-card">
                             <div class="msg">${escapeHtml(msg.contenu)}</div>
-                            <div class="meta">
-                                <span class="date">📅 ${date}</span>
-                                <span class="badge">${emoji} Anonyme</span>
-                            </div>
+                            <span class="date">📅 ${date}</span>
                         </div>
                     `;
                 });
-
                 container.innerHTML = html;
-                document.getElementById('status').textContent = `✅ ${messagesData.length} message${messagesData.length > 1 ? 's' : ''}`;
+                document.getElementById('status').textContent = '✅ ' + nouveauNombre + ' message' + (nouveauNombre > 1 ? 's' : '');
             }, (error) => {
                 document.getElementById('status').textContent = '❌ ' + error.message;
             });
@@ -543,65 +410,41 @@
         }
 
         function copierLien() {
-            const input = document.getElementById('lienPartage');
-            input.select();
-            document.execCommand('copy');
-            alert('✅ Lien copié !');
-        }
-
-        function partagerWhatsApp() {
-            if (!boiteId) return;
-            const url = window.location.origin + '/boite.html?id=' + boiteId;
-            const msg = encodeURIComponent('👋 Pose-moi une question anonymement ! 🔗 ' + url);
-            window.open('https://wa.me/?text=' + msg, '_blank');
+            const lien = document.getElementById('lienAffichage').textContent;
+            navigator.clipboard.writeText(lien).then(() => {
+                alert('✅ Lien copié !');
+            }).catch(() => {
+                prompt('Copie ce lien :', lien);
+            });
         }
 
         function partagerInstagram() {
-            if (!boiteId) return;
-            const url = window.location.origin + '/boite.html?id=' + boiteId;
             copierLien();
             alert('📸 Lien copié ! Colle-le dans ta story Instagram 📲');
-            if (navigator.share) {
-                navigator.share({
-                    text: 'Pose-moi une question anonymement ! 🔗 ' + url,
-                }).catch(() => {});
-            }
         }
 
-        function rafraichir() {
-            location.reload();
+        function partagerWhatsApp() {
+            const lien = document.getElementById('lienAffichage').textContent;
+            const msg = encodeURIComponent('👋 Pose-moi une question anonymement ! 🔗 ' + lien);
+            window.open('https://wa.me/?text=' + msg, '_blank');
         }
+
+        function rafraichir() { location.reload(); }
 
         function supprimerMessages() {
             if (!confirm('⚠️ Supprimer tous les messages ?')) return;
-            if (!boiteId) return;
-            database.ref('boites/' + boiteId + '/messages').remove()
+            if (!pseudo) return;
+            database.ref('boites/' + pseudo + '/messages').remove()
                 .then(() => {
-                    database.ref('boites/' + boiteId + '/nbMessages').set(0);
+                    database.ref('boites/' + pseudo + '/nbMessages').set(0);
                     alert('✅ Messages supprimés');
                 })
-                .catch((error) => {
-                    alert('❌ ' + error.message);
-                });
+                .catch((error) => alert('❌ ' + error.message));
         }
 
         function creerNouvelleBoite() {
-            if (!currentUser) {
-                alert('⏳ Attends la connexion...');
-                return;
-            }
-            const id = Math.random().toString(36).substring(2, 8).toUpperCase();
-            database.ref('boites/' + id).set({
-                proprietaire: currentUser.uid,
-                dateCreation: Date.now(),
-                nbMessages: 0
-            }).then(() => {
-                localStorage.setItem('maBoite', id);
-                alert('✅ Nouvelle boîte créée !');
-                window.location.href = 'recevoir.html?id=' + id;
-            }).catch((error) => {
-                alert('❌ ' + error.message);
-            });
+            localStorage.removeItem('monPseudo');
+            window.location.href = 'index.html';
         }
     </script>
 </body>
