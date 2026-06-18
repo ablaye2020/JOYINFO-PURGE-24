@@ -4,7 +4,7 @@ L A Y E
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AQA - Ask Anything</title>
+    <title>AskMe - Anonyme</title>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -20,107 +20,119 @@ L A Y E
             padding: 20px;
         }
         .container {
-            background: #141414;
-            border-radius: 30px;
-            padding: 40px 30px;
             max-width: 400px;
             width: 100%;
-            border: 1px solid #2a2a2a;
         }
-        .logo {
-            text-align: center;
-            margin-bottom: 30px;
+
+        /* === HEADER === */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0 20px 0;
         }
-        .logo h1 {
+        .header .logo {
             color: #fff;
-            font-size: 34px;
+            font-size: 22px;
             font-weight: 800;
-            letter-spacing: -1px;
         }
-        .logo h1 span {
+        .header .logo span {
             background: linear-gradient(135deg, #ff6b6b, #ffd93d);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .logo p {
+        .header .menu {
             color: #666;
             font-size: 14px;
+            cursor: pointer;
         }
 
-        .card {
-            background: #1a1a1a;
-            border-radius: 20px;
-            padding: 30px 20px;
+        /* === CARD PRINCIPALE === */
+        .main-card {
+            background: #141414;
+            border-radius: 24px;
+            padding: 40px 24px 30px;
+            border: 1px solid #2a2a2a;
             text-align: center;
             margin-bottom: 20px;
-            border: 1px solid #2a2a2a;
         }
-        .card .emoji {
-            font-size: 50px;
+        .main-card .big-emoji {
+            font-size: 70px;
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
-        .card h2 {
+        .main-card h1 {
             color: #fff;
-            font-size: 20px;
+            font-size: 28px;
+            font-weight: 800;
         }
-        .card p {
-            color: #777;
-            font-size: 14px;
-            margin-top: 4px;
+        .main-card h1 span {
+            background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .main-card p {
+            color: #666;
+            font-size: 15px;
+            margin-top: 6px;
+            line-height: 1.6;
         }
 
-        .input-pseudo {
-            display: flex;
-            gap: 10px;
-            background: #1a1a1a;
+        /* === INPUT PSEUDO === */
+        .pseudo-box {
+            background: #141414;
             border-radius: 16px;
-            padding: 6px;
+            padding: 16px;
             border: 1px solid #2a2a2a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             margin-bottom: 15px;
+            transition: border-color 0.3s;
         }
-        .input-pseudo input {
+        .pseudo-box:focus-within {
+            border-color: #ff6b6b;
+        }
+        .pseudo-box .at {
+            color: #555;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .pseudo-box input {
             flex: 1;
             background: transparent;
             border: none;
             color: #fff;
-            padding: 12px 16px;
-            font-size: 16px;
+            font-size: 18px;
+            font-weight: 700;
             outline: none;
-            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
+            padding: 4px 0;
         }
-        .input-pseudo input::placeholder {
+        .pseudo-box input::placeholder {
             color: #333;
             text-transform: none;
             letter-spacing: 0;
             font-weight: 400;
         }
-        .input-pseudo .prefix {
-            color: #555;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            padding-left: 12px;
-            font-weight: 600;
-        }
-        .input-pseudo button {
+        .pseudo-box button {
             background: linear-gradient(135deg, #ff6b6b, #ee5a24);
             border: none;
             color: white;
-            padding: 10px 20px;
+            padding: 10px 22px;
             border-radius: 12px;
             font-size: 14px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
             white-space: nowrap;
+            transition: 0.3s;
         }
-        .input-pseudo button:hover {
+        .pseudo-box button:hover {
             transform: scale(1.03);
         }
 
+        /* === BOUTONS === */
         .btn-secondary {
             display: block;
             width: 100%;
@@ -132,13 +144,43 @@ L A Y E
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
             text-align: center;
+            transition: 0.3s;
             margin-top: 10px;
         }
         .btn-secondary:hover {
             background: #222;
             color: #fff;
+        }
+
+        /* === STATS === */
+        .stats {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .stats .stat {
+            flex: 1;
+            background: #141414;
+            border-radius: 16px;
+            padding: 14px;
+            text-align: center;
+            border: 1px solid #2a2a2a;
+        }
+        .stats .stat .number {
+            color: #fff;
+            font-size: 22px;
+            font-weight: 800;
+        }
+        .stats .stat .number span {
+            background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stats .stat .label {
+            color: #444;
+            font-size: 11px;
+            margin-top: 2px;
         }
 
         #status {
@@ -149,7 +191,7 @@ L A Y E
         }
         .footer {
             text-align: center;
-            color: #333;
+            color: #222;
             font-size: 12px;
             margin-top: 20px;
         }
@@ -160,27 +202,38 @@ L A Y E
 </head>
 <body>
     <div class="container">
-        <div class="logo">
+        <div class="header">
+            <div class="logo">Ask<span>Me</span></div>
+            <div class="menu">⚙️</div>
+        </div>
+
+        <div class="main-card">
+            <span class="big-emoji">💬</span>
             <h1>Ask<span>Me</span></h1>
-            <p>Pose des questions anonymement</p>
+            <p>Crée ta boîte anonyme en 2 secondes</p>
         </div>
 
-        <div class="card">
-            <span class="emoji">🎯</span>
-            <h2>Crée ta boîte</h2>
-            <p>Choisis ton pseudo et reçois des messages</p>
-        </div>
-
-        <div class="input-pseudo">
-            <span class="prefix">🔗 /</span>
-            <input type="text" id="pseudoInput" placeholder="TONPSEUDO" maxlength="20">
-            <button onclick="creerBoite()">Créer</button>
+        <div class="pseudo-box">
+            <span class="at">@</span>
+            <input type="text" id="pseudoInput" placeholder="TON PSEUDO" maxlength="20">
+            <button onclick="creerBoite()">🚀</button>
         </div>
 
         <button class="btn-secondary" onclick="voirBoite()">📥 Voir mes messages</button>
 
-        <div id="status">Chargement...</div>
-        <div class="footer">🔒 100% anonyme • <span>♥</span> 2026</div>
+        <div class="stats">
+            <div class="stat">
+                <div class="number"><span id="statsMessages">0</span></div>
+                <div class="label">Messages reçus</div>
+            </div>
+            <div class="stat">
+                <div class="number"><span id="statsPartages">0</span></div>
+                <div class="label">Partages</div>
+            </div>
+        </div>
+
+        <div id="status">⏳ Connexion...</div>
+        <div class="footer">🔒 Anonyme et gratuit • <span>♥</span> 2026</div>
     </div>
 
     <script>
@@ -198,10 +251,10 @@ L A Y E
         const database = firebase.database();
         let currentUser = null;
 
-        // Vérifier si un pseudo est déjà enregistré
         const savedPseudo = localStorage.getItem('monPseudo');
         if (savedPseudo) {
             document.getElementById('pseudoInput').value = savedPseudo;
+            chargerStats(savedPseudo);
         }
 
         firebase.auth().signInAnonymously()
@@ -212,6 +265,13 @@ L A Y E
             .catch((error) => {
                 document.getElementById('status').textContent = '❌ ' + error.message;
             });
+
+        function chargerStats(pseudo) {
+            database.ref('boites/' + pseudo + '/nbMessages').once('value').then((snapshot) => {
+                const count = snapshot.val() || 0;
+                document.getElementById('statsMessages').textContent = count;
+            });
+        }
 
         function creerBoite() {
             if (!currentUser) {
@@ -224,7 +284,6 @@ L A Y E
                 alert('📝 Choisis un pseudo !');
                 return;
             }
-            // Nettoyer le pseudo
             pseudo = pseudo.replace(/[^A-Z0-9]/g, '');
             if (pseudo.length < 3) {
                 alert('📝 Minimum 3 caractères');
@@ -233,13 +292,10 @@ L A Y E
 
             document.getElementById('status').textContent = '⏳ Création...';
 
-            // Vérifier si le pseudo existe déjà
             database.ref('pseudos/' + pseudo).once('value').then((snapshot) => {
                 if (snapshot.exists()) {
-                    // Le pseudo existe déjà, vérifier si c'est le nôtre
                     const data = snapshot.val();
                     if (data.proprietaire === currentUser.uid) {
-                        // C'est notre boîte, on y va
                         localStorage.setItem('monPseudo', pseudo);
                         window.location.href = 'recevoir.html?pseudo=' + pseudo;
                     } else {
@@ -247,13 +303,11 @@ L A Y E
                         document.getElementById('status').textContent = '❌ Pseudo indisponible';
                     }
                 } else {
-                    // Créer la boîte
                     database.ref('boites/' + pseudo).set({
                         proprietaire: currentUser.uid,
                         dateCreation: Date.now(),
                         nbMessages: 0
                     });
-                    // Enregistrer le pseudo
                     database.ref('pseudos/' + pseudo).set({
                         proprietaire: currentUser.uid,
                         dateCreation: Date.now()
