@@ -17,18 +17,19 @@
         }
         .container { max-width: 420px; margin: 0 auto; }
 
+        /* === HEADER === */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 10px 0 20px 0;
         }
-        .header h1 {
+        .header .logo {
             color: #fff;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 800;
         }
-        .header h1 span {
+        .header .logo span {
             background: linear-gradient(135deg, #ff6b6b, #ffd93d);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -41,7 +42,7 @@
             background: #1a1a1a;
             border: 1px solid #2a2a2a;
             color: #666;
-            padding: 8px 14px;
+            padding: 8px 12px;
             border-radius: 12px;
             font-size: 14px;
             cursor: pointer;
@@ -52,68 +53,52 @@
             color: #fff;
         }
 
-        /* === STYLE AQA PUR === */
-        .aqa-box {
+        /* === PROFIL === */
+        .profile-card {
             background: #141414;
             border-radius: 20px;
-            padding: 30px 20px;
+            padding: 25px 20px;
             border: 1px solid #2a2a2a;
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
-        .aqa-box .emoji-big {
-            font-size: 60px;
+        .profile-card .avatar {
+            font-size: 50px;
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
-        .aqa-box h2 {
+        .profile-card .pseudo {
             color: #fff;
-            font-size: 22px;
-            font-weight: 700;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
         }
-        .aqa-box p {
-            color: #666;
+        .profile-card .pseudo span {
+            color: #ff6b6b;
+        }
+        .profile-card .sub {
+            color: #555;
             font-size: 14px;
-            margin-top: 4px;
         }
 
-        .step {
+        /* === LIEN === */
+        .link-box {
             background: #141414;
             border-radius: 16px;
-            padding: 20px;
+            padding: 16px 18px;
             border: 1px solid #2a2a2a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             margin-bottom: 15px;
         }
-        .step .step-label {
-            color: #ff6b6b;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .step .step-text {
-            color: #ccc;
-            font-size: 15px;
-            margin-top: 4px;
-        }
-        .step .link-display {
-            background: #0a0a0a;
-            border-radius: 12px;
-            padding: 14px 16px;
-            margin-top: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #2a2a2a;
-        }
-        .step .link-display .link {
-            color: #fff;
-            font-size: 16px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
+        .link-box .link {
+            flex: 1;
+            color: #aaa;
+            font-size: 13px;
             word-break: break-all;
         }
-        .step .link-display .copy-btn {
+        .link-box .copy-btn {
             background: linear-gradient(135deg, #ff6b6b, #ee5a24);
             border: none;
             color: white;
@@ -123,91 +108,103 @@
             font-weight: 700;
             cursor: pointer;
             white-space: nowrap;
-            transition: 0.3s;
         }
-        .step .link-display .copy-btn:hover {
+        .link-box .copy-btn:hover {
             transform: scale(1.05);
         }
 
-        .btn-share {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+        /* === BOUTONS PARTAGE === */
+        .share-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .share-row button {
+            flex: 1;
+            padding: 12px;
             border: none;
-            border-radius: 16px;
-            color: white;
-            font-size: 17px;
+            border-radius: 14px;
+            font-size: 14px;
             font-weight: 700;
             cursor: pointer;
             transition: 0.3s;
-            margin-top: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 6px;
         }
-        .btn-share:hover {
-            transform: scale(1.02);
-            box-shadow: 0 10px 30px rgba(238, 90, 36, 0.25);
-        }
+        .share-row button:hover { transform: translateY(-2px); }
+        .btn-wa { background: #25D366; color: white; }
+        .btn-ig { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743); color: white; }
+        .btn-copy { background: #1a1a1a; color: #888; border: 1px solid #2a2a2a; }
 
-        .btn-new {
-            width: 100%;
-            padding: 14px;
-            background: transparent;
-            border: 1px solid #2a2a2a;
+        /* === STATS === */
+        .stats {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .stats .stat {
+            flex: 1;
+            background: #141414;
             border-radius: 16px;
-            color: #666;
-            font-size: 15px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: 0.3s;
+            padding: 14px;
+            text-align: center;
+            border: 1px solid #2a2a2a;
         }
-        .btn-new:hover {
-            background: #1a1a1a;
+        .stats .stat .number {
             color: #fff;
+            font-size: 24px;
+            font-weight: 800;
+        }
+        .stats .stat .number span {
+            background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stats .stat .label {
+            color: #444;
+            font-size: 11px;
+            margin-top: 2px;
         }
 
-        /* Messages reçus (petit affichage en bas) */
-        .messages-section {
-            margin-top: 25px;
-            border-top: 1px solid #1a1a1a;
-            padding-top: 20px;
-        }
-        .messages-section .title {
-            color: #444;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-        }
+        /* === MESSAGES === */
         .msg-card {
             background: #141414;
             border-radius: 14px;
-            padding: 14px 18px;
+            padding: 16px 18px;
             border: 1px solid #2a2a2a;
             margin-bottom: 10px;
-            animation: fadeIn 0.3s ease;
+            animation: slideIn 0.3s ease;
         }
         .msg-card .msg {
             color: #eee;
             font-size: 15px;
             line-height: 1.5;
         }
+        .msg-card .meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+        }
         .msg-card .date {
             color: #444;
             font-size: 11px;
-            margin-top: 6px;
-            display: block;
+        }
+        .msg-card .badge {
+            color: #ff6b6b;
+            font-size: 11px;
+            font-weight: 600;
         }
         .empty-msg {
             color: #333;
             text-align: center;
-            padding: 20px;
+            padding: 30px;
             font-size: 14px;
         }
 
-        @keyframes fadeIn {
+        @keyframes slideIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
@@ -218,58 +215,80 @@
             font-size: 13px;
             margin: 10px 0;
         }
+        .btn-new {
+            width: 100%;
+            padding: 14px;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 16px;
+            color: #666;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+        .btn-new:hover {
+            background: #222;
+            color: #fff;
+        }
         .footer {
             text-align: center;
             color: #222;
             font-size: 12px;
             margin-top: 20px;
         }
+        .footer a {
+            color: #555;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Ask<span>Me</span></h1>
+            <div class="logo">Ask<span>Me</span></div>
             <div class="header-actions">
                 <button onclick="rafraichir()">🔄</button>
                 <button onclick="supprimerMessages()">🗑️</button>
             </div>
         </div>
 
-        <!-- ÉTAPE 1 -->
-        <div class="step">
-            <div class="step-label">📌 Étape 1</div>
-            <div class="step-text">Copie ton lien</div>
-            <div class="link-display">
-                <span class="link" id="lienAffichage">Chargement...</span>
-                <button class="copy-btn" onclick="copierLien()">Copier</button>
-            </div>
+        <div class="profile-card">
+            <span class="avatar">👤</span>
+            <div class="pseudo">@<span id="pseudoDisplay">PSEUDO</span></div>
+            <div class="sub">envoie-moi des messages anonymes !</div>
         </div>
 
-        <!-- ÉTAPE 2 -->
-        <div class="step">
-            <div class="step-label">📌 Étape 2</div>
-            <div class="step-text">Partage le lien sur ta Story Instagram</div>
-            <button class="btn-share" onclick="partagerInstagram()">
-                📸 Partager sur Instagram
-            </button>
-            <button class="btn-share" style="background:#25D366; margin-top:10px;" onclick="partagerWhatsApp()">
-                💬 Partager sur WhatsApp
-            </button>
+        <div class="link-box">
+            <span class="link" id="lienAffichage">Chargement...</span>
+            <button class="copy-btn" onclick="copierLien()">Copier</button>
+        </div>
+
+        <div class="share-row">
+            <button class="btn-wa" onclick="partagerWhatsApp()">💬 WhatsApp</button>
+            <button class="btn-ig" onclick="partagerInstagram()">📸 Story</button>
+            <button class="btn-copy" onclick="copierLien()">📋 Copier</button>
+        </div>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="number"><span id="msgCount">0</span></div>
+                <div class="label">Messages reçus</div>
+            </div>
+            <div class="stat">
+                <div class="number"><span id="unreadCount">0</span></div>
+                <div class="label">Non lus</div>
+            </div>
         </div>
 
         <div id="status">⏳ Chargement...</div>
 
-        <!-- Messages reçus -->
-        <div class="messages-section">
-            <div class="title">📬 Messages reçus (<span id="msgCount">0</span>)</div>
-            <div id="messagesContainer">
-                <div class="empty-msg">Aucun message reçu pour l'instant</div>
-            </div>
+        <div id="messagesContainer">
+            <div class="empty-msg">🕊️ Aucun message reçu</div>
         </div>
 
         <button class="btn-new" onclick="creerNouvelleBoite()">🔄 Changer de pseudo</button>
-        <div class="footer">🔒 100% anonyme</div>
+        <div class="footer">🔒 Anonyme • <a href="#">Terms Privacy</a></div>
     </div>
 
     <script>
@@ -292,11 +311,11 @@
         let ancienNombreMessages = 0;
 
         if (pseudo) {
+            document.getElementById('pseudoDisplay').textContent = pseudo;
             const lien = window.location.origin + '/boite.html?pseudo=' + pseudo;
             document.getElementById('lienAffichage').textContent = lien;
         }
 
-        // 🔔 SON
         function jouerSonNotification() {
             try {
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -365,6 +384,7 @@
                 if (!data) {
                     container.innerHTML = '<div class="empty-msg">🕊️ Aucun message reçu</div>';
                     countEl.textContent = '0';
+                    document.getElementById('unreadCount').textContent = '0';
                     ancienNombreMessages = 0;
                     document.getElementById('status').textContent = '✅ Prêt';
                     return;
@@ -385,14 +405,20 @@
                 }
                 ancienNombreMessages = nouveauNombre;
                 countEl.textContent = nouveauNombre;
+                document.getElementById('unreadCount').textContent = nouveauNombre;
 
                 let html = '';
-                messages.forEach((msg) => {
+                const emojis = ['❤️', '😍', '🔥', '👀', '💯', '✨'];
+                messages.forEach((msg, index) => {
                     const date = msg.date ? new Date(msg.date).toLocaleString('fr-FR') : 'Date inconnue';
+                    const emoji = emojis[index % emojis.length];
                     html += `
                         <div class="msg-card">
                             <div class="msg">${escapeHtml(msg.contenu)}</div>
-                            <span class="date">📅 ${date}</span>
+                            <div class="meta">
+                                <span class="date">📅 ${date}</span>
+                                <span class="badge">${emoji} Anonyme</span>
+                            </div>
                         </div>
                     `;
                 });
@@ -418,15 +444,15 @@
             });
         }
 
-        function partagerInstagram() {
-            copierLien();
-            alert('📸 Lien copié ! Colle-le dans ta story Instagram 📲');
-        }
-
         function partagerWhatsApp() {
             const lien = document.getElementById('lienAffichage').textContent;
             const msg = encodeURIComponent('👋 Pose-moi une question anonymement ! 🔗 ' + lien);
             window.open('https://wa.me/?text=' + msg, '_blank');
+        }
+
+        function partagerInstagram() {
+            copierLien();
+            alert('📸 Lien copié ! Colle-le dans ta story Instagram 📲');
         }
 
         function rafraichir() { location.reload(); }
