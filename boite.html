@@ -2,49 +2,169 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Envoyer un message anonyme</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AskMe - Envoyer</title>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; }
-        .container { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-width: 500px; width: 100%; }
-        h2 { text-align: center; color: #333; margin-bottom: 20px; }
-        .info { text-align: center; color: #888; font-size: 14px; margin-bottom: 25px; }
-        textarea { width: 100%; height: 120px; padding: 15px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; resize: vertical; transition: 0.3s; }
-        textarea:focus { border-color: #f5576c; outline: none; }
-        .btn { width: 100%; padding: 15px; background: #f5576c; color: white; border: none; border-radius: 10px; font-size: 18px; cursor: pointer; margin-top: 15px; transition: 0.3s; }
-        .btn:hover { transform: scale(1.02); background: #e53e3e; }
-        #status { margin-top: 15px; text-align: center; color: #666; font-size: 14px; }
-        .share { margin-top: 20px; text-align: center; background: #f7f7f7; padding: 15px; border-radius: 10px; }
-        .share input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; margin: 5px 0; }
-        .copy-btn { background: #48bb78; color: white; border: none; padding: 8px 20px; border-radius: 5px; cursor: pointer; margin-top: 5px; }
-        .copy-btn:hover { background: #38a169; }
-        .emoji-big { font-size: 40px; display: block; text-align: center; margin-bottom: 10px; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(255, 107, 107, 0.12), transparent 50%);
+            animation: rotateBg 20s linear infinite;
+            z-index: 0;
+        }
+        @keyframes rotateBg {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .container {
+            position: relative;
+            z-index: 1;
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 40px 30px 35px;
+            max-width: 400px;
+            width: 100%;
+            border: 1px solid rgba(255,255,255,0.06);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.8);
+        }
+        .back {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: block;
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .back:hover { color: #aaa; }
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo .icon {
+            font-size: 50px;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .logo h2 {
+            color: #fff;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .logo p {
+            color: #555;
+            font-size: 14px;
+        }
+        .input-area {
+            background: rgba(0,0,0,0.4);
+            border-radius: 18px;
+            padding: 16px;
+            border: 1px solid rgba(255,255,255,0.06);
+            margin-bottom: 18px;
+            transition: border-color 0.3s;
+        }
+        .input-area:focus-within {
+            border-color: rgba(255,107,107,0.3);
+        }
+        textarea {
+            width: 100%;
+            height: 140px;
+            background: transparent;
+            border: none;
+            color: #eee;
+            font-size: 16px;
+            resize: none;
+            outline: none;
+            font-family: inherit;
+            line-height: 1.6;
+        }
+        textarea::placeholder {
+            color: #444;
+        }
+        .btn-send {
+            width: 100%;
+            padding: 17px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border: none;
+            border-radius: 18px;
+            color: white;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(238, 90, 36, 0.2);
+        }
+        .btn-send:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(238, 90, 36, 0.35);
+        }
+        .btn-send:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        #status {
+            text-align: center;
+            color: #444;
+            font-size: 13px;
+            margin-top: 18px;
+        }
+        #status.success {
+            color: #4ade80;
+        }
+        .footer {
+            text-align: center;
+            color: #333;
+            font-size: 12px;
+            margin-top: 22px;
+            letter-spacing: 0.3px;
+        }
+        .footer span {
+            color: #ff6b6b;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <span class="emoji-big">✉️</span>
-        <h2>Envoyer un message anonyme</h2>
-        <div class="info">📌 Ton message sera totalement anonyme</div>
-        
-        <textarea id="messageInput" placeholder="Écris ton message ici..."></textarea>
-        
-        <button class="btn" onclick="envoyerMessage()">📨 Envoyer anonymement</button>
-        
-        <div id="status"></div>
-        
-        <div class="share">
-            <p>🔗 Partage ce lien pour recevoir des messages :</p>
-            <input type="text" id="lienPartage" readonly>
-            <button class="copy-btn" onclick="copierLien()">📋 Copier le lien</button>
+        <a class="back" onclick="history.back()">← Retour</a>
+
+        <div class="logo">
+            <span class="icon">✉️</span>
+            <h2>Message anonyme</h2>
+            <p>Pose ta question en toute liberté</p>
         </div>
+
+        <div class="input-area">
+            <textarea id="messageInput" placeholder="Écris ton message ici..."></textarea>
+        </div>
+
+        <button class="btn-send" onclick="envoyerMessage()">📨 Envoyer anonymement</button>
+
+        <div id="status"></div>
+        <div class="footer">🔒 100% anonyme • Personne ne saura qui tu es <span>♥</span></div>
     </div>
 
     <script>
-        // Configuration Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCmrwHuZhxJRSOAIEB04Bc2xfMiCdIzMIc",
             authDomain: "mon-jeu-anonymous.firebaseapp.com",
@@ -60,37 +180,35 @@
 
         const params = new URLSearchParams(window.location.search);
         const boiteId = params.get('id');
-        
-        if (boiteId) {
-            document.getElementById('lienPartage').value = window.location.origin + '/boite.html?id=' + boiteId;
-        } else {
-            document.getElementById('status').textContent = '❌ Erreur : boîte introuvable.';
+
+        if (!boiteId) {
+            document.getElementById('status').textContent = '❌ Lien invalide';
         }
 
         function envoyerMessage() {
             const contenu = document.getElementById('messageInput').value.trim();
             
             if (!contenu) {
-                alert('📝 Écris un message avant d\'envoyer !');
+                alert('📝 Écris un message !');
                 return;
             }
-            
             if (contenu.length < 2) {
-                alert('📝 Le message est trop court (minimum 2 caractères)');
+                alert('📝 Message trop court (min. 2 caractères)');
                 return;
             }
-            
             if (!boiteId) {
-                alert('❌ Erreur : boîte introuvable.');
+                alert('❌ Erreur');
                 return;
             }
-            
-            document.getElementById('status').textContent = '⏳ Envoi en cours...';
-            document.querySelector('.btn').disabled = true;
-            
+
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = '⏳ Envoi...';
+            statusEl.className = '';
+            document.querySelector('.btn-send').disabled = true;
+
             const messagesRef = database.ref('boites/' + boiteId + '/messages');
             const newMessageRef = messagesRef.push();
-            
+
             newMessageRef.set({
                 contenu: contenu,
                 date: Date.now()
@@ -98,21 +216,17 @@
                 database.ref('boites/' + boiteId + '/nbMessages').transaction((current) => {
                     return (current || 0) + 1;
                 });
-                
-                document.getElementById('status').textContent = '✅ Message envoyé avec succès ! Il est totalement anonyme.';
+                statusEl.textContent = '✅ Message envoyé avec succès !';
+                statusEl.className = 'success';
                 document.getElementById('messageInput').value = '';
-                document.querySelector('.btn').disabled = false;
+                document.querySelector('.btn-send').disabled = false;
+                setTimeout(() => {
+                    statusEl.textContent = '';
+                }, 3000);
             }).catch((error) => {
-                document.getElementById('status').textContent = '❌ Erreur : ' + error.message;
-                document.querySelector('.btn').disabled = false;
+                statusEl.textContent = '❌ ' + error.message;
+                document.querySelector('.btn-send').disabled = false;
             });
-        }
-
-        function copierLien() {
-            const input = document.getElementById('lienPartage');
-            input.select();
-            document.execCommand('copy');
-            alert('✅ Lien copié dans le presse-papiers !');
         }
     </script>
 </body>
