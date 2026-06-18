@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Anonyme - Jeu</title>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; }
+        .container { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center; max-width: 400px; width: 100%; }
+        h1 { color: #333; margin-bottom: 10px; }
+        p { color: #666; margin-bottom: 30px; }
+        .btn { display: block; width: 100%; padding: 15px; background: #667eea; color: white; border: none; border-radius: 10px; font-size: 18px; cursor: pointer; margin: 10px 0; transition: 0.3s; }
+        .btn:hover { transform: scale(1.02); background: #5a67d8; }
+        .btn.secondary { background: #48bb78; }
+        .btn.secondary:hover { background: #38a169; }
+        #status { margin-top: 15px; color: #666; font-size: 14px; }
+        .emoji { font-size: 50px; display: block; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="emoji">🎮</span>
+        <h1>Message Anonyme</h1>
+        <p>Crée ta boîte et reçois des messages anonymes de tes amis !</p>
+        
+        <button class="btn" onclick="creerBoite()">🚀 Créer ma boîte</button>
+        <button class="btn secondary" onclick="voirBoite()">📥 Voir mes messages</button>
+        
+        <div id="status">Chargement...</div>
+    </div>
+
+    <script>
+        // Configuration Firebase (ta config)
+        const firebaseConfig = {
+            apiKey: "AIzaSyB3yYAuiGqbtrbZ1aSYxAjduZ65adNIpag",
+            authDomain: "purge-game-58718.firebaseapp.com",
+            databaseURL: "https://purge-game-58718-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "purge-game-58718",
+            storageBucket: "purge-game-58718.firebasestorage.app",
+            messagingSenderId: "554574972856",
+            appId: "1:554574972856:web:9de17e7f77eb7b5be4b14d"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        let currentUser = null;
+        
+        // Connexion anonyme automatique
+        firebase.auth().signInAnonymously()
+            .then((userCredential) => {
+                currentUser = userCredential.user;
+                document.getElementById('status').textContent = '✅ Connecté ! Tu peux créer ta boîte.';
+            })
+            .catch((error) => {
+                document.getElementById('status').textContent = '❌ Erreur : ' + error.message;
+            });
+
+        function creerBoite() {
+            if (!currentUser) {
+                alert('Attends la connexion...');
+                return;
+            }
+            
+            // Générer un ID unique de 6 caractères
+            const id = Math.random().toString(36).substring(2, 8).toUpperCase();
+            
+            // Créer la boîte dans Realtime Database
+            database.ref('boites/' + id).set({
+                proprietaire: currentUser.uid,
+                dateCreation: Date.now(),
+                nbMessages: 0
+            }).then(() => {
+                localStorage.setItem('maBoite', id);
+                alert('✅ Boîte créée ! Ton lien :\n' + window.location.origin + '/boite.html?id=' + id);
+                window.location.href = 'boite.html?id=' + id;
+            }).catch((error) => {
+                alert('❌ Erreur : ' + error.message);
+            });
+        }
+
+        function voirBoite() {
+            const id = localStorage.getItem('maBoite');
+            if (id) {
+                window.location.href = 'recevoir.html?id=' + id;
+            } else {
+                alert('❌ Tu n\'as pas encore de boîte. Crée-en une !');
+            }
+        }
+    </script>
+</body>
+</html>
