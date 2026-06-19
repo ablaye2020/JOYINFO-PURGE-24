@@ -9,14 +9,19 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body { 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #0a0a0a;
             min-height: 100vh;
             padding: 20px;
+            background-image: 
+                radial-gradient(circle at 70% 20%, rgba(255, 107, 107, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 30% 80%, rgba(255, 215, 0, 0.05) 0%, transparent 50%);
         }
         .container { max-width: 420px; margin: 0 auto; }
 
+        /* HEADER */
         .header {
             display: flex;
             justify-content: space-between;
@@ -25,11 +30,11 @@
         }
         .header .logo {
             color: #fff;
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 800;
         }
         .header .logo span {
-            background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -38,36 +43,41 @@
             gap: 8px;
         }
         .header-actions button {
-            background: #1a1a1a;
-            border: 1px solid #2a2a2a;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
             color: #666;
-            padding: 8px 12px;
-            border-radius: 12px;
-            font-size: 14px;
+            padding: 10px 14px;
+            border-radius: 14px;
+            font-size: 16px;
             cursor: pointer;
             transition: 0.3s;
+            backdrop-filter: blur(10px);
         }
         .header-actions button:hover {
-            background: #222;
+            background: rgba(255,255,255,0.1);
             color: #fff;
+            transform: translateY(-2px);
         }
 
+        /* PROFIL */
         .profile-card {
-            background: #141414;
-            border-radius: 20px;
-            padding: 25px 20px;
-            border: 1px solid #2a2a2a;
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 30px 20px 25px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
             text-align: center;
             margin-bottom: 20px;
+            box-shadow: 0 15px 40px -10px rgba(0,0,0,0.5);
         }
         .profile-card .avatar {
-            font-size: 50px;
+            font-size: 56px;
             display: block;
             margin-bottom: 5px;
         }
         .profile-card .pseudo {
             color: #fff;
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 800;
             letter-spacing: 0.5px;
         }
@@ -75,41 +85,62 @@
             color: #ff6b6b;
         }
         .profile-card .sub {
-            color: #555;
+            color: #666;
             font-size: 14px;
+            margin-top: 4px;
+        }
+        .profile-card .badge-pop {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 20px;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
+        /* LIEN */
         .link-box {
-            background: #141414;
-            border-radius: 16px;
-            padding: 16px 18px;
-            border: 1px solid #2a2a2a;
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 18px;
+            padding: 14px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
             display: flex;
             align-items: center;
             gap: 10px;
             margin-bottom: 15px;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
         }
         .link-box .link {
             flex: 1;
             color: #aaa;
             font-size: 13px;
             word-break: break-all;
+            font-family: monospace;
         }
         .link-box .copy-btn {
             background: linear-gradient(135deg, #ff6b6b, #ee5a24);
             border: none;
             color: white;
-            padding: 8px 16px;
-            border-radius: 10px;
+            padding: 10px 18px;
+            border-radius: 12px;
             font-size: 13px;
             font-weight: 700;
             cursor: pointer;
+            transition: 0.3s;
             white-space: nowrap;
+            box-shadow: 0 10px 25px -5px rgba(238, 90, 36, 0.2);
         }
         .link-box .copy-btn:hover {
             transform: scale(1.05);
+            box-shadow: 0 15px 35px -5px rgba(238, 90, 36, 0.3);
         }
 
+        /* SHARE ROW */
         .share-row {
             display: flex;
             gap: 10px;
@@ -117,9 +148,9 @@
         }
         .share-row button {
             flex: 1;
-            padding: 12px;
+            padding: 14px 10px;
             border: none;
-            border-radius: 14px;
+            border-radius: 16px;
             font-size: 14px;
             font-weight: 700;
             cursor: pointer;
@@ -129,11 +160,27 @@
             justify-content: center;
             gap: 6px;
         }
-        .share-row button:hover { transform: translateY(-2px); }
-        .btn-wa { background: #25D366; color: white; }
-        .btn-ig { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743); color: white; }
-        .btn-copy { background: #1a1a1a; color: #888; border: 1px solid #2a2a2a; }
+        .share-row button:hover { transform: translateY(-3px); }
+        .btn-wa { 
+            background: #25D366; 
+            color: white;
+            box-shadow: 0 10px 25px -5px rgba(37, 211, 102, 0.3);
+        }
+        .btn-wa:hover { box-shadow: 0 15px 35px -5px rgba(37, 211, 102, 0.4); }
+        .btn-ig { 
+            background: linear-gradient(135deg, #f09433, #e6683c, #dc2743); 
+            color: white;
+            box-shadow: 0 10px 25px -5px rgba(220, 39, 67, 0.3);
+        }
+        .btn-ig:hover { box-shadow: 0 15px 35px -5px rgba(220, 39, 67, 0.4); }
+        .btn-copy { 
+            background: rgba(255,255,255,0.06); 
+            color: #aaa; 
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .btn-copy:hover { background: rgba(255,255,255,0.12); color: #fff; }
 
+        /* STATS */
         .stats {
             display: flex;
             gap: 12px;
@@ -141,46 +188,62 @@
         }
         .stats .stat {
             flex: 1;
-            background: #141414;
-            border-radius: 16px;
-            padding: 14px;
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 18px;
+            padding: 16px;
             text-align: center;
-            border: 1px solid #2a2a2a;
+            border: 1px solid rgba(255, 255, 255, 0.04);
         }
         .stats .stat .number {
             color: #fff;
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 800;
         }
         .stats .stat .number span {
-            background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .stats .stat .label {
-            color: #444;
+            color: #555;
             font-size: 11px;
-            margin-top: 2px;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
+        /* MESSAGES */
         .msg-card {
-            background: #141414;
-            border-radius: 14px;
-            padding: 16px 18px;
-            border: 1px solid #2a2a2a;
-            margin-bottom: 10px;
-            animation: slideIn 0.3s ease;
+            background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 18px;
+            padding: 18px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            margin-bottom: 12px;
+            animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: 0.3s;
+        }
+        .msg-card:hover {
+            border-color: rgba(255, 107, 107, 0.15);
+            transform: translateX(4px);
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .msg-card .msg {
             color: #eee;
-            font-size: 15px;
-            line-height: 1.5;
+            font-size: 16px;
+            line-height: 1.6;
         }
         .msg-card .meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 8px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.04);
         }
         .msg-card .date {
             color: #444;
@@ -188,43 +251,64 @@
         }
         .msg-card .badge {
             color: #ff6b6b;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 600;
         }
-        .empty-msg {
-            color: #333;
-            text-align: center;
-            padding: 30px;
-            font-size: 14px;
-        }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .empty-msg {
+            color: #444;
+            text-align: center;
+            padding: 50px 20px;
+            font-size: 15px;
+            background: rgba(20, 20, 20, 0.4);
+            border-radius: 20px;
+            border: 1px dashed rgba(255,255,255,0.04);
+        }
+        .empty-msg .emoji {
+            font-size: 60px;
+            display: block;
+            margin-bottom: 15px;
         }
 
         #status {
             text-align: center;
             color: #444;
             font-size: 13px;
-            margin: 10px 0;
+            margin: 10px 0 20px;
         }
+        #status .dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(0.8); }
+        }
+
         .btn-new {
             width: 100%;
-            padding: 14px;
-            background: #1a1a1a;
-            border: 1px solid #2a2a2a;
-            border-radius: 16px;
+            padding: 16px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 18px;
             color: #666;
             font-size: 15px;
+            font-weight: 600;
             cursor: pointer;
             transition: 0.3s;
             margin-top: 10px;
+            backdrop-filter: blur(10px);
         }
         .btn-new:hover {
-            background: #222;
+            background: rgba(255,255,255,0.08);
             color: #fff;
         }
+
         .footer {
             text-align: center;
             color: #222;
@@ -232,13 +316,15 @@
             margin-top: 20px;
         }
         .footer a {
-            color: #555;
+            color: #444;
             text-decoration: none;
         }
+        .footer a:hover { color: #666; }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- HEADER -->
         <div class="header">
             <div class="logo">Ask<span>Me</span></div>
             <div class="header-actions">
@@ -247,23 +333,28 @@
             </div>
         </div>
 
+        <!-- PROFIL -->
         <div class="profile-card">
             <span class="avatar">👤</span>
             <div class="pseudo">@<span id="pseudoDisplay">PSEUDO</span></div>
             <div class="sub">envoie-moi des messages anonymes !</div>
+            <span class="badge-pop">🔥 238 potes sont venus</span>
         </div>
 
+        <!-- LIEN -->
         <div class="link-box">
             <span class="link" id="lienAffichage">Chargement...</span>
             <button class="copy-btn" onclick="copierLien()">Copier</button>
         </div>
 
+        <!-- SHARE -->
         <div class="share-row">
             <button class="btn-wa" onclick="partagerWhatsApp()">💬 WhatsApp</button>
             <button class="btn-ig" onclick="partagerInstagram()">📸 Story</button>
             <button class="btn-copy" onclick="copierLien()">📋 Copier</button>
         </div>
 
+        <!-- STATS -->
         <div class="stats">
             <div class="stat">
                 <div class="number"><span id="msgCount">0</span></div>
@@ -275,10 +366,14 @@
             </div>
         </div>
 
-        <div id="status">⏳ Chargement...</div>
+        <div id="status"><span class="dot"></span>Chargement...</div>
 
+        <!-- MESSAGES -->
         <div id="messagesContainer">
-            <div class="empty-msg">🕊️ Aucun message reçu</div>
+            <div class="empty-msg">
+                <span class="emoji">🕊️</span>
+                Aucun message reçu pour l'instant
+            </div>
         </div>
 
         <button class="btn-new" onclick="creerNouvelleBoite()">🔄 Changer de pseudo</button>
@@ -304,13 +399,13 @@
         let currentUser = null;
         let ancienNombreMessages = 0;
 
-        // ✅ LIEN CORRIGÉ AVEC LE BON CHEMIN
         if (pseudo) {
             document.getElementById('pseudoDisplay').textContent = pseudo;
-            const lien = window.location.origin + '/laye-anonymous/boite.html?pseudo=' + pseudo;
+            const lien = 'https://ablaye2020.github.io/laye-anonymous/boite.html?pseudo=' + pseudo;
             document.getElementById('lienAffichage').textContent = lien;
         }
 
+        // SON
         function jouerSonNotification() {
             try {
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -320,7 +415,7 @@
                 gain1.connect(audioCtx.destination);
                 osc1.frequency.value = 880;
                 osc1.type = 'sine';
-                gain1.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                gain1.gain.setValueAtTime(0.2, audioCtx.currentTime);
                 gain1.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
                 osc1.start(audioCtx.currentTime);
                 osc1.stop(audioCtx.currentTime + 0.15);
@@ -331,7 +426,7 @@
                     gain2.connect(audioCtx.destination);
                     osc2.frequency.value = 1100;
                     osc2.type = 'sine';
-                    gain2.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain2.gain.setValueAtTime(0.12, audioCtx.currentTime);
                     gain2.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
                     osc2.start(audioCtx.currentTime);
                     osc2.stop(audioCtx.currentTime + 0.1);
@@ -377,11 +472,16 @@
                 const countEl = document.getElementById('msgCount');
 
                 if (!data) {
-                    container.innerHTML = '<div class="empty-msg">🕊️ Aucun message reçu</div>';
+                    container.innerHTML = `
+                        <div class="empty-msg">
+                            <span class="emoji">🕊️</span>
+                            Aucun message reçu pour l'instant
+                        </div>
+                    `;
                     countEl.textContent = '0';
                     document.getElementById('unreadCount').textContent = '0';
                     ancienNombreMessages = 0;
-                    document.getElementById('status').textContent = '✅ Prêt';
+                    document.getElementById('status').innerHTML = '<span class="dot"></span>Prêt ✅';
                     return;
                 }
 
@@ -395,7 +495,7 @@
                     jouerSonNotification();
                     document.getElementById('status').textContent = '🔔 Nouveau message !';
                     setTimeout(() => {
-                        document.getElementById('status').textContent = '✅ ' + nouveauNombre + ' message(s)';
+                        document.getElementById('status').innerHTML = '<span class="dot"></span>' + nouveauNombre + ' message' + (nouveauNombre > 1 ? 's' : '');
                     }, 2000);
                 }
                 ancienNombreMessages = nouveauNombre;
@@ -403,7 +503,7 @@
                 document.getElementById('unreadCount').textContent = nouveauNombre;
 
                 let html = '';
-                const emojis = ['❤️', '😍', '🔥', '👀', '💯', '✨'];
+                const emojis = ['❤️', '😍', '🔥', '👀', '💯', '✨', '🌟', '🎯'];
                 messages.forEach((msg, index) => {
                     const date = msg.date ? new Date(msg.date).toLocaleString('fr-FR') : 'Date inconnue';
                     const emoji = emojis[index % emojis.length];
@@ -418,7 +518,7 @@
                     `;
                 });
                 container.innerHTML = html;
-                document.getElementById('status').textContent = '✅ ' + nouveauNombre + ' message' + (nouveauNombre > 1 ? 's' : '');
+                document.getElementById('status').innerHTML = '<span class="dot"></span>' + nouveauNombre + ' message' + (nouveauNombre > 1 ? 's' : '');
             }, (error) => {
                 document.getElementById('status').textContent = '❌ ' + error.message;
             });
@@ -465,7 +565,7 @@
 
         function creerNouvelleBoite() {
             localStorage.removeItem('monPseudo');
-            window.location.href = 'index.html';
+            window.location.href = 'https://ablaye2020.github.io/laye-anonymous/';
         }
     </script>
 </body>
