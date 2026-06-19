@@ -1,115 +1,183 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AskMe - Envoyer</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>NGL - Envoyer</title>
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        /* Reset et fond animé */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background: #0a0a0a;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            background-image: radial-gradient(circle at 30% 20%, rgba(255, 107, 107, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
         }
+
         .container {
-            background: #141414;
-            border-radius: 30px;
-            padding: 40px 30px;
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 35px 25px 30px;
             max-width: 400px;
             width: 100%;
-            border: 1px solid #2a2a2a;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
             text-align: center;
         }
+
         .back {
-            color: #555;
+            color: #888;
             font-size: 14px;
             display: block;
             text-align: left;
             cursor: pointer;
-            transition: 0.3s;
+            transition: 0.2s;
+            text-decoration: none;
+            font-weight: 500;
         }
-        .back:hover { color: #aaa; }
+        .back:hover {
+            color: #fff;
+        }
+
         .logo h2 {
             color: #fff;
-            font-size: 24px;
-            font-weight: 700;
-            margin-top: 5px;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin: 5px 0 5px;
+        }
+        .logo h2 span {
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         .logo p {
-            color: #555;
-            font-size: 14px;
+            color: #777;
+            font-size: 15px;
         }
+
         .pseudo-display {
-            background: #1a1a1a;
-            border-radius: 14px;
-            padding: 12px;
-            margin: 20px 0;
-            border: 1px solid #2a2a2a;
-            color: #ff6b6b;
-            font-size: 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            padding: 14px 18px;
+            margin: 25px 0 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: #fff;
+            font-size: 20px;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
+        .pseudo-display span {
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
         textarea {
             width: 100%;
             height: 140px;
-            background: #1a1a1a;
-            border: 1px solid #2a2a2a;
-            border-radius: 16px;
-            padding: 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 24px;
+            padding: 18px 20px;
             color: #eee;
             font-size: 16px;
             resize: none;
             outline: none;
             font-family: inherit;
-            transition: 0.3s;
+            transition: 0.2s;
+            line-height: 1.6;
         }
-        textarea:focus { border-color: #ff6b6b; }
-        textarea::placeholder { color: #444; }
+        textarea:focus {
+            border-color: #ff6b6b;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        textarea::placeholder {
+            color: #555;
+        }
+
         .btn-send {
             width: 100%;
             padding: 16px;
             background: linear-gradient(135deg, #ff6b6b, #ee5a24);
             border: none;
-            border-radius: 16px;
+            border-radius: 30px;
             color: white;
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 700;
             cursor: pointer;
-            margin-top: 15px;
+            margin-top: 18px;
             transition: 0.3s;
+            box-shadow: 0 10px 30px -5px rgba(238, 90, 36, 0.3);
         }
-        .btn-send:hover { transform: scale(1.02); }
-        .btn-send:disabled { opacity: 0.5; cursor: not-allowed; }
-        #status { color: #444; font-size: 13px; margin-top: 15px; }
-        .footer { color: #222; font-size: 12px; margin-top: 15px; }
+        .btn-send:hover {
+            transform: scale(1.02);
+        }
+        .btn-send:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        #status {
+            color: #666;
+            font-size: 14px;
+            margin-top: 18px;
+        }
+        .footer {
+            color: #333;
+            font-size: 12px;
+            margin-top: 25px;
+            letter-spacing: 0.3px;
+        }
+        .footer span {
+            color: #ff6b6b;
+        }
+
+        .emoji-big {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <a class="back" onclick="history.back()">← Retour</a>
         <div class="logo">
-            <h2>✉️ Message anonyme</h2>
+            <span class="emoji-big">✉️</span>
+            <h2>Message <span>anonyme</span></h2>
             <p>Pose ta question en toute liberté</p>
         </div>
 
-        <div class="pseudo-display" id="pseudoDisplay">@PSEUDO</div>
+        <div class="pseudo-display">
+            @<span id="pseudoDisplay">pseudo</span>
+        </div>
 
         <textarea id="messageInput" placeholder="Écris ton message ici..."></textarea>
 
-        <button class="btn-send" onclick="envoyerMessage()">📨 Envoyer anonymement</button>
+        <button class="btn-send" onclick="envoyerMessage()">📨 Envoyer</button>
 
         <div id="status"></div>
-        <div class="footer">🔒 100% anonyme</div>
+        <div class="footer">🔒 100% anonyme • <span>♥</span> 2026</div>
     </div>
 
     <script>
+        // Configuration Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCmrwHuZhxJRSOAIEB04Bc2xfMiCdIzMIc",
             authDomain: "mon-jeu-anonymous.firebaseapp.com",
@@ -123,32 +191,34 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
+        // Récupérer le pseudo depuis l'URL
         const params = new URLSearchParams(window.location.search);
         const pseudo = params.get('pseudo');
 
         if (pseudo) {
-            document.getElementById('pseudoDisplay').textContent = '@' + pseudo;
+            document.getElementById('pseudoDisplay').textContent = pseudo;
         } else {
             document.getElementById('status').textContent = '❌ Lien invalide';
         }
 
         function envoyerMessage() {
             const contenu = document.getElementById('messageInput').value.trim();
-            
+            const statusEl = document.getElementById('status');
+
             if (!contenu) {
                 alert('📝 Écris un message !');
                 return;
             }
             if (contenu.length < 2) {
-                alert('📝 Message trop court');
+                alert('📝 Message trop court (min. 2 caractères)');
                 return;
             }
             if (!pseudo) {
-                alert('❌ Erreur');
+                alert('❌ Erreur : pseudo manquant');
                 return;
             }
 
-            document.getElementById('status').textContent = '⏳ Envoi...';
+            statusEl.textContent = '⏳ Envoi en cours...';
             document.querySelector('.btn-send').disabled = true;
 
             const messagesRef = database.ref('boites/' + pseudo + '/messages');
@@ -161,14 +231,14 @@
                 database.ref('boites/' + pseudo + '/nbMessages').transaction((current) => {
                     return (current || 0) + 1;
                 });
-                document.getElementById('status').textContent = '✅ Message envoyé !';
+                statusEl.textContent = '✅ Message envoyé avec succès !';
                 document.getElementById('messageInput').value = '';
                 document.querySelector('.btn-send').disabled = false;
                 setTimeout(() => {
-                    document.getElementById('status').textContent = '';
+                    statusEl.textContent = '';
                 }, 3000);
             }).catch((error) => {
-                document.getElementById('status').textContent = '❌ ' + error.message;
+                statusEl.textContent = '❌ ' + error.message;
                 document.querySelector('.btn-send').disabled = false;
             });
         }
