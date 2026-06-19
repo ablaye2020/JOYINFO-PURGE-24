@@ -1,69 +1,61 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>AskMe - Envoyer</title>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0a0a0a;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: #f2f2f7;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            background-image: 
-                radial-gradient(circle at 30% 20%, rgba(255, 107, 107, 0.12) 0%, transparent 50%),
-                radial-gradient(circle at 70% 80%, rgba(255, 215, 0, 0.08) 0%, transparent 50%);
         }
 
         .container {
-            background: rgba(20, 20, 20, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 40px;
-            padding: 40px 30px 35px;
-            max-width: 400px;
+            max-width: 380px;
             width: 100%;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+            background: white;
+            border-radius: 40px;
+            padding: 40px 25px 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
             text-align: center;
-            animation: fadeUp 0.6s ease;
-        }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .back {
-            color: #666;
-            font-size: 14px;
             display: block;
             text-align: left;
-            cursor: pointer;
-            transition: 0.3s;
-            text-decoration: none;
+            color: #888;
+            font-size: 14px;
             font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            margin-bottom: 10px;
         }
-        .back:hover { color: #fff; }
+        .back:hover {
+            color: #1a1a1a;
+        }
 
         .logo .emoji-big {
             font-size: 52px;
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
         .logo h2 {
-            color: #fff;
             font-size: 28px;
             font-weight: 800;
-            letter-spacing: -0.5px;
-            margin: 5px 0 4px;
+            color: #1a1a1a;
         }
         .logo h2 span {
             background: linear-gradient(135deg, #ff6b6b, #feca57);
@@ -71,49 +63,46 @@
             -webkit-text-fill-color: transparent;
         }
         .logo p {
-            color: #777;
+            color: #888;
             font-size: 15px;
+            margin-top: 4px;
         }
 
         .pseudo-display {
-            background: rgba(255, 255, 255, 0.04);
+            background: #f2f2f7;
             border-radius: 30px;
             padding: 16px 20px;
             margin: 25px 0 20px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            color: #fff;
+            color: #1a1a1a;
             font-size: 20px;
             font-weight: 700;
             letter-spacing: 0.5px;
         }
         .pseudo-display span {
-            background: linear-gradient(135deg, #ff6b6b, #feca57);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #ff6b6b;
         }
 
         textarea {
             width: 100%;
             height: 140px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: #f2f2f7;
+            border: 2px solid transparent;
             border-radius: 24px;
             padding: 18px 20px;
-            color: #eee;
             font-size: 16px;
             resize: none;
             outline: none;
             font-family: inherit;
-            transition: 0.3s;
+            transition: 0.2s;
             line-height: 1.6;
+            color: #1a1a1a;
         }
         textarea:focus {
             border-color: #ff6b6b;
-            background: rgba(0, 0, 0, 0.5);
-            box-shadow: 0 0 30px -10px rgba(255, 107, 107, 0.1);
+            background: white;
         }
         textarea::placeholder {
-            color: #444;
+            color: #bbb;
         }
 
         .btn-send {
@@ -127,12 +116,7 @@
             font-weight: 700;
             cursor: pointer;
             margin-top: 18px;
-            transition: 0.3s;
-            box-shadow: 0 10px 30px -5px rgba(238, 90, 36, 0.3);
-        }
-        .btn-send:hover {
-            transform: scale(1.02);
-            box-shadow: 0 15px 40px -5px rgba(238, 90, 36, 0.4);
+            transition: 0.2s;
         }
         .btn-send:active {
             transform: scale(0.97);
@@ -144,19 +128,22 @@
         }
 
         #status {
-            color: #555;
+            color: #aaa;
             font-size: 14px;
             margin-top: 18px;
             min-height: 22px;
         }
-        #status.success { color: #4ade80; }
-        #status.error { color: #ff6b6b; }
+        #status.success {
+            color: #4ade80;
+        }
+        #status.error {
+            color: #ff6b6b;
+        }
 
         .footer {
-            color: #222;
+            color: #ccc;
             font-size: 12px;
             margin-top: 25px;
-            letter-spacing: 0.3px;
         }
         .footer span {
             color: #ff6b6b;
@@ -166,7 +153,7 @@
 <body>
     <div class="container">
         <a class="back" onclick="history.back()">← Retour</a>
-        
+
         <div class="logo">
             <span class="emoji-big">✉️</span>
             <h2>Message <span>anonyme</span></h2>
