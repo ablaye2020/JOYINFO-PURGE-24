@@ -54,10 +54,6 @@
             border-bottom-color: #ff6b6b;
         }
 
-        .header .nav span:active {
-            transform: scale(0.95);
-        }
-
         .header .badge {
             background: #ff6b6b;
             color: white;
@@ -82,17 +78,14 @@
             font-weight: 800;
             color: #1a1a1a;
         }
-
         .profile-card .pseudo span {
             color: #ff6b6b;
         }
-
         .profile-card .sub {
             color: #888;
             font-size: 15px;
             margin-top: 4px;
         }
-
         .profile-card .badge-pop {
             display: inline-block;
             background: linear-gradient(135deg, #ff6b6b, #feca57);
@@ -117,7 +110,6 @@
             margin-bottom: 15px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
         }
-
         .link-box .link {
             flex: 1;
             color: #888;
@@ -125,7 +117,6 @@
             word-break: break-all;
             font-family: monospace;
         }
-
         .link-box .copy-btn {
             background: linear-gradient(135deg, #ff6b6b, #ee5a24);
             border: none;
@@ -138,7 +129,6 @@
             transition: 0.2s;
             white-space: nowrap;
         }
-
         .link-box .copy-btn:active {
             transform: scale(0.95);
         }
@@ -149,7 +139,6 @@
             gap: 10px;
             margin-bottom: 20px;
         }
-
         .share-row button {
             flex: 1;
             padding: 14px 10px;
@@ -164,21 +153,17 @@
             justify-content: center;
             gap: 6px;
         }
-
         .share-row button:active {
             transform: scale(0.95);
         }
-
         .btn-wa {
             background: #25D366;
             color: white;
         }
-
         .btn-ig {
             background: linear-gradient(135deg, #f09433, #e6683c, #dc2743);
             color: white;
         }
-
         .btn-copy {
             background: #f2f2f7;
             color: #1a1a1a;
@@ -190,7 +175,6 @@
             gap: 12px;
             margin-bottom: 20px;
         }
-
         .stats .stat {
             flex: 1;
             background: white;
@@ -199,19 +183,16 @@
             text-align: center;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
         }
-
         .stats .stat .number {
             font-size: 28px;
             font-weight: 800;
             color: #1a1a1a;
         }
-
         .stats .stat .number span {
             background: linear-gradient(135deg, #ff6b6b, #feca57);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
         .stats .stat .label {
             color: #888;
             font-size: 11px;
@@ -224,12 +205,11 @@
         .tab-content {
             display: none;
         }
-
         .tab-content.active {
             display: block;
         }
 
-        /* ===== PLAY (vide) ===== */
+        /* ===== PLAY ===== */
         .play-empty {
             background: white;
             border-radius: 20px;
@@ -239,21 +219,21 @@
             font-size: 15px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
         }
-
         .play-empty .emoji {
             font-size: 60px;
             display: block;
             margin-bottom: 12px;
         }
 
-        /* ===== MESSAGES (INBOX) ===== */
+        /* ===== MESSAGES INBOX (STYLE IMAGE) ===== */
         .msg-card {
             background: white;
-            border-radius: 20px;
-            padding: 18px 20px;
-            margin-bottom: 12px;
+            border-radius: 24px;
+            padding: 20px 22px;
+            margin-bottom: 14px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
             animation: slideIn 0.3s ease;
+            border-left: 4px solid #ff6b6b;
         }
 
         @keyframes slideIn {
@@ -268,49 +248,92 @@
         }
 
         .msg-card .msg {
-            font-size: 16px;
+            font-size: 18px;
+            font-weight: 600;
             color: #1a1a1a;
             line-height: 1.5;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
+        }
+
+        .msg-card .msg .emoji-msg {
+            font-size: 22px;
+            margin-right: 6px;
         }
 
         .msg-card .actions {
             display: flex;
+            flex-direction: column;
             gap: 10px;
-            flex-wrap: wrap;
         }
 
-        .msg-card .actions button {
-            flex: 1;
-            min-width: 100px;
-            padding: 10px 14px;
+        .msg-card .actions .btn-qui {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
             border: none;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+            width: 100%;
+        }
+
+        .msg-card .actions .btn-qui:active {
+            transform: scale(0.97);
+        }
+
+        .msg-card .actions .btn-qui .emoji-btn {
+            font-size: 18px;
+            margin-right: 6px;
+        }
+
+        .msg-card .actions .btn-indice {
+            background: transparent;
+            border: 2px solid #ff6b6b;
+            color: #ff6b6b;
+            padding: 10px 18px;
             border-radius: 30px;
             font-size: 14px;
             font-weight: 700;
             cursor: pointer;
             transition: 0.2s;
+            text-align: center;
+            width: 100%;
         }
 
-        .msg-card .actions button:active {
-            transform: scale(0.95);
+        .msg-card .actions .btn-indice:active {
+            transform: scale(0.97);
+            background: #fff5f5;
         }
 
-        .btn-indice {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-            color: white;
-        }
-
-        .btn-repondre {
+        .msg-card .actions .btn-repondre {
             background: #f2f2f7;
+            border: none;
             color: #1a1a1a;
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+            width: 100%;
+        }
+
+        .msg-card .actions .btn-repondre:active {
+            transform: scale(0.97);
+            background: #e5e5ea;
         }
 
         .msg-card .meta-indice {
+            display: block;
             font-size: 12px;
             color: #aaa;
-            margin-top: 8px;
-            display: block;
+            margin-top: 10px;
+            text-align: center;
+            font-style: italic;
         }
 
         /* ===== EMPTY INBOX ===== */
@@ -323,7 +346,6 @@
             font-size: 15px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
         }
-
         .empty-msg .emoji {
             font-size: 60px;
             display: block;
@@ -353,7 +375,6 @@
             margin-top: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
         }
-
         .btn-new:active {
             transform: scale(0.98);
         }
@@ -365,7 +386,6 @@
             font-size: 12px;
             margin-top: 20px;
         }
-
         .footer a {
             color: #bbb;
             text-decoration: none;
@@ -376,10 +396,20 @@
             .header .nav span {
                 font-size: 16px;
             }
-            .msg-card .actions button {
+            .msg-card {
+                padding: 16px 18px;
+            }
+            .msg-card .msg {
+                font-size: 16px;
+            }
+            .msg-card .actions .btn-qui {
+                font-size: 14px;
+                padding: 10px 14px;
+            }
+            .msg-card .actions .btn-indice,
+            .msg-card .actions .btn-repondre {
                 font-size: 13px;
-                padding: 8px 12px;
-                min-width: 80px;
+                padding: 8px 14px;
             }
         }
     </style>
@@ -484,8 +514,6 @@
         function jouerSonNotification() {
             try {
                 const audioCtx = new(window.AudioContext || window.webkitAudioContext)();
-
-                // Premier son (pop)
                 const osc1 = audioCtx.createOscillator();
                 const gain1 = audioCtx.createGain();
                 osc1.connect(gain1);
@@ -496,8 +524,6 @@
                 gain1.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
                 osc1.start(audioCtx.currentTime);
                 osc1.stop(audioCtx.currentTime + 0.15);
-
-                // Deuxième son (ding) avec un léger délai
                 setTimeout(() => {
                     const osc2 = audioCtx.createOscillator();
                     const gain2 = audioCtx.createGain();
@@ -510,8 +536,6 @@
                     osc2.start(audioCtx.currentTime);
                     osc2.stop(audioCtx.currentTime + 0.1);
                 }, 120);
-
-                // Troisième son (vibration douce) pour un effet plus pro
                 setTimeout(() => {
                     const osc3 = audioCtx.createOscillator();
                     const gain3 = audioCtx.createGain();
@@ -524,9 +548,7 @@
                     osc3.start(audioCtx.currentTime);
                     osc3.stop(audioCtx.currentTime + 0.08);
                 }, 200);
-
             } catch (e) {
-                // Silencieux si l'API Audio n'est pas supportée
                 console.log('🔇 Son non supporté');
             }
         }
@@ -596,7 +618,6 @@
                 const nouveauNombre = messages.length;
                 messageCount = nouveauNombre;
 
-                // 🔔 JOUER LE SON SI UN NOUVEAU MESSAGE ARRIVE
                 if (nouveauNombre > ancienNombreMessages && ancienNombreMessages > 0) {
                     jouerSonNotification();
                     document.getElementById('status').textContent = '🔔 Nouveau message reçu !';
@@ -615,18 +636,25 @@
 
                 messages.forEach((msg, index) => {
                     const emoji = emojis[index % emojis.length];
+                    const messageSansEmoji = msg.contenu.replace(/[❤️😍🔥👀💯✨🌟🎯]/g, '').trim();
                     html += `
                         <div class="msg-card">
-                            <div class="msg">${escapeHtml(msg.contenu)}</div>
+                            <div class="msg">
+                                <span class="emoji-msg">${emoji}</span>
+                                ${escapeHtml(messageSansEmoji)}
+                            </div>
                             <div class="actions">
+                                <button class="btn-qui" onclick="obtenirIndice('${msg.id}')">
+                                    <span class="emoji-btn">😍</span> Qui a envoyé ça ?
+                                </button>
                                 <button class="btn-indice" onclick="obtenirIndice('${msg.id}')">
-                                    ${emoji} Qui a envoyé ça ?
+                                    🔎 Obtenez un indice
                                 </button>
                                 <button class="btn-repondre" onclick="repondreMessage('${msg.id}')">
                                     ✏️ Répondre
                                 </button>
                             </div>
-                            <span class="meta-indice">🔎 Obtenez un indice pour découvrir qui a envoyé ce message</span>
+                            <span class="meta-indice">🔎 Cliquez sur "Obtenez un indice" pour découvrir qui a envoyé ce message</span>
                         </div>
                     `;
                 });
@@ -634,7 +662,6 @@
                 container.innerHTML = html;
                 document.getElementById('status').textContent = '✅ ' + nouveauNombre + ' message' + (nouveauNombre > 1 ? 's' : '');
 
-                // Si l'onglet INBOX n'est pas actif, on le signale visuellement
                 const inboxTab = document.querySelector('[data-tab="inbox"]');
                 if (!inboxTab.classList.contains('active')) {
                     badgeEl.style.background = '#ff6b6b';
@@ -655,20 +682,16 @@
 
         // ===== SWITCH ENTRE LES ONGLETS =====
         function switchTab(tab) {
-            // Cacher tous les onglets
             document.querySelectorAll('.tab-content').forEach(el => {
                 el.classList.remove('active');
             });
-            // Désactiver tous les liens
             document.querySelectorAll('.nav span').forEach(el => {
                 el.classList.remove('active');
             });
 
-            // Activer l'onglet choisi
             document.getElementById('tab-' + tab).classList.add('active');
-            document.querySelector('[data-tab="' + tab + ']').classList.add('active');
+            document.querySelector('[data-tab="' + tab + '"]').classList.add('active');
 
-            // Mettre à jour le badge
             const badgeEl = document.getElementById('unreadBadge');
             if (tab === 'inbox') {
                 badgeEl.style.background = '#ff6b6b';
@@ -682,12 +705,10 @@
         // ===== ACTIONS SUR LES MESSAGES =====
         function obtenirIndice(messageId) {
             alert('🔎 Indice : La personne qui a envoyé ce message est dans tes contacts !');
-            // Tu peux personnaliser cette fonction plus tard
         }
 
         function repondreMessage(messageId) {
             alert('✏️ Tu peux répondre à ce message anonymement !');
-            // Tu peux personnaliser cette fonction plus tard
         }
 
         // ===== PARTAGE ET COPIER =====
@@ -711,12 +732,10 @@
             alert('📸 Lien copié ! Colle-le dans ta story Instagram 📲');
         }
 
-        // ===== RAFRAÎCHIR =====
         function rafraichir() {
             location.reload();
         }
 
-        // ===== SUPPRIMER LES MESSAGES =====
         function supprimerMessages() {
             if (!confirm('⚠️ Supprimer tous les messages ?')) return;
             if (!pseudo) return;
@@ -728,7 +747,6 @@
                 .catch((error) => alert('❌ ' + error.message));
         }
 
-        // ===== CHANGER DE PSEUDO =====
         function creerNouvelleBoite() {
             localStorage.removeItem('monPseudo');
             window.location.href = 'https://ablaye2020.github.io/laye-anonymous/';
