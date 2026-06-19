@@ -17,7 +17,6 @@
         }
         .container { max-width: 420px; margin: 0 auto; }
 
-        /* === HEADER === */
         .header {
             display: flex;
             justify-content: space-between;
@@ -53,7 +52,6 @@
             color: #fff;
         }
 
-        /* === PROFIL === */
         .profile-card {
             background: #141414;
             border-radius: 20px;
@@ -81,7 +79,6 @@
             font-size: 14px;
         }
 
-        /* === LIEN === */
         .link-box {
             background: #141414;
             border-radius: 16px;
@@ -113,7 +110,6 @@
             transform: scale(1.05);
         }
 
-        /* === BOUTONS PARTAGE === */
         .share-row {
             display: flex;
             gap: 10px;
@@ -138,7 +134,6 @@
         .btn-ig { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743); color: white; }
         .btn-copy { background: #1a1a1a; color: #888; border: 1px solid #2a2a2a; }
 
-        /* === STATS === */
         .stats {
             display: flex;
             gap: 12px;
@@ -168,7 +163,6 @@
             margin-top: 2px;
         }
 
-        /* === MESSAGES === */
         .msg-card {
             background: #141414;
             border-radius: 14px;
@@ -310,9 +304,10 @@
         let currentUser = null;
         let ancienNombreMessages = 0;
 
+        // ✅ LIEN CORRIGÉ AVEC LE BON CHEMIN
         if (pseudo) {
             document.getElementById('pseudoDisplay').textContent = pseudo;
-            const lien = window.location.origin + '/boite.html?pseudo=' + pseudo;
+            const lien = window.location.origin + '/laye-anonymous/boite.html?pseudo=' + pseudo;
             document.getElementById('lienAffichage').textContent = lien;
         }
 
